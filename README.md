@@ -30,6 +30,7 @@ myCalendar.book(20, 30); // return True ，这个日程安排可以添加到日�
 ```
 `分析`
 ***可以申明一个Dictionary<int,int> 来记录日历区间，key表示日程开始，vaule表示日程结束。每次book遍历calendar 判断start和end是否在已有区间则返回false。***
+
 `c#实现`
 ```
 public class MyCalendar {
