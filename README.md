@@ -1,5 +1,160 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/6
+## 736. Lisp 语法解析
+给你一个类似 Lisp 语句的字符串表达式 expression，求出其计算结果。
+
+表达式语法如下所示:
+
+表达式可以为整数，let 表达式，add 表达式，mult 表达式，或赋值的变量。表达式的结果总是一个整数。
+(整数可以是正整数、负整数、0)
+let 表达式采用 "(let v1 e1 v2 e2 ... vn en expr)" 的形式，其中 let 总是以字符串 "let"来表示，接下来会跟随一对或多对交替的变量和表达式，也就是说，第一个变量 v1被分配为表达式 e1 的值，第二个变量 v2 被分配为表达式 e2 的值，依次类推；最终 let 表达式的值为 expr表达式的值。
+add 表达式表示为 "(add e1 e2)" ，其中 add 总是以字符串 "add" 来表示，该表达式总是包含两个表达式 e1、e2 ，最终结果是 e1 表达式的值与 e2 表达式的值之 和 。
+mult 表达式表示为 "(mult e1 e2)" ，其中 mult 总是以字符串 "mult" 表示，该表达式总是包含两个表达式 e1、e2，最终结果是 e1 表达式的值与 e2 表达式的值之 积 。
+在该题目中，变量名以小写字符开始，之后跟随 0 个或多个小写字符或数字。为了方便，"add" ，"let" ，"mult" 会被定义为 "关键字" ，不会用作变量名。
+最后，要说一下作用域的概念。计算变量名所对应的表达式时，在计算上下文中，首先检查最内层作用域（按括号计），然后按顺序依次检查外部作用域。测试用例中每一个表达式都是合法的。有关作用域的更多详细信息，请参阅示例。
+
+
+`示例：`
+```
+示例 1：
+
+输入：expression = "(let x 2 (mult x (let x 3 y 4 (add x y))))"
+输出：14
+解释：
+计算表达式 (add x y), 在检查变量 x 值时，
+在变量的上下文中由最内层作用域依次向外检查。
+首先找到 x = 3, 所以此处的 x 值是 3 。
+示例 2：
+
+输入：expression = "(let x 3 x 2 x)"
+输出：2
+解释：let 语句中的赋值运算按顺序处理即可。
+示例 3：
+
+输入：expression = "(let x 1 y 2 x (add x y) (add x y))"
+输出：5
+解释：
+第一个 (add x y) 计算结果是 3，并且将此值赋给了 x 。 
+第二个 (add x y) 计算结果是 3 + 2 = 5 。
+
+
+```
+`分析`
+***每个表达式都包含在()里，且有let add mult 三种关键字，其余都是变量名和整数，可以实现一个EvaInt函数来返回当前下标得值并移动下标，实现一个EvaVar函数来返回当前下标的变量字符穿并移动下标，因为let的赋值可能有多个，变量需要在对应作用域下，可以申明一个Dictionary<string,Stack<int>> scope 来存对应的变量值。考虑实现一个递归函数InnerEva
+返回表达式的结果，只要当前字符不为左括号’(’，则判断为变量或值，直接返回变量或整数，然后判断判断是let add 或 mult 。add返回两变量的和，mult返回两变量的积， let 需要赋值所有的变量直到遇到左右括号（）则递归（）里的表达式。***
+
+`c#实现`
+```
+public class Solution {
+    int index = 0;
+    Dictionary<string,Stack<int>> scope = new Dictionary<string,Stack<int>>(); //用来记录作用域内所有变量的值
+    public int Evaluate(string expression) {
+        return InnerEva(expression);
+    }
+    
+    private int InnerEva(string expression){
+        //不是（ 则只可能是 变量或者值 返回值或者变量的值
+        if (expression[index] != '(')
+        {
+            if (char.IsLower(expression[index]))
+            {
+                string var = EvaVar(expression);
+                return scope[var].Peek();
+            }else{ //整数
+                return EvaInt(expression);
+            }   
+        }
+        // 下面处理括号内的表达式
+        //移除(
+        int ret;
+        index++;
+        //判断是let add 或 mult
+        if (expression[index] == 'l')
+        {
+            index += 4;
+            IList<string> vars = new List<string>(); //记录所有的变量名
+            while (true)
+            {
+                if (!char.IsLower(expression[index])) //如果不是变量的字符 这时应该是下一个表达式的（  此时直接递得到下一个（）的值
+                {
+                    ret = InnerEva(expression);
+                    break;
+                }
+                //记录该scope let表达式里 所有变量的值
+                string var = EvaVar(expression);
+                if (expression[index] == ')') //如果let 表达式结束 则返回最后赋值的变量值
+                {
+                    ret = scope[var].Peek();
+                    break;
+                }
+                vars.Add(var);
+                index ++;
+                int v = InnerEva(expression);
+                if (!scope.ContainsKey(var))
+                {
+                    scope.Add(var,new Stack<int>());
+                }
+                scope[var].Push(v);
+                index++;
+            }
+            foreach (string var in vars) {
+                scope[var].Pop(); // 清除当前作用域的变量
+            }
+        }else if (expression[index] == 'a')
+        {
+            index += 4;
+            int v1 = InnerEva(expression);
+            index ++;
+            int v2 = InnerEva(expression);
+            ret = v1 + v2;
+        }else
+        {
+            index += 5;
+            int v1 = InnerEva(expression);
+            index ++;
+            int v2 = InnerEva(expression);
+            ret = v1 * v2;
+        }
+        //移除 ）
+        index ++;
+        return ret;
+    }
+
+    //返回当前下表的值
+    private int EvaInt(string expression){
+        int n = expression.Length;
+        int ret = 0, sign = 1;
+        if(expression[index] == '-'){
+            sign = -1;
+            index ++;
+        }
+        while (index < n && char.IsDigit(expression[index]))
+        {
+            ret = ret * 10 + (expression[index] - '0');
+            index ++;
+        }
+        return ret*sign;
+    }
+
+    //返回当前下表的变量字符
+    private string EvaVar(string expression){
+        int n = expression.Length;
+        StringBuilder ret = new StringBuilder();
+        while (index < n && expression[index] != ' ' && expression[index] != ')')
+        {
+            ret.Append(expression[index]);
+            index ++;
+        }
+        return ret.ToString();
+    }
+}
+```
+
+
+***
+
+
 ## 2022/7/5
 ## 729. 我的日程安排表 I
 实现一个 MyCalendar 类来存放你的日程安排。如果要添加的日程安排不会造成 重复预订 ，则可以存储这个新的日程安排。
