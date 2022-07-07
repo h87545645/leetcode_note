@@ -1,5 +1,125 @@
 # LEET CODE STUDY NOTE
 
+
+## 2022/7/7
+## 648. 单词替换
+
+在英语中，我们有一个叫做 词根(root) 的概念，可以词根后面添加其他一些词组成另一个较长的单词——我们称这个词为 继承词(successor)。例如，词根an，跟随着单词 other(其他)，可以形成新的单词 another(另一个)。
+
+现在，给定一个由许多词根组成的词典 dictionary 和一个用空格分隔单词形成的句子 sentence。你需要将句子中的所有继承词用词根替换掉。如果继承词有许多可以形成它的词根，则用最短的词根替换它。
+
+你需要输出替换之后的句子。
+
+```
+示例 1：
+
+输入：dictionary = ["cat","bat","rat"], sentence = "the cattle was rattled by the battery"
+输出："the cat was rat by the bat"
+示例 2：
+
+输入：dictionary = ["a","b","c"], sentence = "aadsfasf absbs bbab cadsfafs"
+输出："a a b c"
+ 
+
+提示：
+
+1 <= dictionary.length <= 1000
+1 <= dictionary[i].length <= 100
+dictionary[i] 仅由小写字母组成。
+1 <= sentence.length <= 10^6
+sentence 仅由小写字母和空格组成。
+sentence 中单词的总量在范围 [1, 1000] 内。
+sentence 中每个单词的长度在范围 [1, 1000] 内。
+sentence 中单词之间由一个空格隔开。
+sentence 没有前导或尾随空格。
+```
+`分析`
+
+**由于要求用最短的词根替换，考虑对于sentence中的每个单词，由短至长遍历它所有的前缀。把dictionary 中所有词根放入哈希集合中，如果这个前缀出现在哈希集合中，则我们找到了当前单词的最短词根，将这个词根替换原来的单词。最后返回重新拼接的句子**
+
+`c#实现`
+```
+public class Solution {
+    public string ReplaceWords(IList<string> dictionary, string sentence) {
+        ISet<string> dictionarySet = new HashSet<string>();
+        foreach (string root in dictionary) {
+            dictionarySet.Add(root);
+        }
+        string[] words = sentence.Split(" ");
+        for (int i = 0; i < words.Length; i++) {
+            string word = words[i];
+            for (int j = 0; j < word.Length; j++) {
+                if (dictionarySet.Contains(word.Substring(0, 1 + j))) {
+                    words[i] = word.Substring(0, 1 + j);
+                    break;
+                }
+            }
+        }
+        return String.Join(" ", words);
+    }
+}
+
+```
+
+`解法二 字典树`
+
+**看到一种有意思的解法，`字典树` 关于字典树，可以看[字典树](https://github.com/h87545645/Blog/blob/main/git/git.md)**
+
+**我们用 dictionary 中所有词根构建一棵字典树，并用特殊符号标记结尾。在搜索前缀时，只需在字典树上搜索出一条最短的前缀路径即可。**
+
+`c#实现`
+```
+public class Solution {
+    public string ReplaceWords(IList<string> dictionary, string sentence) {
+        Trie trie = new Trie();
+        foreach (string word in dictionary) {
+            Trie cur = trie;
+            for (int i = 0; i < word.Length; i++) {
+                char c = word[i];
+                if (!cur.Children.ContainsKey(c)) {
+                    cur.Children.Add(c, new Trie());
+                }
+                cur = cur.Children[c];
+            }
+            cur.Children.Add('#', new Trie());
+        }
+        string[] words = sentence.Split(" ");
+        for (int i = 0; i < words.Length; i++) {
+            words[i] = FindRoot(words[i], trie);
+        }
+        return string.Join(" ", words);
+    }
+
+    public string FindRoot(string word, Trie trie) {
+        StringBuilder root = new StringBuilder();
+        Trie cur = trie;
+        for (int i = 0; i < word.Length; i++) {
+            char c = word[i];
+            if (cur.Children.ContainsKey('#')) {
+                return root.ToString();
+            }
+            if (!cur.Children.ContainsKey(c)) {
+                return word;
+            }
+            root.Append(c);
+            cur = cur.Children[c];
+        }
+        return root.ToString();
+    }
+}
+
+public class Trie {
+    public Dictionary<char, Trie> Children;
+
+    public Trie() {
+        Children = new Dictionary<char, Trie>();
+    }
+}
+
+```
+
+***
+
 ## 2022/7/6
 ## 736. Lisp 语法解析
 给你一个类似 Lisp 语句的字符串表达式 expression，求出其计算结果。
