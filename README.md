@@ -102,7 +102,7 @@ public class Solution {
 
 `解法二 字典树`
 
-**看到一种有意思的解法，`字典树` 关于字典树，可以看[字典树](https://github.com/h87545645/Blog/blob/main/git/git.md)**
+**看到一种有意思的解法，`字典树` 关于字典树 [字典树](https://github.com/h87545645/Blog/blob/main/data-structure/%E5%AD%97%E5%85%B8%E6%A0%91.md)**
 
 **我们用 dictionary 中所有词根构建一棵字典树，并用特殊符号标记结尾。在搜索前缀时，只需在字典树上搜索出一条最短的前缀路径即可。**
 
