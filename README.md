@@ -1,5 +1,44 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/8
+## 1217. 玩筹码
+
+>有 n 个筹码。第 i 个筹码的位置是 position[i] 。
+
+>我们需要把所有筹码移到同一个位置。在一步中，我们可以将第 i 个筹码的位置从 position[i] 改变为:
+
+>position[i] + 2 或 position[i] - 2 ，此时 cost = 0
+>position[i] + 1 或 position[i] - 1 ，此时 cost = 1
+>返回将所有筹码移动到同一位置上所需要的 最小代价 。
+
+[原题地址 1217. 玩筹码](https://leetcode.cn/problems/minimum-cost-to-move-chips-to-the-same-position/)
+
+`分析`
+
+按照一般思路需要遍历postion,算出其他筹码移动到该下标的cost，最后取cost最小的一个。但这种方式要遍历两次position，时间复杂度为O(n的2次方)。此题多半不是考虑这种解法。观察cost规则，只有移动奇数位cost才会+1，可以用[贪心算法]()把偶数和奇数位筹码看作整体，结果只和最终位置是偶数位还是奇数位相关，所以只需遍历一次positon，记录奇(偶)数位置的个数，取小的返回就是最终结果。
+
+`c# 实现`
+```
+public class Solution {
+    public int MinCostToMoveChips(int[] position) {
+        int even = 0, odd = 0;
+        foreach (int pos in position) {
+            if ((pos & 1) != 0) { //判断奇偶
+                odd++;
+            } else {
+                even++;
+            }
+        }
+        return Math.Min(odd, even);
+    }
+}
+
+```
+
+关于[& 运算符]()
+​
+ 
+***
 
 ## 2022/7/7
 ## 648. 单词替换
