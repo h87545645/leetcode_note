@@ -1,5 +1,101 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/11
+## 676. 实现一个魔法字典
+```
+设计一个使用单词列表进行初始化的数据结构，单词列表中的单词 互不相同 。 如果给出一个单词，请判定能否只将这个单词中一个字母换成另一个字母，使得所形成的新单词存在于你构建的字典中。
+
+实现 MagicDictionary 类：
+
+MagicDictionary() 初始化对象
+void buildDict(String[] dictionary) 使用字符串数组 dictionary 设定该数据结构，dictionary 中的字符串互不相同
+bool search(String searchWord) 给定一个字符串 searchWord ，判定能否只将字符串中 一个 字母换成另一个字母，使得所形成的新字符串能够与字典中的任一字符串匹配。如果可以，返回 true ；否则，返回 false 。
+示例：
+
+输入
+["MagicDictionary", "buildDict", "search", "search", "search", "search"]
+[[], [["hello", "leetcode"]], ["hello"], ["hhllo"], ["hell"], ["leetcoded"]]
+输出
+[null, null, false, true, false, false]
+
+解释
+MagicDictionary magicDictionary = new MagicDictionary();
+magicDictionary.buildDict(["hello", "leetcode"]);
+magicDictionary.search("hello"); // 返回 False
+magicDictionary.search("hhllo"); // 将第二个 'h' 替换为 'e' 可以匹配 "hello" ，所以返回 True
+magicDictionary.search("hell"); // 返回 False
+magicDictionary.search("leetcoded"); // 返回 False
+```
+
+[原题地址 676. 实现一个魔法字典](https://leetcode.cn/problems/implement-magic-dictionary/)
+
+`分析`
+
+读完题就感觉适合使用上周用过的**[字典树 Trie](https://github.com/h87545645/Blog/blob/main/data-structure/%E5%AD%97%E5%85%B8%E6%A0%91.md)**来实现。
+
+在buildDict中添加字典树
+```
+class Trie{
+    public bool IsFinished { get; set; }
+    public Trie[] Child { get; set; }
+    public Trie(){
+        IsFinished = false;
+        Child = new Trie[26];
+    }
+}
+public void BuildDict(string[] dictionary) {
+    foreach (string word in dictionary)
+    {
+        Trie cur = root;
+        for (int i = 0; i < word.Length; i++)
+        {
+            int index = word[i] - 'a';
+            if (cur.Child[index] == null)
+            {
+                cur.Child[index] = new Trie();
+            }
+            cur = cur.Child[index];
+        }
+        cur.IsFinished = true;
+    }
+}
+```
+
+Search里递归DFS方法，如果字典树中第一次找不到此字符，则用isModify标记修改了单词，第二次找不到单词或这在index == searchWord.Length时未被isModify，则返回false
+
+```
+ private bool DFS(string searchWord , int index ,Trie node, bool isModify){
+    if (index == searchWord.Length)
+    {
+        return isModify && node.IsFinished;
+    }
+    int wordInex = searchWord[index] - 'a';
+    if (node.Child[wordInex] != null)
+    {
+        if (DFS(searchWord , index + 1 , node.Child[wordInex] , isModify))
+        {
+             return true;
+        }
+    }
+    if (!isModify)
+    {
+        for (int i = 0; i < 26; i++)
+        {
+            if (i != wordInex && node.Child[i] != null)
+            {
+                if (DFS(searchWord , index + 1 , node.Child[i] , true))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+```
+
+***
+
 ## 2022/7/8
 ## 1217. 玩筹码
 
