@@ -31,7 +31,7 @@ magicDictionary.search("leetcoded"); // 返回 False
 
 `分析`
 
-读完题就感觉适合使用上周用过的** [字典树 Trie](https://github.com/h87545645/Blog/blob/main/data-structure/%E5%AD%97%E5%85%B8%E6%A0%91.md) **  来实现。
+读完题就感觉适合使用上周用过的 **[字典树 Trie](https://github.com/h87545645/Blog/blob/main/data-structure/%E5%AD%97%E5%85%B8%E6%A0%91.md)**  来实现。
 
 在buildDict中添加字典树
 ```
