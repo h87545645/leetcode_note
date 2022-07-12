@@ -1,5 +1,89 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/12
+## 1252. 奇数值单元格的数目
+
+```
+给你一个 m x n 的矩阵，最开始的时候，每个单元格中的值都是 0。
+
+另有一个二维索引数组 indices，indices[i] = [ri, ci] 指向矩阵中的某个位置，其中 ri 和 ci 分别表示指定的行和列（从 0 开始编号）。
+
+对 indices[i] 所指向的每个位置，应同时执行下述增量操作：
+
+ri 行上的所有单元格，加 1 。
+ci 列上的所有单元格，加 1 。
+给你 m、n 和 indices 。请你在执行完所有 indices 指定的增量操作后，返回矩阵中 奇数值单元格 的数目。
+
+ 
+
+示例 1：
+
+
+
+输入：m = 2, n = 3, indices = [[0,1],[1,1]]
+输出：6
+解释：最开始的矩阵是 [[0,0,0],[0,0,0]]。
+第一次增量操作后得到 [[1,2,1],[0,1,0]]。
+最后的矩阵是 [[1,3,1],[1,3,1]]，里面有 6 个奇数。
+示例 2：
+
+
+
+输入：m = 2, n = 2, indices = [[1,1],[0,0]]
+输出：0
+解释：最后的矩阵是 [[2,2],[2,2]]，里面没有奇数。
+ 
+
+提示：
+
+1 <= m, n <= 50
+1 <= indices.length <= 100
+0 <= ri < m
+0 <= ci < n
+ 
+
+进阶：你可以设计一个时间复杂度为 O(n + m + indices.length) 且仅用 O(n + m) 额外空间的算法来解决此问题吗？
+
+```
+
+[原题地址 1252. 奇数值单元格的数目](https://leetcode.cn/problems/cells-with-odd-values-in-a-matrix)
+
+`分析`
+
+根据题目要求，先遍历indices可以用两个数组分别记录行列增加的次数，再遍历矩阵，计算每个位置行列相加并且计数奇数。
+
+`c#实现`
+
+```
+public class Solution {
+    public int OddCells(int m, int n, int[][] indices) {
+        int[] r = new int[m];
+        int[] c = new int[n];
+        int ans = 0;
+       
+        for(int i =0; i < indices.Length; i ++){
+            r[indices[i][0]] ++;
+            c[indices[i][1]] ++;
+        }
+        
+        for (int i = 0; i < r.Length; i++)
+        {
+            for (int j = 0; j < c.Length; j++)
+            {
+                if (((r[i] + c[j]) & 1) == 1)
+                {
+                    ans ++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+关于[& 运算符](https://github.com/h87545645/Blog/blob/main/c%23/c%23%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93.md#-%E8%BF%90%E7%AE%97%E7%AC%A6)
+
+***
+
 ## 2022/7/11
 ## 676. 实现一个魔法字典
 ```
