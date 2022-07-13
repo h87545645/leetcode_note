@@ -1,5 +1,128 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/13
+## 735. 行星碰撞
+
+[原题地址 735. 行星碰撞](https://leetcode.cn/problems/asteroid-collision/)
+
+```
+给定一个整数数组 asteroids，表示在同一行的行星。
+
+对于数组中的每一个元素，其绝对值表示行星的大小，正负表示行星的移动方向（正表示向右移动，负表示向左移动）。每一颗行星以相同的速度移动。
+
+找出碰撞后剩下的所有行星。碰撞规则：两个行星相互碰撞，较小的行星会爆炸。如果两颗行星大小相同，则两颗行星都会爆炸。两颗移动方向相同的行星，永远不会发生碰撞。
+
+ 
+
+示例 1：
+
+输入：asteroids = [5,10,-5]
+输出：[5,10]
+解释：10 和 -5 碰撞后只剩下 10 。 5 和 10 永远不会发生碰撞。
+示例 2：
+
+输入：asteroids = [8,-8]
+输出：[]
+解释：8 和 -8 碰撞后，两者都发生爆炸。
+示例 3：
+
+输入：asteroids = [10,2,-5]
+输出：[10]
+解释：2 和 -5 发生碰撞后剩下 -5 。10 和 -5 发生碰撞后剩下 10 。
+
+```
+
+`分析`
+
+遍历asteroids，int i 指向头，int j 指向尾。每次循环 i j 下标的行星分别判断是否和相邻的相撞，相撞时删除对应行星。
+
+`c# 实现`
+
+```
+public class Solution {
+    public int[] AsteroidCollision(int[] asteroids) {
+        List<int> aster = new List<int>(asteroids);
+         for (int i = 0 , j = asteroids.Length - 1; i < asteroids.Length || j >= 0; i++ , j --)
+            {
+                if (i > 0 && i < asteroids.Length && asteroids[i] < 0 && asteroids[i - 1] > 0 )
+                {
+                    int sub = asteroids[i - 1] + asteroids[i];
+                    // return new int[]{sub};
+                    if (sub == 0)
+                    {
+                        asteroids = DeleteEle(asteroids , i - 1 , 2);
+                        i -= 2;
+                    }else if (sub > 0)
+                    {
+                        asteroids = DeleteEle(asteroids , i , 1);
+                        i -= 1;
+                    }else{
+                        asteroids = DeleteEle(asteroids , i - 1 , 1);
+                        i -= 1;
+                    }
+                }
+                if (j < asteroids.Length - 1 && i >=0 && asteroids[j] > 0 && asteroids[j + 1] < 0 )
+                {
+                    int sub = asteroids[j + 1] + asteroids[j];
+                    // return new int[]{sub};
+                    if (sub == 0)
+                    {
+                        asteroids = DeleteEle(asteroids , j  , 2);
+                        j += 2;
+                    }else if (sub > 0)
+                    {
+                        asteroids = DeleteEle(asteroids , j + 1 , 1);
+                        j += 1;
+                    }else{
+                        asteroids = DeleteEle(asteroids , j  , 1);
+                        j += 1;
+                    }
+                }
+            }
+        return asteroids;
+    }
+
+    private int[] DeleteEle(int[] arrayBorn,int index,int Len) 
+    {
+        if (Len < 0)    //删除长度小于0，返回
+        {
+            return arrayBorn;
+        }
+        if ( (index + Len) > arrayBorn.Length)      //删除长度超出数组范围 
+        {
+            Len = arrayBorn.Length - index;         //将长度设置为能删除的最大长度
+        }
+        for (int i = 0;i < arrayBorn.Length - ( index + Len); i++)      //将删除元素后面的元素往前移动
+        {
+            if ((index + i + Len) > arrayBorn.Length)       //若删除元素+删除长度超过数组的范围，即无法从数组中找到移动元素，则用null替代
+            {
+                arrayBorn[index + i] = 0;
+            }
+            else            //若能用数组的元素替换则用数组中的元素
+            {
+                arrayBorn[index + i] = arrayBorn[index + i + Len];
+            }           
+        }
+        /*不改变数组长度*/
+        // for (int j =Len;j > 0; j--)         //将删除元素后多余的元素置为null值
+        // {
+        //     arrayBorn[arrayBorn.Length - j ] = null;
+        // }
+        int[] newArray = new int[arrayBorn.Length-Len];
+        for (int j =0;j < newArray.Length;j++) 
+        {
+            newArray[j] = arrayBorn[j];
+        }
+        return newArray;
+        // return arrayBorn;            
+    }
+}
+
+```
+
+
+***
+
 ## 2022/7/12
 ## 1252. 奇数值单元格的数目
 
