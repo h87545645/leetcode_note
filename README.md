@@ -1,5 +1,76 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/14
+
+## 745. 前缀和后缀搜索
+
+[原题地址 745. 前缀和后缀搜索](https://leetcode.cn/problems/prefix-and-suffix-search/)
+
+```
+设计一个包含一些单词的特殊词典，并能够通过前缀和后缀来检索单词。
+
+实现 WordFilter 类：
+
+WordFilter(string[] words) 使用词典中的单词 words 初始化对象。
+f(string pref, string suff) 返回词典中具有前缀 prefix 和后缀 suff 的单词的下标。如果存在不止一个满足要求的下标，返回其中 最大的下标 。如果不存在这样的单词，返回 -1 。
+ 
+
+示例：
+
+输入
+["WordFilter", "f"]
+[[["apple"]], ["a", "e"]]
+输出
+[null, 0]
+解释
+WordFilter wordFilter = new WordFilter(["apple"]);
+wordFilter.f("a", "e"); // 返回 0 ，因为下标为 0 的单词：前缀 prefix = "a" 且 后缀 suff = "e" 。
+
+
+```
+
+`分析`
+
+本来想用每个单词的前后缀拼接作为key来构造[字典树 Trie](https://github.com/h87545645/Blog/blob/main/data-structure/%E5%AD%97%E5%85%B8%E6%A0%91.md)的。后来看到官方题解里有更简洁的方法。
+
+```
+计算每个单词的前缀后缀组合可能性
+
+预先计算出每个单词的前缀后缀组合可能性，用特殊符号连接，作为键，对应的最大下标作为值保存入哈希表。检索时，同样用特殊符号连接前后缀，在哈希表中进行搜索。
+
+```
+
+`c#实现`
+
+```
+public class WordFilter {
+    Dictionary<string, int> dictionary;
+
+    public WordFilter(string[] words) {
+        dictionary = new Dictionary<string, int>();
+        for (int i = words.Length - 1; i >= 0; i--) {
+            string word = words[i];
+            int m = word.Length;
+            for (int prefixLength = 1; prefixLength <= m; prefixLength++) {
+                for (int suffixLength = 1; suffixLength <= m; suffixLength++) {
+                    dictionary.TryAdd(word.Substring(0, prefixLength) + "#" + word.Substring(m - suffixLength), i);
+                }
+            }
+        }
+    }
+
+    public int F(string pref, string suff) {
+        if (dictionary.ContainsKey(pref + "#" + suff)) {
+            return dictionary[pref + "#" + suff];
+        }
+        return -1;
+    }
+}
+
+```
+
+***
+
 ## 2022/7/13
 ## 735. 行星碰撞
 
