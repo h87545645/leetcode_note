@@ -1,5 +1,51 @@
 # LEET CODE STUDY NOTE
 
+
+## 2022/7/15
+
+## 558. 四叉树交集
+
+[原题地址 558. 四叉树交集](https://leetcode.cn/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/)
+
+`题目比较长就不复制了，这道题主要难在四叉树的理解，实现一个递归方法，比较quadTree1和quadTree2，只要其中有一个是叶子isLeaf，则根据条件返回其中一个node。如果两个都不是叶子，则递归四个字节点合成一个节点，新节点根据规则判断是否为叶子`
+
+`c# 实现`
+···
+public class Solution {
+
+    public Node Intersect(Node quadTree1, Node quadTree2) {
+        
+        if (quadTree1.isLeaf || quadTree2.isLeaf)
+        {
+             if (quadTree1.isLeaf && quadTree1.val)
+            {
+                return new Node(quadTree1.val,quadTree1.isLeaf);
+            }else if(quadTree1.isLeaf && !quadTree1.val){
+                return new Node(quadTree2.val,quadTree2.isLeaf,quadTree2.topLeft,quadTree2.topRight,quadTree2.bottomLeft,quadTree2.bottomRight);
+            }
+            else if (quadTree2.isLeaf && quadTree2.val)
+            {
+                return new Node(quadTree2.val,quadTree2.isLeaf);
+            }else{
+                return new Node(quadTree1.val,quadTree1.isLeaf,quadTree1.topLeft,quadTree1.topRight,quadTree1.bottomLeft,quadTree1.bottomRight);
+            }
+        }else
+        {
+            Node o1 = Intersect(quadTree1.topLeft, quadTree2.topLeft);
+        Node o2 = Intersect(quadTree1.topRight, quadTree2.topRight);
+        Node o3 = Intersect(quadTree1.bottomLeft, quadTree2.bottomLeft);
+        Node o4 = Intersect(quadTree1.bottomRight, quadTree2.bottomRight);
+        if (o1.isLeaf && o2.isLeaf && o3.isLeaf && o4.isLeaf && o1.val == o2.val && o1.val == o3.val && o1.val == o4.val) {
+            return new Node(o1.val, true);
+        }
+        return new Node(true, false, o1, o2, o3, o4);
+        }
+    }
+}
+···
+
+***
+
 ## 2022/7/14
 
 ## 745. 前缀和后缀搜索
