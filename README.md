@@ -10,7 +10,7 @@
 `题目比较长就不复制了，这道题主要难在四叉树的理解，实现一个递归方法，比较quadTree1和quadTree2，只要其中有一个是叶子isLeaf，则根据条件返回其中一个node。如果两个都不是叶子，则递归四个字节点合成一个节点，新节点根据规则判断是否为叶子`
 
 `c# 实现`
-···
+```
 public class Solution {
 
     public Node Intersect(Node quadTree1, Node quadTree2) {
@@ -42,7 +42,7 @@ public class Solution {
         }
     }
 }
-···
+```
 
 ***
 
