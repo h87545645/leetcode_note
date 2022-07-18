@@ -1,5 +1,136 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/18
+
+## 749. 隔离病毒
+
+[原题地址 749. 隔离病毒](https://leetcode.cn/problems/contain-virus/)
+
+`分析`
+遍历数组，遇到病毒将virusAreaCnt为key的VirusArea类计入virusAreaDict字典，并递归搜索周围的区域，遇0则VirusArea的哈希neighbors Add, wall计数加1，遇1则标记原数组为-virusAreaCnt。
+遍历结束后如果virusAreaDict count <= 1 则返回结果，否则比较 找到neighbors最大的字典，将值设为1，其余字典还原为1 重复上述操作
+
+`c# 实现`
+```
+public class Solution
+{
+    static int[][] dirs = {new int[]{-1, 0}, new int[]{1, 0}, new int[]{0, -1}, new int[]{0, 1}};
+    private int virusAreaCnt ;
+    private Dictionary<int, VirusArea> virusAreaDict;
+    class VirusArea
+    {
+        public VirusArea(){}
+        public HashSet<int> neighbors = new HashSet<int>();
+        public int wall = 0;
+    }
+
+    public int ContainVirus(int[][] isInfected)
+    {
+        int ans = 0;
+        int rowCnt = isInfected.Length, colCnt = isInfected[0].Length;
+        while (true)
+        {    
+            virusAreaDict = new Dictionary<int, VirusArea>();
+            virusAreaCnt = 0;
+            for (int row = 0; row < rowCnt; row++)
+            {
+                for (int col = 0; col < colCnt; col++)
+                {
+                    if (isInfected[row][col] == 1)
+                    {
+                    
+                        virusAreaCnt++;
+
+                        if (!virusAreaDict.ContainsKey(virusAreaCnt))
+                        {
+                            virusAreaDict.Add(virusAreaCnt,new VirusArea());
+      
+                        }
+                        Queue<Tuple<int, int>> queue = new Queue<Tuple<int, int>>();
+                        queue.Enqueue(new Tuple<int, int>(row, col));
+                        isInfected[row][col] = -virusAreaCnt;
+                        while (queue.Count > 0) {
+                            Tuple<int, int> tuple = queue.Dequeue();
+                            int x = tuple.Item1, y = tuple.Item2;
+                            for (int d = 0; d < 4; ++d) {
+                                int nx = x + dirs[d][0], ny = y + dirs[d][1];
+                                if (nx >= 0 && nx < rowCnt && ny >= 0 && ny < colCnt) {
+                                    if (isInfected[nx][ny] == 1) {
+                                        queue.Enqueue(new Tuple<int, int>(nx, ny));
+                                        isInfected[nx][ny] = -virusAreaCnt;
+                                    } else if (isInfected[nx][ny] == 0) {
+                                        virusAreaDict[virusAreaCnt].wall++;
+                                        int idx = nx * colCnt + (ny);
+                                         virusAreaDict[virusAreaCnt].neighbors.Add(idx);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (virusAreaDict.Count == 0)
+            {
+                break;
+            }
+            int maxVirusAreaCnt = 0;
+            int key = 1;
+            foreach (KeyValuePair<int, VirusArea> kv in virusAreaDict)
+            {
+                if(maxVirusAreaCnt < kv.Value.neighbors.Count){
+                    maxVirusAreaCnt = kv.Value.neighbors.Count;
+                    key = kv.Key;
+                }
+                maxVirusAreaCnt = Math.Max(maxVirusAreaCnt,kv.Value.neighbors.Count);
+            }
+            ans += virusAreaDict[key].wall;
+            if (virusAreaDict.Count == 1)
+            {
+                break;
+            }
+            for (int row = 0; row < rowCnt; row++)
+            {
+                for (int col = 0; col < colCnt; col++)
+                {
+                    if (isInfected[row][col] < 0)
+                    {
+                        if (isInfected[row][col] != -key)
+                        {
+                            isInfected[row][col] = 1;
+                        }
+                        else
+                        {
+                            isInfected[row][col] = 2;
+                        }
+                    }
+                }
+            }
+            foreach (KeyValuePair<int, VirusArea> kv in virusAreaDict)
+            {
+                if (kv.Key != key)
+                {
+                    int cnt = 0;
+                    foreach (int idx in kv.Value.neighbors)
+                    {
+                        int row = (int)Math.Floor((double)(idx / colCnt));
+                        int col = idx % colCnt;
+                      
+                        isInfected[row][col] = 1;
+                        cnt ++;
+                    }
+                }
+            }
+        }
+        
+        return ans;
+    }
+
+}
+```
+
+其中用到的[元组 Tuple](Tuple)
+
+***
 
 ## 2022/7/15
 
