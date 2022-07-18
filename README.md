@@ -128,7 +128,7 @@ public class Solution
 }
 ```
 
-其中用到的[元组 Tuple](Tuple)
+其中用到的[元组 Tuple](https://github.com/h87545645/Blog/blob/main/data-structure/c%23%20%E5%85%83%E7%BB%84%20Tuple.md)
 
 ***
 
