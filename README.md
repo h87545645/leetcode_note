@@ -44,7 +44,7 @@ public class Solution {
     }
 }
 ```
-做题中发现了c#的int[][] grid其实不是二维数组， [int [][] 和 int[,] 的区别]()
+做题中发现了c#的int[][] grid其实不是二维数组， [c# int [][] 和 int[,] 的区别](https://github.com/h87545645/Blog/blob/main/data-structure/c%23%20int%20%5B%5D%5B%5D%20%E5%92%8C%20int%5B%2C%5D%20%E7%9A%84%E5%8C%BA%E5%88%AB)
 ***
 
 ## 2022/7/19
