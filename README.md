@@ -1,5 +1,51 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/20
+
+## 1260. 二维网格迁移
+
+[原题地址 1260. 二维网格迁移](https://leetcode.cn/problems/shift-2d-grid/)
+
+```
+给你一个 m 行 n 列的二维网格 grid 和一个整数 k。你需要将 grid 迁移 k 次。
+
+每次「迁移」操作将会引发下述活动：
+
+位于 grid[i][j] 的元素将会移动到 grid[i][j + 1]。
+位于 grid[i][n - 1] 的元素将会移动到 grid[i + 1][0]。
+位于 grid[m - 1][n - 1] 的元素将会移动到 grid[0][0]。
+请你返回 k 次迁移操作后最终得到的 二维网格。
+
+```
+`思路`
+题目要求其实就是将 `grid` 中每个元素向后移动 `k` 个位置，超过长度的循环到开头的位置。所以只需遍历一次`grid`，算出每个元素移动之后的下标位置，将计算好的下标位置的值添加到 `IList<IList<int>> ans`中，最后返回`ans`
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> ShiftGrid(int[][] grid, int k) {
+    int m = grid.Length, n = grid[0].Length;
+        IList<IList<int>> ans = new List<IList<int>>();
+        // int[,] temp = new int[m,n];
+        for(int i = 0; i < m; i++){
+            IList<int> temp = new List<int>();
+            for (int j = 0; j < n; j++)
+            {
+                // temp[i,j] = grid[i][j];
+                int idx = i *  n + j;
+                int preidx = (idx - k%(m*n) + n * m)%(m*n);
+                int prei = (int)Math.Floor((double)(preidx / n));
+                int prej = preidx % n;
+                // grid[i][j] = grid[prei][prej];
+                temp.Add(grid[prei][prej]);
+            }
+            ans.Add(temp);
+        }
+        return ans;
+    }
+}
+```
+做题中发现了c#的int[][] grid其实不是二维数组， [int [][] 和 int[,] 的区别]()
+***
 
 ## 2022/7/19
 
