@@ -1,5 +1,93 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/22
+
+## 757. 设置交集大小至少为2
+
+[原题地址 757. 设置交集大小至少为2](https://leetcode.cn/problems/set-intersection-size-at-least-two/)
+
+```
+一个整数区间 [a, b]  ( a < b ) 代表着从 a 到 b 的所有连续整数，包括 a 和 b。
+
+给你一组整数区间intervals，请找到一个最小的集合 S，使得 S 里的元素与区间intervals中的每一个整数区间都至少有2个元素相交。
+
+输出这个最小集合S的大小。
+
+示例 1:
+
+输入: intervals = [[1, 3], [1, 4], [2, 5], [3, 5]]
+输出: 3
+解释:
+考虑集合 S = {2, 3, 4}. S与intervals中的四个区间都有至少2个相交的元素。
+且这是S最小的情况，故我们输出3。
+示例 2:
+
+输入: intervals = [[1, 2], [2, 3], [2, 4], [4, 5]]
+输出: 5
+解释:
+最小的集合S = {1, 2, 3, 4, 5}.
+
+```
+
+`思路`
+先对`intervals`按`intervals[0]`升序排序，如果相同按`intervals[1]`降序，定义 `List<int> areaTemp`记录所有区间的共同元素的集合，倒叙遍历`intervals`，按题目要求`intervals`中的区间至少要2个，如果`areaTemp`中有两个元素在`intervals[i]`区间中，则遍历下一个，否则将`intervals[i][0]`和`intervals[i][0]+1`加入`areaTemp` 
+
+`c# 实现`
+
+```
+public class Solution {
+    public int IntersectionSizeTwo(int[][] intervals) {
+        Array.Sort(intervals,new CompareMethod());
+        // return intervals[2][0];
+        List<int> areaTemp = new List<int>();
+        for (int i = intervals.Length - 1; i >= 0; i --)
+        {
+            int cnt = 2;
+            if (areaTemp.Count > 0)
+            {
+                foreach (var item in areaTemp)
+                {
+                    if (item >= intervals[i][0] && item <= intervals[i][1])
+                    {
+                        cnt --;
+                        if (cnt == 0)
+                        {
+                            break;
+                        }
+                    }
+                
+                }
+              
+            }
+            if (cnt > 0)
+            {
+                for (int j = 0; j < cnt; j++)
+                {
+                   areaTemp.Add(intervals[i][0]+j);
+                }
+            }
+        }
+        // return areaTemp[1];
+        return areaTemp.Count;
+    }
+
+    public class CompareMethod : IComparer<int[]>  //继承IComparer<T>接口，T为要比较的元素的类型
+    {                                             //类中类，也可以放在类外面
+        public  int Compare(int[] x, int[] y)
+        {
+            if (x[0] == y[0])
+            {
+                return y[1] - x[1];
+            }else{ 
+                return x[0] - y[0];
+            }
+        }
+    }
+}
+```
+
+***
+
 ## 2022/7/21
 
 ## 814. 二叉树剪枝
