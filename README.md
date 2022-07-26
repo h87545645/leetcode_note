@@ -52,7 +52,7 @@ skiplist.search(1);   // 返回 false，1 已被擦除
 ```
 
 `思路`
-关于[跳表 skiplist]()
+关于[跳表 skiplist](https://github.com/h87545645/Blog/blob/main/data-structure/%E8%B7%B3%E8%A1%A8%20SkipList.md)
 
 `c# 实现`
 ```
