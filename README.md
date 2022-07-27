@@ -2,6 +2,117 @@
 
 ## 2022/7/26
 
+## 592. 分数加减运算
+
+[原题地址 592. 分数加减运算](https://leetcode.cn/problems/fraction-addition-and-subtraction)
+
+```
+给定一个表示分数加减运算的字符串 expression ，你需要返回一个字符串形式的计算结果。 
+
+这个结果应该是不可约分的分数，即最简分数。 如果最终结果是一个整数，例如 2，你需要将它转换成分数形式，其分母为 1。所以在上述例子中, 2 应该被转换为 2/1。
+
+ 
+
+示例 1:
+
+输入: expression = "-1/2+1/2"
+输出: "0/1"
+ 示例 2:
+
+输入: expression = "-1/2+1/2+1/3"
+输出: "1/3"
+示例 3:
+
+输入: expression = "1/3-1/2"
+输出: "-1/6"
+
+```
+
+`思路`
+模拟运算，遍历`expression`，遇到运算符则将左右两边分数计算，并约分，记录结果，直到计算完成。
+
+`c# 实现`
+```
+public class Solution {
+    public string FractionAddition(string expression) {
+        string ans = "";
+        for(int i = 0; i < expression.Length; i++){
+            if(i > 0){
+                if(expression[i] == '+' || expression[i] == '-'){
+                    
+                    int nextOperator1 = expression.IndexOf('+',i+1,expression.Length - 1 -(i+1));
+                    int nextOperator2 = expression.IndexOf('-',i+1,expression.Length - 1- (i+1));
+                    int nextOperator;
+                    if(nextOperator1 == -1 && nextOperator2 == -1){
+                        nextOperator = expression.Length;
+                    }else{
+                        if(nextOperator1 == -1){
+                            nextOperator = nextOperator2;
+                        }
+                        else if(nextOperator2 == -1){
+                            nextOperator = nextOperator1;
+                        }else{
+                            nextOperator = Math.Min(nextOperator1,nextOperator2);
+                        }
+                    }
+                    string fraction2 = expression.Substring(i + 1,nextOperator - i -1 );
+                    string fraction1;
+                    if(ans.Length > 0){
+                        fraction1 = ans;
+                    }else{
+                        fraction1 = expression.Substring(0,i);
+                    }
+                    ans = Calculate(fraction1 , fraction2 , expression[i]);
+                    
+                }
+            }
+        }
+        if(ans.Length == 0){
+            ans = expression;
+        }
+        return ans;
+    }
+
+    private string Calculate(string fraction1 , string fraction2 , char opera){
+        string[] fra1nums = fraction1.Split('/');
+        string[] fra2nums = fraction2.Split('/');
+        int denominator = Convert.ToInt32(fra1nums[1]) *  Convert.ToInt32(fra2nums[1]);
+        int factor1 = 1, factor2 = 1;
+        if(fra1nums[0][0] == '-'){
+            factor1 = -1;
+            fra1nums[0] = fra1nums[0].Substring(1,fra1nums[0].Length - 1 );
+        }
+        if(fra2nums[0][0] == '-'){
+            factor2 = -1;
+            fra2nums[0] = fra2nums[0].Substring(1,fra2nums[0].Length - 1 );
+        }
+        
+        int numerator1 = Convert.ToInt32(fra1nums[0])*factor1*Convert.ToInt32(fra2nums[1]);
+        int numerator2 = Convert.ToInt32(fra1nums[1])*factor2*Convert.ToInt32(fra2nums[0]);
+        int numerator = opera  == '+'? numerator1 + numerator2 :  numerator1 - numerator2;
+        if(numerator == 0){
+            return "0/1";
+        }
+        int gcd = this.GCD(Math.Abs(denominator),Math.Abs(numerator));
+        numerator /= gcd;
+        denominator /= gcd;
+        if(numerator < 0){
+            return '-'+Math.Abs(numerator).ToString()+'/' + denominator.ToString();
+        }
+        return numerator.ToString() + '/' + denominator.ToString();
+    }
+
+    private int GCD(int a, int b)
+    {
+        if (a % b == 0) return b;
+        return GCD(b, a % b);
+    }
+}
+```
+***
+
+## 2022/7/26
+
 ## 1206. 设计跳表
 
 [原题地址 1206. 设计跳表](https://leetcode.cn/problems/design-skiplist/)
