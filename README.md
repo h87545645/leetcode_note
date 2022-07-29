@@ -1,5 +1,94 @@
 # LEET CODE STUDY NOTE
 
+## 2022/7/29
+
+## 593. 有效的正方形
+
+[原题地址 593. 有效的正方形](https://leetcode.cn/problems/valid-square)
+```
+给定2D空间中四个点的坐标 p1, p2, p3 和 p4，如果这四个点构成一个正方形，则返回 true 。
+
+点的坐标 pi 表示为 [xi, yi] 。输入 不是 按任何顺序给出的。
+
+一个 有效的正方形 有四条等边和四个等角(90度角)。
+
+ 
+
+示例 1:
+
+输入: p1 = [0,0], p2 = [1,1], p3 = [1,0], p4 = [0,1]
+输出: True
+示例 2:
+
+输入：p1 = [0,0], p2 = [1,1], p3 = [1,0], p4 = [0,12]
+输出：false
+示例 3:
+
+输入：p1 = [1,0], p2 = [-1,0], p3 = [0,1], p4 = [0,-1]
+输出：true
+```
+
+`思路`
+先对四个点进行排序，方便求边长，以左下和右上两点计算，两个边长必须大于0且相等，再计算两边的夹角，我用的勾股定理来判断是否为直角三角形，都满足则返回true
+
+`c# 实现`
+```
+public class Solution {
+    public bool ValidSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        int [][] pos = new int[][]{p1,p2,p3,p4};
+        //对四个点排序，从左到右 从下到上
+        Array.Sort(pos,new CompareMethod());
+        //求两边长是否一样
+        double dis1 = GetDistance(pos[0],pos[1]);
+        double dis2 = GetDistance(pos[0],pos[2]);
+        if(dis1 <= 0 || dis2 <= 0 || dis1 != dis2){
+            return false;
+        }
+        double dis3 = GetDistance(pos[3],pos[2]);
+        double dis4 = GetDistance(pos[3],pos[1]);
+               if(dis3 <= 0 || dis4 <= 0 || dis3 != dis4){
+            return false;
+        }
+        double dis5 = GetDistance(pos[1],pos[2]);
+        bool angel = Math.Round(dis1*dis1 + dis2*dis2,2) ==  Math.Round(dis5*dis5,2);
+        if (!angel)
+        {
+            return false;
+        }
+                // return true;
+         angel = Math.Round(dis3*dis3 + dis4*dis4,2) ==  Math.Round(dis5*dis5,2);
+
+        if (!angel)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private double GetDistance(int[] a, int[] b)
+    {
+        int x=Math.Abs(b[0]   -   a[0] );
+        int y=Math.Abs(b[1]   -   a[1] );
+        return Math.Sqrt(x*x+y*y);
+    }
+
+    public class CompareMethod : IComparer<int[]>  //继承IComparer<T>接口，T为要比较的元素的类型
+    {                                             //类中类，也可以放在类外面
+        public  int Compare(int[] x, int[] y)
+        {
+            if (x[0] == y[0])
+            {
+                return x[1] - y[1];
+            }else{ 
+                return x[0] - y[0];
+            }
+        }
+    }
+}
+```
+
+***
+
 ## 2022/7/28
 
 ## 1331. 数组序号转换
