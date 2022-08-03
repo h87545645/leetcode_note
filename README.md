@@ -1,6 +1,71 @@
 # LEET CODE STUDY NOTE
 
 
+## 2022/8/3
+
+## 899. 有序队列
+
+[原题地址  899. 有序队列](https://leetcode.cn/problems/orderly-queue)
+
+```
+给定一个字符串 s 和一个整数 k 。你可以从 s 的前 k 个字母中选择一个，并把它加到字符串的末尾。
+
+返回 在应用上述步骤的任意数量的移动后，字典上最小的字符串 。
+
+ 
+
+示例 1：
+
+输入：s = "cba", k = 1
+输出："acb"
+解释：
+在第一步中，我们将第一个字符（“c”）移动到最后，获得字符串 “bac”。
+在第二步中，我们将第一个字符（“b”）移动到最后，获得最终结果 “acb”。
+示例 2：
+
+输入：s = "baaca", k = 3
+输出："aaabc"
+解释：
+在第一步中，我们将第一个字符（“b”）移动到最后，获得字符串 “aacab”。
+在第二步中，我们将第三个字符（“c”）移动到最后，获得最终结果 “aaabc”。
+
+```
+
+`思路`
+当k大于1时，一定可以将字符串换成从小到大的顺序，而k为1时，遍历string,记录每一次的交换结果，返回最小的那个
+
+`c# 实现`
+```
+public class Solution {
+    public string OrderlyQueue(string s, int k) {
+        if (k == 1)
+        {
+            string shortS = s;
+            StringBuilder sbuild = new StringBuilder(s);
+            int n = s.Length;
+            for (int i = 1; i < n; i++)
+            {
+                char head = sbuild[0];
+                sbuild.Remove(0,1);
+                sbuild.Append(head);
+                if (sbuild.ToString().CompareTo(shortS) < 0)
+                {
+                    shortS =  sbuild.ToString();
+                }
+            }
+            return shortS;
+        }else{
+            char[] sa = s.ToCharArray();
+            Array.Sort(sa);
+            return new string(sa);
+        }
+        
+    }
+}
+```
+
+***
+
 ## 2022/8/2
 
 ## 622. 设计循环队列
