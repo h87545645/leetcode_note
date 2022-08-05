@@ -35,7 +35,7 @@ cur 原来的右子树应该是新的右子树根的右子树。
 ```
 
 `思路`
-二叉树的遍历应用，BFS遍历二叉树，记录当前深度`curDeep`,当`curDeep == depth - 1`时，创建两个新TreeNode，其左右分别是原节点的左右节点，并将原节点的左右指向这两个新节点。
+二叉树的遍历应用，[BFS遍历](https://github.com/h87545645/Blog/blob/main/algorithm/DFS%26BFS.md)二叉树，记录当前深度`curDeep`,当`curDeep == depth - 1`时，创建两个新TreeNode，其左右分别是原节点的左右节点，并将原节点的左右指向这两个新节点。
 
 `c# 实现`
 ```
