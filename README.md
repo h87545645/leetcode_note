@@ -1,5 +1,98 @@
 # LEET CODE STUDY NOTE
 
+## 2022/8/10
+
+## 640. 求解方程
+
+[640. 求解方程](https://leetcode.cn/problems/solve-the-equation/)
+
+```
+640. 求解方程
+求解一个给定的方程，将x以字符串 "x=#value" 的形式返回。该方程仅包含 '+' ， '-' 操作，变量 x 和其对应系数。
+
+如果方程没有解，请返回 "No solution" 。如果方程有无限解，则返回 “Infinite solutions” 。
+
+题目保证，如果方程中只有一个解，返回值 'x' 是一个整数。
+
+ 
+
+示例 1：
+
+输入: equation = "x+5-3+x=6+x-2"
+输出: "x=2"
+示例 2:
+
+输入: equation = "x=x"
+输出: "Infinite solutions"
+示例 3:
+
+输入: equation = "2x=x"
+输出: "x=0"
+```
+
+`思路`
+模拟正常解方程，计数所有x `xCnt`，计算所有数字和`res`,方程=号左边的数字取负，=号右边的x取负，最后如果`xCnt`和`res`都为0，则无限解。`xCnt`为0`res`不为0则无解，返回`res/xCnt`
+
+`c# 实现`
+```
+public class Solution {
+    public string SolveEquation(string equation) {
+
+        int res = 0;
+        int xCnt = 0;
+        int flag = -1;
+
+        for (int i = 0; i < equation.Length; i++)
+        {
+          
+            if (Char.IsDigit(equation[i]) || equation[i] == 'x')
+            {   
+                int tempFlag = 1;
+                if (i > 0)
+                {
+                    if (equation[i - 1] == '-')
+                    {
+                        tempFlag = -1;
+                    }
+                }
+                int t = equation[i] == 'x' ? 1 : 0;
+                while(i < equation.Length && char.IsDigit(equation[i])){
+                    t = t * 10 + equation[i] - '0';
+                    i++;
+                }
+                if (i < equation.Length)
+                {
+                    if (equation[i] == 'x')
+                    {
+                        xCnt += t * tempFlag * -flag;
+                    }else{
+                        res += t * tempFlag * flag;
+                    }
+                }else{
+                    res += t * tempFlag * flag;
+                }
+            }
+            if (i < equation.Length && equation[i] == '=')
+            {
+                flag = 1;
+            }
+        }
+        if (xCnt == 0 && res == 0)
+        {
+            return "Infinite solutions";
+        }
+        if (xCnt == 0 && res != 0)
+        {
+            return "No solution";
+        }
+        res /= xCnt;
+        return "x="+res;
+    }
+}
+```
+
+***
+
 
 ## 2022/8/9
 
