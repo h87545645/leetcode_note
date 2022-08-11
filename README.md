@@ -1,5 +1,88 @@
 # LEET CODE STUDY NOTE
 
+## 2022/8/11
+
+## 1417. 重新格式化字符串
+
+[1417. 重新格式化字符串](https://leetcode.cn/problems/reformat-the-string)
+
+```
+给你一个混合了数字和字母的字符串 s，其中的字母均为小写英文字母。
+
+请你将该字符串重新格式化，使得任意两个相邻字符的类型都不同。也就是说，字母后面应该跟着数字，而数字后面应该跟着字母。
+
+请你返回 重新格式化后 的字符串；如果无法按要求重新格式化，则返回一个 空字符串 。
+
+ 
+
+示例 1：
+
+输入：s = "a0b1c2"
+输出："0a1b2c"
+解释："0a1b2c" 中任意两个相邻字符的类型都不同。 "a0b1c2", "0a1b2c", "0c2a1b" 也是满足题目要求的答案。
+示例 2：
+
+输入：s = "leetcode"
+输出：""
+解释："leetcode" 中只有字母，所以无法满足重新格式化的条件。
+示例 3：
+
+输入：s = "1229857369"
+输出：""
+解释："1229857369" 中只有数字，所以无法满足重新格式化的条件。
+示例 4：
+
+输入：s = "covid2019"
+输出："c2o0v1i9d"
+示例 5：
+
+输入：s = "ab123"
+输出："1a2b3"
+```
+
+`思路 贪心`
+定义字符数组 `Char[] ans` , 字符计数`charCnt`   数字计数`numCnt`。 ans长度为s.Length*2+1方便操作
+遍历字符串，将数字放在ans的下标1，3，5... 位置上 非数字放在2，4，6...位置上
+如果charCnt 与 numCnt相差大于1，则不满足条件
+因为我们第一个放的是数字 所以如果最后charCnt>numCnt 需要将最后位置上的非数字放到第0个位置
+最后转成字符串并去掉空字符
+
+
+`c# 实现`
+```
+public class Solution {
+    public string Reformat(string s) {
+        Char[] ans = new Char[s.Length*2+1];
+        int charCnt = 0,numCnt = 0;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (Char.IsDigit(s[i]))
+            {
+                ans[numCnt*2+1] = s[i];
+                ++ numCnt;
+            }else{
+
+                ans[charCnt*2+2] = s[i];
+                ++ charCnt;
+            }
+        }
+        if (Math.Abs(charCnt - numCnt) > 1)
+        {
+            return "";
+        }
+        if (charCnt >  numCnt)
+        {
+             int idx = (charCnt-1)*2+2;
+            ans[0] = ans[idx];
+            ans[idx] = '\0';
+        }
+        return string.Join("", ans).Replace("\u0000" , string.Empty);
+    }
+}
+```
+
+***
+
 ## 2022/8/10
 
 ## 640. 求解方程
