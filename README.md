@@ -1,5 +1,164 @@
 # LEET CODE STUDY NOTE
 
+## 2022/8/15
+
+## 641. 设计循环双端队列
+
+[641. 设计循环双端队列](https://leetcode.cn/problems/design-circular-deque)
+
+```
+设计实现双端队列。
+
+实现 MyCircularDeque 类:
+
+MyCircularDeque(int k) ：构造函数,双端队列最大为 k 。
+boolean insertFront()：将一个元素添加到双端队列头部。 如果操作成功返回 true ，否则返回 false 。
+boolean insertLast() ：将一个元素添加到双端队列尾部。如果操作成功返回 true ，否则返回 false 。
+boolean deleteFront() ：从双端队列头部删除一个元素。 如果操作成功返回 true ，否则返回 false 。
+boolean deleteLast() ：从双端队列尾部删除一个元素。如果操作成功返回 true ，否则返回 false 。
+int getFront() )：从双端队列头部获得一个元素。如果双端队列为空，返回 -1 。
+int getRear() ：获得双端队列的最后一个元素。 如果双端队列为空，返回 -1 。
+boolean isEmpty() ：若双端队列为空，则返回 true ，否则返回 false  。
+boolean isFull() ：若双端队列满了，则返回 true ，否则返回 false 。
+ 
+
+示例 1：
+
+输入
+["MyCircularDeque", "insertLast", "insertLast", "insertFront", "insertFront", "getRear", "isFull", "deleteLast", "insertFront", "getFront"]
+[[3], [1], [2], [3], [4], [], [], [], [4], []]
+输出
+[null, true, true, true, false, 2, true, true, true, 4]
+
+解释
+MyCircularDeque circularDeque = new MycircularDeque(3); // 设置容量大小为3
+circularDeque.insertLast(1);			        // 返回 true
+circularDeque.insertLast(2);			        // 返回 true
+circularDeque.insertFront(3);			        // 返回 true
+circularDeque.insertFront(4);			        // 已经满了，返回 false
+circularDeque.getRear();  				// 返回 2
+circularDeque.isFull();				        // 返回 true
+circularDeque.deleteLast();			        // 返回 true
+circularDeque.insertFront(4);			        // 返回 true
+circularDeque.getFront();				// 返回 4
+ 
+
+```
+
+`思路`
+使用双向链表实现
+
+`c# 实现`
+```
+public class MyCircularDeque {
+    private Node front;
+    private Node rear;
+    private int capacity;
+    private int size;
+    public MyCircularDeque(int k) {
+        capacity = k;
+        size = 0;
+    }
+    
+    public bool InsertFront(int value) {
+        if (IsFull())
+        {
+            return false;
+        }
+        Node temp = new Node(value);
+        if (IsEmpty())
+        {
+            front = rear = temp;
+        }else{
+            temp.next = front;
+            front.prev = temp;
+            front = temp;
+        }
+        ++ size;
+        return true;
+    }
+    
+    public bool InsertLast(int value) {
+        if (IsFull())
+        {
+            return false;
+        }
+        Node temp = new Node(value);
+        if (IsEmpty())
+        {
+            front = rear = temp;
+        }else{
+            rear.next = temp;
+            temp.prev = rear;
+            rear = temp;
+        }
+        ++ size;
+        return true;
+    }
+    
+    public bool DeleteFront() {
+        if (IsEmpty())
+        {
+            return false;
+        }
+        front = front.next;
+        if (front != null) {
+            front.prev = null;
+        }
+        -- size;
+        return true;
+    }
+    
+    public bool DeleteLast() {
+        if (IsEmpty())
+        {
+            return false;
+        }
+        rear = rear.prev;
+        if (rear != null) {
+            rear.next = null;
+        }
+        -- size;
+        return true;
+    }
+    
+    public int GetFront() {
+        if (IsEmpty())
+        {
+            return -1;
+        }
+        return front.val;
+    }
+    
+    public int GetRear() {
+        if (IsEmpty())
+        {
+            return -1;
+        }
+        return rear.val;
+    }
+    
+    public bool IsEmpty() {
+        return size == 0;
+    }
+    
+    public bool IsFull() {
+        return size == capacity;
+    }
+
+
+     class Node {
+        public int val;
+        public Node next;
+        public Node prev;
+        public Node(int val){
+            this.val = val;
+        }
+    }
+}
+```
+
+***
 
 ## 2022/8/12
 
