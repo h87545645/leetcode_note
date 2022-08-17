@@ -1,5 +1,63 @@
 # LEET CODE STUDY NOTE
 
+## 2022/8/17
+
+## 1302. 层数最深叶子节点的和
+
+[1302. 层数最深叶子节点的和](https://leetcode.cn/problems/deepest-leaves-sum)
+
+```
+给你一棵二叉树的根节点 root ，请你返回 层数最深的叶子节点的和 。
+
+ 
+
+示例 1：
+
+
+
+输入：root = [1,2,3,4,5,null,6,7,null,null,null,null,8]
+输出：15
+示例 2：
+
+输入：root = [6,7,8,2,7,1,3,9,null,1,4,null,null,null,5]
+输出：19
+```
+
+`思路`
+DFS应用题
+
+`c# 实现`
+```
+public class Solution {
+    private int sum, dep;
+    public int DeepestLeavesSum(TreeNode root) {
+        dep = 0;
+        sum = 0;
+        DFS(root,0);
+        return sum;
+    }
+
+    private void DFS(TreeNode root , int level){
+        if (root == null)
+        {
+            return;
+        }
+        DFS(root.left,level+1);
+        if (dep == level)
+        {
+            sum += root.val;
+        }else if(dep < level){
+            dep = level;
+            sum = 0;
+            sum += root.val;
+        }
+        DFS(root.right,level+1);
+    }
+}
+```
+
+***
+
 ## 2022/8/16
 
 ## 1656. 设计有序流
