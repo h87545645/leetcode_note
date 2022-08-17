@@ -24,7 +24,7 @@
 ```
 
 `思路`
-DFS应用题
+[DFS](https://github.com/h87545645/Blog/blob/main/algorithm/DFS%26BFS.md)应用题
 
 `c# 实现`
 ```
