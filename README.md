@@ -34,15 +34,10 @@
 ```
 public class Solution {
     public int[] Shuffle(int[] nums, int n) {
-        int[] ans = new int[n*2];
-        for(int i = 0; i < n*2; i ++){
-            int temp = (int)Math.Floor((double)(i / 2));
-            if ((i&1) == 0)
-            {
-                ans[i] = nums[temp];
-            }else{
-                ans[i] = nums[temp+n];
-            }
+        int[] ans = new int[2 * n];
+        for (int i = 0; i < n; i++) {
+            ans[2 * i] = nums[i];
+            ans[2 * i + 1] = nums[i + n];
         }
         return ans;
     }
