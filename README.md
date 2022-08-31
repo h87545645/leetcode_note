@@ -1,6 +1,57 @@
 # LEET CODE STUDY NOTE
 ## 2022/8/30
 
+## 946. 验证栈序列
+
+[946. 验证栈序列](https://leetcode.cn/problems/validate-stack-sequences/)
+
+```
+
+给定 pushed 和 popped 两个序列，每个序列中的 值都不重复，只有当它们可能是在最初空栈上进行的推入 push 和弹出 pop 操作序列的结果时，返回 true；否则，返回 false 。
+
+ 
+
+示例 1：
+
+输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+输出：true
+解释：我们可以按以下顺序执行：
+push(1), push(2), push(3), push(4), pop() -> 4,
+push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
+示例 2：
+
+输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]
+输出：false
+解释：1 不能在 2 之前弹出。
+```
+
+`思路`
+遍历pushed 入栈 同时判断栈顶元素与当前popped相等则出栈，最后栈为空则合法
+
+
+`c# 实现`
+```
+public class Solution {
+    public bool ValidateStackSequences(int[] pushed, int[] popped) {
+        Stack<int> stack = new Stack<int>();
+        for (int i = 0 , j = 0; i < pushed.Length; i++)
+        {
+            stack.Push(pushed[i]);
+            while(stack.Count > 0 && stack.Peek() == popped[j]){
+                stack.Pop();
+                j++;
+            }
+        }
+        return stack.Count == 0;
+    }
+}
+```
+
+
+***
+
+## 2022/8/30
+
 ## 998. 最大二叉树 II
 
 [998. 最大二叉树 II](https://leetcode.cn/problems/maximum-binary-tree-ii/)
