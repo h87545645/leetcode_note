@@ -1,4 +1,78 @@
 # LEET CODE STUDY NOTE
+
+## 2022/9/2
+
+## 687. 最长同值路径
+
+[687. 最长同值路径](https://leetcode.cn/problems/longest-univalue-path/)
+
+```
+
+给定一个二叉树的 root ，返回 最长的路径的长度 ，这个路径中的 每个节点具有相同值 。 这条路径可以经过也可以不经过根节点。
+
+两个节点之间的路径长度 由它们之间的边数表示。
+
+ 
+
+示例 1:
+
+
+
+输入：root = [5,4,5,1,1,5]
+输出：2
+示例 2:
+
+
+
+输入：root = [1,4,5,4,4,5]
+输出：2
+```
+
+`思路`
+递归深度优先遍历树，获得每个节点下的最长路径。
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    int res;
+    public int LongestUnivaluePath(TreeNode root) {
+        res = 0;
+        DFS(root);
+        return res;
+    }
+
+    public int DFS(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = DFS(root.left), right = DFS(root.right);
+        int left1 = 0, right1 = 0;
+        if (root.left != null && root.left.val == root.val) {
+            left1 = left + 1;
+        }
+        if (root.right != null && root.right.val == root.val) {
+            right1 = right + 1;
+        }
+        res = Math.Max(res, left1 + right1);
+        return Math.Max(left1, right1);
+    }
+}
+```
+***
+
 ## 2022/8/30
 
 ## 946. 验证栈序列
