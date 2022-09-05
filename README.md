@@ -1,5 +1,82 @@
 # LEET CODE STUDY NOTE
 
+
+## 2022/9/5
+
+## 652. 寻找重复的子树
+
+[652. 寻找重复的子树](https://leetcode.cn/problems/find-duplicate-subtrees/)
+
+```
+
+给定一棵二叉树 root，返回所有重复的子树。
+
+对于同一类的重复子树，你只需要返回其中任意一棵的根结点即可。
+
+如果两棵树具有相同的结构和相同的结点值，则它们是重复的。
+
+ 
+
+示例 1：
+
+
+
+输入：root = [1,2,3,4,null,2,4,null,null,4]
+输出：[[2,4],[4]]
+示例 2：
+
+
+
+输入：root = [2,1,1]
+输出：[[1]]
+示例 3：
+
+
+
+输入：root = [2,2,2,3,null,3,null]
+输出：[[2,3],[3]]
+```
+
+`思路`
+遍历这个树，用字典记数每个节点的结构字符串，如果某个字符串key的值等于2时，则说明有重复的节点，将其添加到list中。
+
+`c# 实现`
+```
+public class Solution {
+    private Dictionary<string,int> NodeDict;
+     IList<TreeNode> ans;
+    public IList<TreeNode> FindDuplicateSubtrees(TreeNode root) {
+        NodeDict = new Dictionary<string,int>();
+        ans = new List<TreeNode>();
+        DFS(root);
+        return ans;
+    }
+
+    string DFS(TreeNode root){
+        if (root == null)
+        {
+            return "null";
+        }
+        string left = DFS(root.left);
+        string right = DFS(root.right);
+        string valStr = root.val.ToString() + "," +left +","+ right;
+        if (!NodeDict.ContainsKey(valStr))
+        {
+            NodeDict.Add(valStr,0);
+        }
+        NodeDict[valStr] ++;
+        if (NodeDict[valStr] == 2)
+        {
+            ans.Add(root);
+        }
+        return valStr;
+    }
+}
+
+```
+
+***
+
 ## 2022/9/2
 
 ## 687. 最长同值路径
