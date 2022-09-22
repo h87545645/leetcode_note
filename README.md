@@ -2,6 +2,70 @@
 
 ## 2022/9/19
 
+## 1640. 能否连接形成数组
+
+[1640. 能否连接形成数组](https://leetcode.cn/problems/check-array-formation-through-concatenation/)
+```
+
+给你一个整数数组 arr ，数组中的每个整数 互不相同 。另有一个由整数数组构成的数组 pieces，其中的整数也 互不相同 。请你以 任意顺序 连接 pieces 中的数组以形成 arr 。但是，不允许 对每个数组 pieces[i] 中的整数重新排序。
+
+如果可以连接 pieces 中的数组形成 arr ，返回 true ；否则，返回 false 。
+
+ 
+
+示例 1：
+
+输入：arr = [15,88], pieces = [[88],[15]]
+输出：true
+解释：依次连接 [15] 和 [88]
+示例 2：
+
+输入：arr = [49,18,16], pieces = [[16,18,49]]
+输出：false
+解释：即便数字相符，也不能重新排列 pieces[0]
+示例 3：
+
+输入：arr = [91,4,64,78], pieces = [[78],[4,64],[91]]
+输出：true
+解释：依次连接 [91]、[4,64] 和 [78]
+```
+
+`思路`
+先记录下pieces每个数组的第一个元素，再便利arr，如果第一个元素相同则继续比较每个元素
+
+`c# 实现`
+```
+public class Solution {
+    public bool CanFormArray(int[] arr, int[][] pieces) {
+        Dictionary<int,int> dict = new Dictionary<int,int>();
+        for(int i = 0; i < pieces.Length; i++){
+            dict.TryAdd(pieces[i][0],0);
+            dict[pieces[i][0]] = i;
+        }
+        for(int i = 0; i < arr.Length; i++){
+            if (dict.ContainsKey(arr[i]))
+            {
+                int len = pieces[dict[arr[i]]].Length;
+                int[] temp = arr.Skip(i).Take(len).ToArray();
+                if (Enumerable.SequenceEqual(temp, pieces[dict[arr[i]]]))
+                {
+                    i += len - 1;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+***
+
+## 2022/9/19
+
 ## 1636. 按照频率将数组升序排序
 
 [1636. 按照频率将数组升序排序](https://leetcode.cn/problems/sort-array-by-increasing-frequency/)
