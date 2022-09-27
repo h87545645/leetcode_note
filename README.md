@@ -1,5 +1,43 @@
 # LEET CODE STUDY NOTE
 
+## 2022/9/27
+
+## 面试题 01.02. 判定是否互为字符重排
+
+[面试题 01.02. 判定是否互为字符重排](https://leetcode.cn/problems/check-permutation-lcci/)
+
+```
+面试题 01.02. 判定是否互为字符重排
+给定两个字符串 s1 和 s2，请编写一个程序，确定其中一个字符串的字符重新排列后，能否变成另一个字符串。
+
+示例 1：
+
+输入: s1 = "abc", s2 = "bca"
+输出: true 
+示例 2：
+
+输入: s1 = "abc", s2 = "bad"
+输出: false
+
+```
+
+`思路`
+转成字符数组排序后再比较是否相同
+
+`c# 实现`
+```
+public class Solution {
+    public bool CheckPermutation(string s1, string s2) {
+        char[] t1 = s1.ToCharArray();
+        char[] t2 = s2.ToCharArray();
+        Array.Sort(t1);
+        Array.Sort(t2);
+        return  t1.SequenceEqual(t2);
+    }
+}
+```
+
+***
 
 ## 2022/9/23
 
