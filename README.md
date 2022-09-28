@@ -1,5 +1,52 @@
 # LEET CODE STUDY NOTE
 
+## 2022/9/28
+
+## 面试题 17.09. 第 k 个数
+
+[面试题 17.09. 第 k 个数](https://leetcode.cn/problems/get-kth-magic-number-lcci/)
+
+```
+
+有些数的素因子只有 3，5，7，请设计一个算法找出第 k 个数。注意，不是必须有这些素因子，而是必须不包含其他的素因子。例如，前几个数按顺序应该是 1，3，5，7，9，15，21。
+
+示例 1:
+
+输入: k = 5
+
+输出: 9
+```
+
+`思路`
+题目其实是说一个数，他只能由3，5，7的乘法运算得到。先是1*3 1*5 1*7 再是 3*3 3*5 3*7 然后5*3 5*5 5*7 3*3*3 可以用堆结构存所有符合的数。遍历k次，获得第k个数。其中使用(PriorityQueue)[]来模拟堆结构。
+
+`c#实现`
+```
+public class Solution {
+    public int GetKthMagicNumber(int k) {
+        int[] factors = {3, 5, 7};
+        ISet<long> seen = new HashSet<long>();
+        PriorityQueue<long, long> heap = new PriorityQueue<long, long>();
+        seen.Add(1);
+        heap.Enqueue(1, 1);
+        int magic = 0;
+        for (int i = 0; i < k; i++) {
+            long curr = heap.Dequeue();
+            magic = (int) curr;
+            foreach (int factor in factors) {
+                long next = curr * factor;
+                if (seen.Add(next)) {
+                    heap.Enqueue(next, next);
+                }
+            }
+        }
+        return magic;
+    }
+}
+```
+
+***
+
 ## 2022/9/27
 
 ## 面试题 01.02. 判定是否互为字符重排
