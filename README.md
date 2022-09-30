@@ -1,5 +1,76 @@
 # LEET CODE STUDY NOTE
 
+## 2022/9/30
+
+## 01.08. 零矩阵
+
+[01.08. 零矩阵](https://leetcode.cn/problems/zero-matrix-lcci/)
+
+``` 
+编写一种算法，若M × N矩阵中某个元素为0，则将其所在的行与列清零。
+
+ 
+
+示例 1：
+
+输入：
+[
+  [1,1,1],
+  [1,0,1],
+  [1,1,1]
+]
+输出：
+[
+  [1,0,1],
+  [0,0,0],
+  [1,0,1]
+]
+示例 2：
+
+输入：
+[
+  [0,1,2,0],
+  [3,4,5,2],
+  [1,3,1,5]
+]
+输出：
+[
+  [0,0,0,0],
+  [0,4,5,0],
+  [0,3,1,0]
+]
+```
+
+`思路`
+使用两个一维数组记录矩阵中有0的行和列，遍历矩阵，如果该行/列已经被标记有0，则设置此位置为0
+
+`c#实现`
+```
+public class Solution {
+    public void SetZeroes(int[][] matrix) {
+        int[] row = new int[matrix.Length];
+        int[] col = new int[matrix[0].Length];
+        for(int i = 0 ; i < matrix.Length; i ++){
+            for(int j =0 ; j < matrix[i].Length ; j++){
+                if(matrix[i][j] == 0){
+                    row[i] = 1;
+                    col[j] = 1;
+                }
+            }
+        }
+        for(int i = 0 ; i < matrix.Length; i ++){
+            for(int j =0 ; j < matrix[i].Length ; j++){
+                if( row[i] == 1 || col[j] == 1){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+}
+```
+
+***
+
 ## 2022/9/28
 
 ## 面试题 17.09. 第 k 个数
