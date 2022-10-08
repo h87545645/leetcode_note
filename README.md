@@ -1,5 +1,68 @@
 # LEET CODE STUDY NOTE
 
+## 2022/10/8
+
+## 870. 优势洗牌
+
+[870. 优势洗牌](https://leetcode.cn/problems/advantage-shuffle)
+
+```
+给定两个大小相等的数组 nums1 和 nums2，nums1 相对于 nums 的优势可以用满足 nums1[i] > nums2[i] 的索引 i 的数目来描述。
+
+返回 nums1 的任意排列，使其相对于 nums2 的优势最大化。
+
+ 
+
+示例 1：
+
+输入：nums1 = [2,7,11,15], nums2 = [1,10,4,11]
+输出：[2,11,7,15]
+示例 2：
+
+输入：nums1 = [12,24,8,32], nums2 = [13,25,32,11]
+输出：[24,32,8,12]
+
+```
+
+`思路`
+题目类似于田忌赛马的策略
+对nums1 和 nums2的下标数组进行排序，遍历排序后的nums1下标数组，如果当前下标的nums1大于当前nums2,则说明当前nums1的值相较于nums2有优势，ans数组的对应nums2的下标位置赋值，而又因为nums2也是有序的，所有小于等于的情况说明当前nums1这个值对于后面的nums2都没有优势，直接放到最后。
+
+`c# 实现`
+```
+public class Solution {
+    public int[] AdvantageCount(int[] nums1, int[] nums2) {
+        int n = nums1.Length;
+        int[] idx1 = new int[n];
+        int[] idx2 = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            idx1[i] = i;
+            idx2[i] = i;
+        }
+        Array.Sort(idx1,(i,j)=>{return nums1[i] - nums1[j];});
+        Array.Sort(idx2,(i,j)=>{return nums2[i] - nums2[j];});
+        int left  = 0;
+        int right = n - 1;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            if (nums1[idx1[i]] > nums2[idx2[left]])
+            {
+                ans[idx2[left]] = nums1[idx1[i]];
+                ++ left;
+            }else{
+                ans[idx2[right]] = nums1[idx1[i]];
+                -- right;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2022/9/30
 
 ## 01.08. 零矩阵
