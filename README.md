@@ -1,5 +1,101 @@
 # LEET CODE STUDY NOTE
 
+## 2022/10/9
+
+## 856. 括号的分数
+
+[856. 括号的分数](https://leetcode.cn/problems/score-of-parentheses/)
+
+```
+
+给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：
+
+() 得 1 分。
+AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。
+(A) 得 2 * A 分，其中 A 是平衡括号字符串。
+ 
+
+示例 1：
+
+输入： "()"
+输出： 1
+示例 2：
+
+输入： "(())"
+输出： 2
+示例 3：
+
+输入： "()()"
+输出： 2
+示例 4：
+
+输入： "(()(()))"
+输出： 6
+```
+
+`思路`
+1.递归拆分计算
+遍历s，当匹配到一个'（）'时，如果是字符串末尾，则是（A）的结构，返回中间字符串*2，否则是A+B结构 ，返回递归计算ScoreOfParentheses(A)+ScoreOfParentheses(B)的结果。
+
+2.栈运算
+'(' 将0入栈 ')'将栈顶结果+1入栈，最后栈顶即为和。
+
+
+`c# 实现`
+```
+1.
+public class Solution {
+    public int ScoreOfParentheses(string s) {
+        if (s.Length == 2)
+        {
+            return 1;
+        }
+        int bal = 0;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+            {
+                bal++;
+            }else{
+                bal--;
+            }
+            if (bal == 0)
+            {
+                if (i == s.Length - 1)
+                {
+                    return 2*ScoreOfParentheses(s.Substring(1,s.Length - 2));
+                }else{
+                    return ScoreOfParentheses(s.Substring(0,i+1)) + ScoreOfParentheses(s.Substring(i+1));
+                }
+            }
+        }
+    }
+
+}
+2.
+public class Solution {
+    public int ScoreOfParentheses(string s) {
+        Stack<int> score = new Stack<int>();
+        score.Push(0);
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+            {
+                score.Push(0);
+            }else{
+                int v = score.Pop();
+                v = Math.Max(1,2*v);
+                int sum = score.Pop() + v;
+                score.Push(sum);
+            }
+        }
+        return score.Peek();
+    }
+}
+```
+
+***
+
 ## 2022/10/8
 
 ## 870. 优势洗牌
