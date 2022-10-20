@@ -1,5 +1,73 @@
 # LEET CODE STUDY NOTE
 
+## 2022/10/20
+
+## 779. 第K个语法符号
+
+[779. 第K个语法符号](https://leetcode.cn/problems/k-th-symbol-in-grammar/)
+```
+我们构建了一个包含 n 行( 索引从 1  开始 )的表。首先在第一行我们写上一个 0。接下来的每一行，将前一行中的0替换为01，1替换为10。
+
+例如，对于 n = 3 ，第 1 行是 0 ，第 2 行是 01 ，第3行是 0110 。
+给定行数 n 和序数 k，返回第 n 行中第 k 个字符。（ k 从索引 1 开始）
+
+
+示例 1:
+
+输入: n = 1, k = 1
+输出: 0
+解释: 第一行：0
+示例 2:
+
+输入: n = 2, k = 1
+输出: 0
+解释: 
+第一行: 0 
+第二行: 01
+示例 3:
+
+输入: n = 2, k = 2
+输出: 1
+解释:
+第一行: 0
+第二行: 01
+```
+
+`思路`
+递归寻找位置k的上一级是0还是1，且根据当前k的奇偶知道最终结果
+
+`c# 实现`
+```
+public class Solution {
+    public int KthGrammar(int n, int k) {
+        if (n == 1)
+        {
+            return 0;
+        }else{
+            int pre = KthGrammar(n-1,(int)Math.Ceiling((double)k/2));
+            if (pre == 0)
+            {
+                if ((k&1) == 1 )
+                {
+                    return 0;
+                }else{
+                    return 1;
+                }
+            }else{
+                if ((k&1) == 1 )
+                {
+                    return 1;
+                }else{
+                    return 0;
+                }
+            }
+        }
+    }
+}
+```
+
+***
+
 ## 2022/10/19
 
 ## 1700. 无法吃午餐的学生数量
