@@ -1,5 +1,96 @@
 # LEET CODE STUDY NOTE
 
+## 2022/10/21
+
+## 901. 股票价格跨度
+股票价格跨度
+
+[901. 股票价格跨度](https://leetcode.cn/problems/online-stock-span/)
+```
+编写一个 StockSpanner 类，它收集某些股票的每日报价，并返回该股票当日价格的跨度。
+
+今天股票价格的跨度被定义为股票价格小于或等于今天价格的最大连续日数（从今天开始往回数，包括今天）。
+
+例如，如果未来7天股票的价格是 [100, 80, 60, 70, 60, 75, 85]，那么股票跨度将是 [1, 1, 1, 2, 1, 4, 6]。
+
+ 
+
+示例：
+
+输入：["StockSpanner","next","next","next","next","next","next","next"], [[],[100],[80],[60],[70],[60],[75],[85]]
+输出：[null,1,1,1,2,1,4,6]
+解释：
+首先，初始化 S = StockSpanner()，然后：
+S.next(100) 被调用并返回 1，
+S.next(80) 被调用并返回 1，
+S.next(60) 被调用并返回 1，
+S.next(70) 被调用并返回 2，
+S.next(60) 被调用并返回 1，
+S.next(75) 被调用并返回 4，
+S.next(85) 被调用并返回 6。
+
+注意 (例如) S.next(75) 返回 4，因为截至今天的最后 4 个价格
+(包括今天的价格 75) 小于或等于今天的价格。
+```
+
+`思路`
+往前寻找比当前小的数的个数。
+
+`c# 实现`
+```
+public class StockSpanner {
+    IList<int> list;
+    public StockSpanner() {
+        list = new List<int>();
+    }
+    
+    public int Next(int price) {
+    
+        int ans = 1;
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (price >= list[i])
+            {
+                ans++;
+            }else{
+                break;
+            }
+        }
+        list.Add(price);
+        return ans;
+    }
+}
+
+官方答案：
+public class StockSpanner {
+    Stack<Tuple<int, int>> stack;
+    int idx;
+
+    public StockSpanner() {
+        stack = new Stack<Tuple<int, int>>();
+        stack.Push(new Tuple<int, int>(-1, int.MaxValue));
+        idx = -1;
+    }
+
+    public int Next(int price) {
+        idx++;
+        while (price >= stack.Peek().Item2) {
+            stack.Pop();
+        }
+        int ret = idx - stack.Peek().Item1;
+        stack.Push(new Tuple<int, int>(idx, price));
+        return ret;
+    }
+}
+
+作者：LeetCode-Solution
+链接：https://leetcode.cn/problems/online-stock-span/solution/gu-piao-jie-ge-kua-du-by-leetcode-soluti-5cm7/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+***
+
 ## 2022/10/20
 
 ## 779. 第K个语法符号
