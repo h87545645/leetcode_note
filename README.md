@@ -1,5 +1,99 @@
 # LEET CODE STUDY NOTE
 
+## 2022/10/25
+
+## 934. 最短的桥
+
+[934. 最短的桥](https://leetcode.cn/problems/shortest-bridge/submissions/)
+```
+给你一个大小为 n x n 的二元矩阵 grid ，其中 1 表示陆地，0 表示水域。
+岛 是由四面相连的 1 形成的一个最大组，即不会与非组内的任何其他 1 相连。grid 中 恰好存在两座岛 。
+你可以将任意数量的 0 变为 1 ，以使两座岛连接起来，变成 一座岛 。
+返回必须翻转的 0 的最小数目。
+ 
+示例 1：
+输入：grid = [[0,1],[1,0]]
+输出：1
+示例 2：
+输入：grid = [[0,1,0],[0,0,0],[0,0,1]]
+输出：2
+示例 3：
+输入：grid = [[1,1,1,1,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]
+输出：1
+```
+
+`思路`
+找到第一个为1的位置，BFS遍历一次记录第一座岛的所有位置（岛的位置记为-1避免重复）。再BFS第一座岛所有位置，向外找为1的地方，找到返回结果，否则计数并继续。
+
+`c# 实现`
+```
+public class Solution {
+    public int ShortestBridge(int[][] grid) {
+        int n = grid.Length;
+        int[][] dirs = {new int[]{-1, 0}, new int[]{1, 0}, new int[]{0, 1}, new int[]{0, -1}};
+        IList<Tuple<int, int>> island = new List<Tuple<int, int>>();
+        Queue<Tuple<int, int>> queue = new Queue<Tuple<int, int>>();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1)
+                {
+                    queue.Enqueue(new Tuple<int, int>(i, j));
+                    grid[i][j] = -1;
+                    while(queue.Count > 0){
+                        Tuple<int, int> cell = queue.Dequeue();
+                        int x = cell.Item1, y = cell.Item2;
+                        island.Add(cell);
+                        for (int k = 0; k < 4; k++)
+                        {
+                            int nx = dirs[k][0] + x;
+                            int ny = dirs[k][1] + y;
+                            if (nx >= 0 && ny >= 0 && nx < n && ny < n && grid[nx][ny] == 1)
+                            {
+                                queue.Enqueue(new Tuple<int, int>(nx, ny));
+                                grid[nx][ny] = -1;
+                            }
+                        }
+                    }
+
+                    foreach (Tuple<int, int> cell in island) {
+                        queue.Enqueue(cell);
+                    }
+                    int ans = 0;
+                    while(queue.Count > 0){
+                        int sz = queue.Count;
+                        for (int k = 0; k < sz; k++)
+                        {
+                            Tuple<int, int> cell = queue.Dequeue();
+                            int x = cell.Item1, y = cell.Item2;
+                            for (int l = 0; l < 4; l++)
+                            {
+                                int nx = dirs[l][0] + x;
+                                int ny = dirs[l][1] + y;
+                                if (nx >= 0 && ny >= 0 && nx < n && ny < n)
+                                {
+                                    if (grid[nx][ny] == 1)
+                                    {
+                                        return ans;
+                                    }else if(grid[nx][ny] == 0){
+                                        queue.Enqueue(new Tuple<int, int>(nx, ny));
+                                        grid[nx][ny] = -1;
+                                    }
+                                }
+                            }
+                        }
+                        ans ++;
+                    }
+                }
+            }
+        }
+         return 0;
+    }
+}
+```
+
+***
+
 ## 2022/10/24
 
 ## 915. 分割数组
