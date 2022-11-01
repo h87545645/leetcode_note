@@ -1,5 +1,59 @@
 # LEET CODE STUDY NOTE
 
+## 2022/11/1
+
+## 1662. 检查两个字符串数组是否相等
+
+[1662. 检查两个字符串数组是否相等](https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/)
+```
+
+给你两个字符串数组 word1 和 word2 。如果两个数组表示的字符串相同，返回 true ；否则，返回 false 。
+
+数组表示的字符串 是由数组中的所有元素 按顺序 连接形成的字符串。
+
+ 
+
+示例 1：
+
+输入：word1 = ["ab", "c"], word2 = ["a", "bc"]
+输出：true
+解释：
+word1 表示的字符串为 "ab" + "c" -> "abc"
+word2 表示的字符串为 "a" + "bc" -> "abc"
+两个字符串相同，返回 true
+示例 2：
+
+输入：word1 = ["a", "cb"], word2 = ["ab", "c"]
+输出：false
+示例 3：
+
+输入：word1  = ["abc", "d", "defg"], word2 = ["abcddefg"]
+输出：true
+```
+
+`思路`
+拼接两个字符串，返回是否相同
+
+`c# 实现`
+```
+public class Solution {
+    public bool ArrayStringsAreEqual(string[] word1, string[] word2) {
+        string w1 = String.Empty , w2 = String.Empty;
+        foreach (string str in word1)
+        {
+            w1 += str;
+        }
+        foreach (string str in word2)
+        {
+            w2 += str;
+        }
+        return w1 == w2;
+    }
+}
+```
+
+***
+
 ## 2022/10/31
 
 ## 481. 神奇字符串
