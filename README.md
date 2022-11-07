@@ -1,5 +1,88 @@
 # LEET CODE STUDY NOTE
 
+## 2022/11/7
+
+## 816. 模糊坐标
+
+[816. 模糊坐标](https://leetcode.cn/problems/ambiguous-coordinates/description/)
+```
+816. 模糊坐标
+
+我们有一些二维坐标，如 "(1, 3)" 或 "(2, 0.5)"，然后我们移除所有逗号，小数点和空格，得到一个字符串S。返回所有可能的原始字符串到一个列表中。
+
+原始的坐标表示法不会存在多余的零，所以不会出现类似于"00", "0.0", "0.00", "1.0", "001", "00.01"或一些其他更小的数来表示坐标。此外，一个小数点前至少存在一个数，所以也不会出现“.1”形式的数字。
+
+最后返回的列表可以是任意顺序的。而且注意返回的两个数字中间（逗号之后）都有一个空格。
+
+ 
+
+示例 1:
+输入: "(123)"
+输出: ["(1, 23)", "(12, 3)", "(1.2, 3)", "(1, 2.3)"]
+示例 2:
+输入: "(00011)"
+输出:  ["(0.001, 1)", "(0, 0.011)"]
+解释: 
+0.0, 00, 0001 或 00.01 是不被允许的。
+示例 3:
+输入: "(0123)"
+输出: ["(0, 123)", "(0, 12.3)", "(0, 1.23)", "(0.1, 23)", "(0.1, 2.3)", "(0.12, 3)"]
+示例 4:
+输入: "(100)"
+输出: [(10, 0)]
+解释: 
+1.0 是不被允许的。
+```
+
+`思路`
+去掉外层的括号，遍历s 将其分成左右两部分枚举所有合法的数字，最后拼接所有合法字符串。
+
+`c# 实现`
+```
+public class Solution {
+    public IList<string> AmbiguousCoordinates(string s) {
+        int n = s.Length - 2;
+        IList<string> res = new List<string>();
+        s = s.Substring(1, s.Length - 2);
+        for (int l = 1; l < n; ++l) {
+            IList<string> lt = GetPos(s.Substring(0, l));
+            if (lt.Count == 0) {
+                continue;
+            }
+            IList<string> rt = GetPos(s.Substring(l));
+            if (rt.Count == 0) {
+                continue;
+            }
+            foreach (string i in lt) {
+                foreach (string j in rt) {
+                    res.Add("(" + i + ", " + j + ")");
+                }
+            }
+        }
+        return res;
+    }
+
+    private IList<string> GetPos(string s) {
+        IList<string> pos = new List<string>();
+        if (s[0] != '0' || "0".Equals(s))
+        {
+            pos.Add(s);
+        }
+        for (int i = 1; i < s.Length; i++)
+        {
+            if ((s[0] == '0' && i != 1) || s[s.Length - 1] == '0')
+            {
+                continue;
+            }
+            pos.Add(s.Substring(0, i) + "." + s.Substring(i));
+        }
+        return pos;
+    }
+}
+```
+
+***
+
 ## 2022/11/4
 
 ## 754. 到达终点数字
