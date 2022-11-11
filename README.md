@@ -1,5 +1,67 @@
 # LEET CODE STUDY NOTE
 
+## 2022/11/11
+
+## 1704. 判断字符串的两半是否相似
+
+[1704. 判断字符串的两半是否相似](https://leetcode.cn/problems/determine-if-string-halves-are-alike/description/)
+```
+给你一个偶数长度的字符串 s 。将其拆分成长度相同的两半，前一半为 a ，后一半为 b 。
+
+两个字符串 相似 的前提是它们都含有相同数目的元音（'a'，'e'，'i'，'o'，'u'，'A'，'E'，'I'，'O'，'U'）。注意，s 可能同时含有大写和小写字母。
+
+如果 a 和 b 相似，返回 true ；否则，返回 false 。
+
+ 
+
+示例 1：
+
+输入：s = "book"
+输出：true
+解释：a = "bo" 且 b = "ok" 。a 中有 1 个元音，b 也有 1 个元音。所以，a 和 b 相似。
+示例 2：
+
+输入：s = "textbook"
+输出：false
+解释：a = "text" 且 b = "book" 。a 中有 1 个元音，b 中有 2 个元音。因此，a 和 b 不相似。
+注意，元音 o 在 b 中出现两次，记为 2 个。
+
+```
+
+`思路`
+用hashset记录所有元音字符，遍历s,分别计数前半段和后半段的元音个数，返回两个计数是否相等。
+
+`c# 实现`
+```
+public class Solution {
+    public bool HalvesAreAlike(string s) {
+        ISet<char> dict = new HashSet<char>();
+        dict.Add('a');
+        dict.Add('e');
+        dict.Add('i');
+        dict.Add('o');
+        dict.Add('u');
+        int half = s.Length/2;
+        int left = 0 , right = 0;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (dict.Contains(Char.ToLower(s[i])))
+            {
+                if (i < half)
+                {
+                    left++;
+                }else{
+                    right++;
+                }
+            }
+        }
+        return left == right;
+    }
+}
+```
+
+***
+
 ## 2022/11/
 
 ## 764. 最大加号标志
