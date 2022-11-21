@@ -35,7 +35,7 @@
 ```
 
 `思路`
-
+见[官方题解](https://leetcode.cn/problems/soup-servings/solutions/1981704/fen-tang-by-leetcode-solution-0yxs/)
 
 `c# 实现`
 ```
