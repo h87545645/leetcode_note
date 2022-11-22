@@ -1,5 +1,63 @@
 # LEET CODE STUDY NOTE
 
+## 2022/11/22
+
+## ✨878. 第 N 个神奇数字
+
+[878. 第 N 个神奇数字](https://leetcode.cn/problems/nth-magical-number/description/)
+```
+一个正整数如果能被 a 或 b 整除，那么它是神奇的。
+
+给定三个整数 n , a , b ，返回第 n 个神奇的数字。因为答案可能很大，所以返回答案 对 109 + 7 取模 后的值。
+
+ 
+
+示例 1：
+
+输入：n = 1, a = 2, b = 3
+输出：2
+示例 2：
+
+输入：n = 4, a = 2, b = 3
+输出：6
+```
+
+`思路`
+直接模拟会超时，主要思路是使用二分查找来优化，题目要求第 n 个神奇的数字，假设 a 和 b 中较小的一个是 a ，那么结果的范围就是[a , n * a],从而变成了在[a , n * a]中找到第 n 个神奇的数字，其中n满足被 a 整除的个数 + 被 b 整除的个数 - 被 ab 整除的个数。使用二分查找求出最后的答案。
+
+`c# 实现`
+```
+public class Solution {
+    const int MOD = 1000000007;
+    public int NthMagicalNumber(int n, int a, int b) {
+        long l = Math.Min(a,b);
+        long r = l * n;
+        int c = LCM(a,b);
+        while(l <= r){
+            long mid = (r + l)/2;
+            long cnt = mid/a + mid/b - mid/c;
+            if (cnt >= n)
+            {
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+        return (int)((r+1)%MOD);
+    }
+
+    private int LCM(int a,int b){
+        return a*b/GCD(a,b);
+    }
+
+    private int GCD(int a,int b){
+        return b != 0 ? GCD(b,a%b) : a;
+    }
+}
+```
+
+***
+
 ## 2022/11/21
 
 ## ✨808. 分汤
