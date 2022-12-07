@@ -1,5 +1,116 @@
 # LEET CODE STUDY NOTE
 
+## 2022/12/7
+
+## 1775. 通过最少操作次数使数组的和相等
+
+[1775. 通过最少操作次数使数组的和相等](https://leetcode.cn/problems/equal-sum-arrays-with-minimum-number-of-operations/description/)
+```
+给你两个长度可能不等的整数数组 nums1 和 nums2 。两个数组中的所有值都在 1 到 6 之间（包含 1 和 6）。
+
+每次操作中，你可以选择 任意 数组中的任意一个整数，将它变成 1 到 6 之间 任意 的值（包含 1 和 6）。
+
+请你返回使 nums1 中所有数的和与 nums2 中所有数的和相等的最少操作次数。如果无法使两个数组的和相等，请返回 -1 。
+
+ 
+
+示例 1：
+
+输入：nums1 = [1,2,3,4,5,6], nums2 = [1,1,2,2,2,2]
+输出：3
+解释：你可以通过 3 次操作使 nums1 中所有数的和与 nums2 中所有数的和相等。以下数组下标都从 0 开始。
+- 将 nums2[0] 变为 6 。 nums1 = [1,2,3,4,5,6], nums2 = [6,1,2,2,2,2] 。
+- 将 nums1[5] 变为 1 。 nums1 = [1,2,3,4,5,1], nums2 = [6,1,2,2,2,2] 。
+- 将 nums1[2] 变为 2 。 nums1 = [1,2,2,4,5,1], nums2 = [6,1,2,2,2,2] 。
+示例 2：
+
+输入：nums1 = [1,1,1,1,1,1,1], nums2 = [6]
+输出：-1
+解释：没有办法减少 nums1 的和或者增加 nums2 的和使二者相等。
+示例 3：
+
+输入：nums1 = [6,6], nums2 = [1]
+输出：3
+解释：你可以通过 3 次操作使 nums1 中所有数的和与 nums2 中所有数的和相等。以下数组下标都从 0 开始。
+- 将 nums1[0] 变为 2 。 nums1 = [2,6], nums2 = [1] 。
+- 将 nums1[1] 变为 2 。 nums1 = [2,2], nums2 = [1] 。
+- 将 nums2[0] 变为 4 。 nums1 = [2,2], nums2 = [4] 。
+```
+
+`思路`
+哈希表记录
+要求num1 nums2和相同,先求出nums1 nums2 的差 diff，问题转化为修改两数组的元素，使diff归0， 两数组中每个数字位1-6，也就是每次修改元素最多能使diff减少5最小减少1，
+排序数组后，遍历num1 nums2 , 记录使diff减少贡献1-5的个数，最后遍历哈希表，计算最少次数
+
+`c# 实现`
+```
+public class Solution {
+    public int MinOperations(int[] nums1, int[] nums2) {
+        int res = 0;
+        int sum1 = nums1.Sum();
+        int sum2 = nums2.Sum();
+        int diff = Math.Abs(sum1 - sum2);  
+        int[] descNums , asceNums;
+        if (sum1 > sum2)
+        {
+            Array.Sort(nums2,(a,b)=>{
+                return a - b;
+            });
+            Array.Sort(nums1,(a,b)=>{
+                return b - a;
+            });
+            descNums = nums1;
+            asceNums = nums2;
+        }else{
+            Array.Sort(nums2,(a,b)=>{
+                return b - a;
+            });
+            Array.Sort(nums1,(a,b)=>{
+                return a - b;
+            });
+            descNums = nums2;
+            asceNums = nums1;
+        }
+        // Dictionary<int,int> dict = new Dictionary<int,int>();
+        int[] hash = new int[6];
+        int n = asceNums.Length > descNums.Length ? asceNums.Length : descNums.Length;
+        for (int i = 0; i < n; i++)
+        {
+            int sub = 0, add = 0;
+            if (i < descNums.Length)
+            {
+                sub = descNums[i] - 1;
+            }
+            if (i < asceNums.Length)
+            {
+                add = 6 - asceNums[i];
+            }
+            if (sub > 0)
+            {
+                hash[sub] ++;
+            }
+            if (add > 0)
+            {
+                hash[add] ++;
+            }
+        }
+        for (int i = 5; i > 0; i--)
+        {
+            int t = Math.Min((diff + i - 1) / i, hash[i]);
+            res += t;
+            diff -= t * i;
+            if (diff <= 0)
+            {
+                return res;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+***
+
 ## 2022/12/6
 
 ## 1805. 字符串中不同整数的数目
