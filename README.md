@@ -1,5 +1,52 @@
 # LEET CODE STUDY NOTE
 
+## 2022/12/12
+
+## 1781. 所有子字符串美丽值之和
+
+[1781. 所有子字符串美丽值之和](https://leetcode.cn/problems/sum-of-beauty-of-all-substrings/submissions/388584716/)
+```
+一个字符串的 美丽值 定义为：出现频率最高字符与出现频率最低字符的出现次数之差。
+
+比方说，"abaacc" 的美丽值为 3 - 1 = 2 。
+给你一个字符串 s ，请你返回它所有子字符串的 美丽值 之和。
+```
+
+`思路`
+双重遍历+哈希表
+
+`c# 实现`
+```
+public class Solution {
+    public int BeautySum(string s) {
+        int res = 0;
+        for (int i = 0; i < s.Length - 2; i++)
+        {
+            int[] cnt = new int[26];
+            int max = 0;
+            for (int j = i; j < s.Length; j++)
+            {
+                cnt[s[j] - 'a']++;
+                max = Math.Max(max,cnt[s[j] - 'a']);
+                int min = s.Length;
+                for (int k = 0; k < 26; k++)
+                {
+                    if (cnt[k] > 0)
+                    {
+                        min = Math.Min(min,cnt[k]);
+                    }
+                }
+                res += max - min;
+            }
+        }
+        return res;
+    }
+}
+
+```
+
+***
+
 ## 2022/12/9
 
 ✨## 1780. 判断一个数字是否可以表示成三的幂的和
