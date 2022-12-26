@@ -1,5 +1,76 @@
 # LEET CODE STUDY NOTE
 
+## 2022/12/26
+
+## 1759. 统计同构子字符串的数目
+
+[1759. 统计同构子字符串的数目](https://leetcode.cn/problems/count-number-of-homogenous-substrings/description/)
+```
+给你一个字符串 s ，返回 s 中 同构子字符串 的数目。由于答案可能很大，只需返回对 109 + 7 取余 后的结果。
+
+同构字符串 的定义为：如果一个字符串中的所有字符都相同，那么该字符串就是同构字符串。
+
+子字符串 是字符串中的一个连续字符序列。
+
+ 
+
+示例 1：
+
+输入：s = "abbcccaa"
+输出：13
+解释：同构子字符串如下所列：
+"a"   出现 3 次。
+"aa"  出现 1 次。
+"b"   出现 2 次。
+"bb"  出现 1 次。
+"c"   出现 3 次。
+"cc"  出现 2 次。
+"ccc" 出现 1 次。
+3 + 1 + 2 + 1 + 3 + 2 + 1 = 13
+示例 2：
+
+输入：s = "xy"
+输出：2
+解释：同构子字符串是 "x" 和 "y" 。
+示例 3：
+
+输入：s = "zzzzz"
+输出：15
+```
+
+`思路`
+遍历字符串，计数连续字符个数，然后将答案相加
+
+`c# 实现`
+```
+public class Solution {
+    const int MOD = 1000000007;
+    public int CountHomogenous(string s) {
+        long res = 0;
+        for(int i = 0; i < s.Length; i++){
+            int cnt = 1;
+            while(i+cnt < s.Length && s[i] == s[i+cnt]){
+                cnt ++;
+            }
+            res += display(cnt);
+            i += (cnt-1);
+        }
+        return (int)(res%MOD);
+    }
+
+    public long display(int n) {
+        long res = 1;
+        while (n != 1) {
+            res = (long)res + n;
+            n = n - 1;
+        }
+        return res;
+    }
+}
+```
+
+***
+
 ## 2022/12/23
 
 ## 2011. 执行操作后的变量值
