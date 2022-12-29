@@ -1,5 +1,78 @@
 # LEET CODE STUDY NOTE
 
+## 2022/12/29
+
+## 2032. 至少在两个数组中出现的值
+
+[2032. 至少在两个数组中出现的值](https://leetcode.cn/problems/two-out-of-three/description/)
+```
+给你三个整数数组 nums1、nums2 和 nums3 ，请你构造并返回一个 元素各不相同的 数组，且由 至少 在 两个 数组中出现的所有值组成。数组中的元素可以按 任意 顺序排列。
+ 
+
+示例 1：
+
+输入：nums1 = [1,1,3,2], nums2 = [2,3], nums3 = [3]
+输出：[3,2]
+解释：至少在两个数组中出现的所有值为：
+- 3 ，在全部三个数组中都出现过。
+- 2 ，在数组 nums1 和 nums2 中出现过。
+示例 2：
+
+输入：nums1 = [3,1], nums2 = [2,3], nums3 = [1,2]
+输出：[2,3,1]
+解释：至少在两个数组中出现的所有值为：
+- 2 ，在数组 nums2 和 nums3 中出现过。
+- 3 ，在数组 nums1 和 nums2 中出现过。
+- 1 ，在数组 nums1 和 nums3 中出现过。
+示例 3：
+
+输入：nums1 = [1,2,2], nums2 = [4,3,3], nums3 = [5]
+输出：[]
+解释：不存在至少在两个数组中出现的值。
+```
+
+`思路`
+记录各个数组重复的值
+
+`c# 实现`
+```
+public class Solution {
+    public IList<int> TwoOutOfThree(int[] nums1, int[] nums2, int[] nums3) {
+        IList<int> ans = new List<int>();
+        ISet<int> hset = new HashSet<int>();
+        ISet<int> hset2 = new HashSet<int>();
+        for(int i = 0; i < nums1.Length; i ++){
+             hset.Add(nums1[i]);
+        }
+
+        for(int i = 0; i < nums2.Length; i ++){
+            if(!hset2.Contains(nums2[i])){
+                hset2.Add(nums2[i]);
+                if(hset.Contains(nums2[i])&& !ans.Contains(nums2[i])){
+                    ans.Add(nums2[i]);
+                }
+                hset.Add(nums2[i]);
+            }
+        }
+        //  return ans;
+        hset2.Clear();
+        for(int i = 0; i < nums3.Length; i ++){
+            if(!hset2.Contains(nums3[i])){
+                hset2.Add(nums3[i]);
+                if(hset.Contains(nums3[i])&& !ans.Contains(nums3[i])){
+                    ans.Add(nums3[i]);
+                }
+                hset.Add(nums3[i]);
+            }
+        }
+        return ans;
+
+    }
+}
+```
+
+***
+
 ## 2022/12/26
 
 ## 1759. 统计同构子字符串的数目
