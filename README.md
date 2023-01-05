@@ -1,5 +1,76 @@
 # LEET CODE STUDY NOTE
 
+## 2023/1/5
+
+## 1802. 有界数组中指定下标处的最大值
+
+[1802. 有界数组中指定下标处的最大值](https://leetcode.cn/problems/maximum-value-at-a-given-index-in-a-bounded-array/description/)
+```
+给你三个正整数 n、index 和 maxSum 。你需要构造一个同时满足下述所有条件的数组 nums（下标 从 0 开始 计数）：
+
+nums.length == n
+nums[i] 是 正整数 ，其中 0 <= i < n
+abs(nums[i] - nums[i+1]) <= 1 ，其中 0 <= i < n-1
+nums 中所有元素之和不超过 maxSum
+nums[index] 的值被 最大化
+返回你所构造的数组中的 nums[index] 。
+
+注意：abs(x) 等于 x 的前提是 x >= 0 ；否则，abs(x) 等于 -x 。
+
+ 
+
+示例 1：
+
+输入：n = 4, index = 2,  maxSum = 6
+输出：2
+解释：数组 [1,1,2,1] 和 [1,2,2,1] 满足所有条件。不存在其他在指定下标处具有更大值的有效数组。
+示例 2：
+
+输入：n = 6, index = 1,  maxSum = 10
+输出：3
+```
+
+`思路`
+假设第index个数为x，x一定为[1,maxSum],可以用二分查找x，当x满足x+左边的和+右边的和 <= maxSum时，则继续往右查找，否则向左查找
+
+`c# 实现`
+```
+public class Solution {
+    public int MaxValue(int n, int index, int maxSum) {
+        int left = 1, right = maxSum;
+        while(left < right){
+            int mid = (left + right + 1)/2;
+            if (checkVaild(mid,n,index,maxSum))
+            {
+                left = mid;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    public bool checkVaild(int mid , int n , int index , int maxSum){
+        int left = index;
+        int right = n - index - 1;
+        return mid + Cal(mid , left) + Cal(mid , right) <= maxSum;
+    }
+
+    public long Cal(int big, int len){
+        if (len > big - 1)
+        {
+            int ones = len - (big - 1);
+            return (long)big * (big - 1) / 2 + ones;
+        }else{
+            int small = big - len;
+            return (long)(big - 1 + small)*len / 2; 
+        }
+    }
+}
+```
+
+***
+
 ## 2023/1/3
 
 ## 2042. 检查句子中的数字是否递增
