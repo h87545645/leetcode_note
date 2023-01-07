@@ -1,5 +1,128 @@
 # LEET CODE STUDY NOTE
 
+## 2023/1/7
+
+## 1658. 将 x 减到 0 的最小操作数
+
+[1658. 将 x 减到 0 的最小操作数](https://leetcode.cn/problems/minimum-operations-to-reduce-x-to-zero/description/)
+```
+给你一个整数数组 nums 和一个整数 x 。每一次操作时，你应当移除数组 nums 最左边或最右边的元素，然后从 x 中减去该元素的值。请注意，需要 修改 数组以供接下来的操作使用。
+
+如果可以将 x 恰好 减到 0 ，返回 最小操作数 ；否则，返回 -1 。
+
+ 
+
+示例 1：
+
+输入：nums = [1,1,4,2,3], x = 5
+输出：2
+解释：最佳解决方案是移除后两个元素，将 x 减到 0 。
+示例 2：
+
+输入：nums = [5,6,7,8,9], x = 4
+输出：-1
+示例 3：
+
+输入：nums = [3,2,20,1,1,3], x = 10
+输出：5
+解释：最佳解决方案是移除后三个元素和前两个元素（总共 5 次操作），将 x 减到 0 。
+```
+
+`思路`
+直接遍历会超时，贴一个官方题解 滑动窗口，巧妙的是rsum一开始是最大值，一次便利就可以包括left和right的全部情况
+
+`c# 实现`
+```
+public class Solution {
+    public int MinOperations(int[] nums, int x) {
+        int n = nums.Length;
+        int res = -1;
+        for (int i = 0; i < n + 1; i++)
+        {   
+            int left = 0;
+            if (i > 0)
+            {
+                for (int i2 = 0; i2 < i; i2++)
+                {
+                    left += nums[i2];
+                    if (left == x)
+                    {
+                        if (res == -1)
+                        {
+                            res = i2+1;
+                        }else{
+                            res = Math.Min(i2+1,res);
+                        }
+                    }else if (left > x)
+                    {
+                        goto cc;
+                    }
+                }
+            }
+            for (int j = 1; j <= n - i; j++)
+            {
+                int right = 0;
+                for (int j2 = 0; j2 < j; j2++)
+                {
+                    right += nums[n - j2 - 1];
+                    if (left + right == x)
+                    {
+                        if (res == -1)
+                        {
+                            res = i + j2 + 1;
+                        }else{
+                            res = Math.Min(i + j2 + 1,res);
+                        }
+                    }else if (left + right > x)
+                    {
+                        goto cc;
+                    }
+                }
+            }
+            cc : continue;
+        }
+        return res;
+    }
+}
+
+官方题解 滑动窗口
+public class Solution {
+    public int MinOperations(int[] nums, int x) {
+        int n = nums.Length;
+        int sum = nums.Sum();
+
+        if (sum < x) {
+            return -1;
+        }
+
+        int right = 0;
+        int lsum = 0, rsum = sum;
+        int ans = n + 1;
+
+        for (int left = -1; left < n; left++)
+        {
+            if (left != -1)
+            {
+                lsum += nums[left];
+            }
+            while(right < n && lsum + rsum > x){
+                rsum -= nums[right];
+                right ++;
+            }
+            if (lsum + rsum == x)
+            {
+                ans = Math.Min(ans,left+1+n-right);
+            }
+        }
+
+        return ans > n ? -1 : ans;
+    }
+}
+
+```
+
+***
+
 ## 2023/1/6
 
 ## 2180. 统计各位数字之和为偶数的整数个数
