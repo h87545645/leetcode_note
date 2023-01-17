@@ -1,5 +1,69 @@
 # LEET CODE STUDY NOTE
 
+## 2023/1/17
+
+## 1814. 统计一个数组中好对子的数目
+
+[1814. 统计一个数组中好对子的数目](https://leetcode.cn/problems/count-nice-pairs-in-an-array/description/)
+```
+给你一个数组 nums ，数组中只包含非负整数。定义 rev(x) 的值为将整数 x 各个数字位反转得到的结果。比方说 rev(123) = 321 ， rev(120) = 21 。我们称满足下面条件的下标对 (i, j) 是 好的 ：
+
+0 <= i < j < nums.length
+nums[i] + rev(nums[j]) == nums[j] + rev(nums[i])
+请你返回好下标对的数目。由于结果可能会很大，请将结果对 109 + 7 取余 后返回。
+
+ 
+
+示例 1：
+
+输入：nums = [42,11,1,97]
+输出：2
+解释：两个坐标对为：
+ - (0,3)：42 + rev(97) = 42 + 79 = 121, 97 + rev(42) = 97 + 24 = 121 。
+ - (1,2)：11 + rev(1) = 11 + 1 = 12, 1 + rev(11) = 1 + 11 = 12 。
+示例 2：
+
+输入：nums = [13,10,35,24,76]
+输出：4
+```
+
+`思路`
+反转后的数和原数字的差相同的数字则满足好的数，遍历找出所有好的。
+
+`c# 实现`
+```
+public class Solution {
+    const int MOD = 1000000007;
+    public int CountNicePairs(int[] nums) {
+        int n = nums.Length;
+        int res = 0;
+        Dictionary<int , int> dict = new Dictionary <int , int>();
+        for (int i = 0; i < n; i++)
+        {
+            int diff = Reverse(nums[i]) - nums[i];
+            dict.TryAdd(diff,0);
+            res = (res + dict[diff])%MOD;
+            dict[diff] ++;
+        }
+    
+        return res;
+    }
+
+    public int Reverse(int x)
+    {
+
+        int num = 0;
+        while (x > 0) {
+            num = num * 10 + x % 10;
+            x /= 10;
+        }
+        return num;
+    }
+}
+```
+
+***
+
 ## 2023/1/16
 
 ## 1813. 句子相似性 III
