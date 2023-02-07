@@ -1,5 +1,83 @@
 # LEET CODE STUDY NOTE
 
+## 2023/2/7
+
+## 1604. 警告一小时内使用相同员工卡大于等于三次的人
+
+[1604. 警告一小时内使用相同员工卡大于等于三次的人](https://leetcode.cn/problems/alert-using-same-key-card-three-or-more-times-in-a-one-hour-period/description/)
+```
+力扣公司的员工都使用员工卡来开办公室的门。每当一个员工使用一次他的员工卡，安保系统会记录下员工的名字和使用时间。如果一个员工在一小时时间内使用员工卡的次数大于等于三次，这个系统会自动发布一个 警告 。
+
+给你字符串数组 keyName 和 keyTime ，其中 [keyName[i], keyTime[i]] 对应一个人的名字和他在 某一天 内使用员工卡的时间。
+
+使用时间的格式是 24小时制 ，形如 "HH:MM" ，比方说 "23:51" 和 "09:49" 。
+
+请你返回去重后的收到系统警告的员工名字，将它们按 字典序升序 排序后返回。
+
+请注意 "10:00" - "11:00" 视为一个小时时间范围内，而 "23:51" - "00:10" 不被视为一小时内，因为系统记录的是某一天内的使用情况。
+
+ 
+
+示例 1：
+
+输入：keyName = ["daniel","daniel","daniel","luis","luis","luis","luis"], keyTime = ["10:00","10:40","11:00","09:00","11:00","13:00","15:00"]
+输出：["daniel"]
+解释："daniel" 在一小时内使用了 3 次员工卡（"10:00"，"10:40"，"11:00"）。
+示例 2：
+
+输入：keyName = ["alice","alice","alice","bob","bob","bob","bob"], keyTime = ["12:01","12:00","18:00","21:00","21:20","21:30","23:00"]
+输出：["bob"]
+解释："bob" 在一小时内使用了 3 次员工卡（"21:00"，"21:20"，"21:30"）。
+示例 3：
+
+输入：keyName = ["john","john","john"], keyTime = ["23:58","23:59","00:01"]
+输出：[]
+示例 4：
+
+输入：keyName = ["leslie","leslie","leslie","clare","clare","clare","clare"], keyTime = ["13:00","13:20","14:00","18:00","18:51","19:30","19:49"]
+输出：["clare","leslie"]
+```
+
+`思路`
+哈希表记录每个同事所有开门时间，排序后统计一小时超过2次的人
+
+`c# 实现`
+```
+public class Solution {
+    public IList<string> AlertNames(string[] keyName, string[] keyTime) {
+        int n = keyName.Length;
+        IList<string> ans = new List<string>();
+        Dictionary<string,List<int>> dict = new Dictionary<string,List<int>>();
+        for (int i = 0; i < n; i++)
+        {
+            string name = keyName[i];
+            string time = keyTime[i];
+            dict.TryAdd(name,new List<int>());
+            int hour = (time[0] - '0') * 10 + (time[1] - '0');
+            int minute = (time[3] - '0') * 10 + (time[4] - '0');
+            dict[name].Add(hour*60+minute);
+        }
+        foreach (KeyValuePair<string, List<int>> kvp in dict)
+        {
+            List<int> list = kvp.Value;
+            list.Sort();
+            for (int i = 2; i < list.Count; i++)
+            {
+                if (list[i] - list[i - 2] <= 60)
+                {
+                    ans.Add(kvp.Key);
+                    break;
+                }
+            }
+        }
+        ((List<string>) ans).Sort();
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/2/6
 
 ## 2331. 计算布尔二叉树的值
