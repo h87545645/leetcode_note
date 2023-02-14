@@ -1,5 +1,64 @@
 # LEET CODE STUDY NOTE
 
+## 2023/2/14
+
+## 1124. 表现良好的最长时间段
+
+[1124. 表现良好的最长时间段](https://leetcode.cn/problems/longest-well-performing-interval/description/)
+```
+给你一份工作时间表 hours，上面记录着某一位员工每天的工作小时数。
+
+我们认为当员工一天中的工作小时数大于 8 小时的时候，那么这一天就是「劳累的一天」。
+
+所谓「表现良好的时间段」，意味在这段时间内，「劳累的天数」是严格 大于「不劳累的天数」。
+
+请你返回「表现良好时间段」的最大长度。
+
+ 
+
+示例 1：
+
+输入：hours = [9,9,6,0,6,6,9]
+输出：3
+解释：最长的表现良好时间段是 [9,9,6]。
+示例 2：
+
+输入：hours = [6,6,6]
+输出：0
+```
+
+`思路`
+哈希表记录前缀值
+
+`c# 实现`
+```
+public class Solution {
+    public int LongestWPI(int[] hours) {
+        int n = hours.Length;
+        IDictionary<int, int> dictionary = new Dictionary<int, int>();
+        int s = 0, res = 0;
+        for (int i = 0; i < n; i++) {
+            s += hours[i] > 8 ? 1 : -1;
+            if (s > 0) {
+                res = Math.Max(res, i + 1);
+            } else {
+                if (dictionary.ContainsKey(s - 1)) {
+                    res = Math.Max(res, i - dictionary[s - 1]);
+                }
+            }
+            if (!dictionary.ContainsKey(s)) {
+                dictionary.Add(s, i);
+            }
+        }
+        return res;
+    }
+}
+
+
+```
+
+***
+
 ## 2023/2/13
 
 ## 1234. 替换子串得到平衡字符串
