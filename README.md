@@ -48,7 +48,7 @@ public class Solution {
 }
 
 
-### 我自己的实现， 最后一个用力错误
+### 我自己的实现， 虽然没想到用动态规划，但实际思路是差不多的，只是空间复杂度和时间复杂度略高，勉强没有超过时间限制
 public class Solution {
     private Dictionary<string,int> dict = new Dictionary<string,int>();
     public int MaxValue(int[][] grid) {
@@ -56,9 +56,9 @@ public class Solution {
     }
 
     private int GetMax(int row , int col, int[][] grid){
-        if (dict.ContainsKey(row+""+col))
+        if (dict.ContainsKey(row+"-"+col))
         {
-           return dict[row+""+col];
+           return dict[row+"-"+col];
         }
         int right = 0;
         int down = 0;
@@ -71,7 +71,7 @@ public class Solution {
             right = GetMax(row ,col + 1 , grid);
         }
         int max = grid[row][col] + Math.Max(right,down);
-        dict.TryAdd(row+""+col,max);
+        dict.TryAdd(row+"-"+col,max);
         return max;
     }
 }
