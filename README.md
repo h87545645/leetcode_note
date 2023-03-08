@@ -1,5 +1,84 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/8
+
+## 剑指 Offer 47. 礼物的最大价值
+
+[剑指 Offer 47. 礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/description/)
+```
+在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+
+ 
+
+示例 1:
+
+输入: 
+[
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+输出: 12
+解释: 路径 1→3→5→2→1 可以拿到最多价值的礼物
+```
+
+`思路`
+动态规划，记 f(i,j) 表示从棋盘的左上角走到位置 (i,j)，最多可以拿到的礼物的价值 , 遍历grid, i , j位置的最大值 = Math.Max(f(i-1,j) , f(i,j-1)) 最后返回 f[m - 1][n - 1];
+
+`c# 实现`
+```
+public class Solution {
+    public int MaxValue(int[][] grid) {
+        int m = grid.Length, n = grid[0].Length;
+        int[][] f = new int[m][];
+        for (int i = 0; i < m; ++i) {
+            f[i] = new int[n];
+            for (int j = 0; j < n; ++j) {
+                if (i > 0) {
+                    f[i][j] = Math.Max(f[i][j], f[i - 1][j]);
+                }
+                if (j > 0) {
+                    f[i][j] = Math.Max(f[i][j], f[i][j - 1]);
+                }
+                f[i][j] += grid[i][j];
+            }
+        }
+        return f[m - 1][n - 1];
+    }
+}
+
+
+### 我自己的实现， 最后一个用力错误
+public class Solution {
+    private Dictionary<string,int> dict = new Dictionary<string,int>();
+    public int MaxValue(int[][] grid) {
+        return GetMax(0,0,grid);
+    }
+
+    private int GetMax(int row , int col, int[][] grid){
+        if (dict.ContainsKey(row+""+col))
+        {
+           return dict[row+""+col];
+        }
+        int right = 0;
+        int down = 0;
+        if (row < grid.Length - 1)
+        {
+            down = GetMax(row + 1,col , grid);
+        }
+        if (col < grid[0].Length - 1)
+        {
+            right = GetMax(row ,col + 1 , grid);
+        }
+        int max = grid[row][col] + Math.Max(right,down);
+        dict.TryAdd(row+""+col,max);
+        return max;
+    }
+}
+```
+
+***
+
 ## 2023/3/6
 
 ## 1653. 使字符串平衡的最少删除次数
