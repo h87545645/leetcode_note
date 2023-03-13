@@ -1,5 +1,81 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/13
+
+## 5. 最长回文子串
+
+[5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/description/?favorite=2cktkvj)
+```
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+ 
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+示例 2：
+
+输入：s = "cbbd"
+输出："bb"
+```
+
+`思路`
+动态规划，记dp[i][j]为第i到j的子字符串是否为回文字符串
+
+`c# 实现`
+```
+public class Solution {
+    public string LongestPalindrome(string s) {
+        int len = s.Length;
+        if (len <= 1)
+        {
+            return s;
+        }
+        int maxLen = 1;
+        int begin = 0;
+        bool[][] dp = new bool[len][];
+        for (int i = 0; i < len; i++)
+        {
+            dp[i] = new bool[len];
+            dp[i][i] = true;
+        }
+        for (int L = 2; L <= len; L++)
+        {
+            for (int i = 0 ; i < len; i++)
+            {
+                int j = i + L - 1;
+                if (j >= len) {
+                    break;
+                }
+                if (s[i] == s[j])
+                {
+                    if (j - i < 3)
+                    {
+                        dp[i][j] = true;
+                    }else{
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }else{
+                    dp[i][j] = false;
+                }
+                if (dp[i][j] == true && j - i + 1 > maxLen)
+                {
+                    maxLen = j - i +1;
+                    begin = i;
+                }
+            }
+        }
+        return s.Substring(begin,maxLen);
+    }
+}
+```
+
+***
+
 ## 2023/3/10
 
 ## 4. 寻找两个正序数组的中位数
