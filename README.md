@@ -1,5 +1,98 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/16
+
+## 15. 三数之和
+
+[15. 三数之和](https://leetcode.cn/problems/3sum/description/?favorite=2cktkvj)
+```
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
+
+你返回所有和为 0 且不重复的三元组。
+
+注意：答案中不可以包含重复的三元组。
+
+ 
+
+ 
+
+示例 1：
+
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+示例 2：
+
+输入：nums = [0,1,1]
+输出：[]
+解释：唯一可能的三元组和不为 0 。
+示例 3：
+
+输入：nums = [0,0,0]
+输出：[[0,0,0]]
+解释：唯一可能的三元组和为 0 。
+```
+
+`思路`
+排序+双指针
+主要在于如何去除重复答案
+1.可以将目标list排序后转成字符串记录在哈希表，缺点是比较麻烦而且空间
+2.数组已经排过序，所以遍历时只要保证下一次数和当前数不同即可排除重复答案
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> ThreeSum(int[] nums) {
+        IList<IList<int>> ans = new List<IList<int>>();
+        Array.Sort(nums);
+        int n = nums.Length;
+        for (int i = 0; i < n - 2; i++)
+        {
+            if (nums[i] > 0)
+            {
+                break;
+            }
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int left = i + 1;
+            int right = nums.Length - 1;
+            while(left < right){
+                int sum = nums[left] + nums[right];
+                if (sum == -nums[i])
+                {
+                    List<int> list = new List<int>(){nums[i],nums[left],nums[right]};
+                    ans.Add(list);
+                    while(left < right && nums[left] == nums[left + 1]){
+                        left ++;
+                    }
+                    while(left < right && nums[right] == nums[right - 1]){
+                        right --;
+                    }
+                    left ++;
+                    right --;
+                }else{
+                    if (sum + nums[i] > 0)
+                    {
+                        right --;
+                    }else{
+                        left ++;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/3/15
 
 ## 11. 盛最多水的容器
