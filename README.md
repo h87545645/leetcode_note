@@ -1,5 +1,75 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/17
+
+## 17. 电话号码的字母组合
+
+[17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/description/?favorite=2cktkvj)
+```
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+
+
+ 
+
+示例 1：
+
+输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+示例 2：
+
+输入：digits = ""
+输出：[]
+示例 3：
+
+输入：digits = "2"
+输出：["a","b","c"]
+```
+
+`思路`
+回溯
+
+`c# 实现`
+```
+public class Solution {
+    public IList<string> LetterCombinations(string digits) {
+        IList<string> ans = new List<string>();
+        if (digits.Length == 0) {
+            return ans;
+        }
+        Dictionary<char , string> dict = new Dictionary<char , string>();
+        dict.Add('2', "abc");
+        dict.Add('3', "def");
+        dict.Add('4', "ghi");
+        dict.Add('5', "jkl");
+        dict.Add('6', "mno");
+        dict.Add('7', "pqrs");
+        dict.Add('8', "tuv");
+        dict.Add('9', "wxyz");
+
+        BackTrack(ans,dict ,0,digits,"");
+        return  ans;
+    }
+
+    private void BackTrack(IList<string> ans ,  Dictionary<char , string> dict, int index, string digits , string comb){
+        if (index == digits.Length)
+        {
+            ans.Add(comb);
+            return;
+        }
+        string str = dict[digits[index]];
+        for (int i = 0; i < str.Length; i++)
+        {
+            BackTrack(ans,dict,index + 1,digits,comb + str[i]);
+        }
+    }
+}
+```
+
+***
+
 ## 2023/3/16
 
 ## 15. 三数之和
