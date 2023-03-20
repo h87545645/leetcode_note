@@ -1,5 +1,70 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/20
+
+## 19. 删除链表的倒数第 N 个结点
+
+[19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?favorite=2cktkvj)
+```
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+ 
+
+示例 1：
+
+
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+示例 2：
+
+输入：head = [1], n = 1
+输出：[]
+示例 3：
+
+输入：head = [1,2], n = 1
+输出：[1]
+```
+
+`思路`
+哈希表记录节点，也可以入栈删除
+
+`c# 实现`
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode RemoveNthFromEnd(ListNode head, int n) {
+        Dictionary<int , ListNode> dict = new Dictionary<int , ListNode>();
+        int index = 0;
+        ListNode curNd = head;
+        while(curNd != null){
+            dict.TryAdd(index ++,curNd);
+            curNd = curNd.next;
+        }
+        int tarIndex = index - n;
+        ListNode target = dict[tarIndex];
+        if (target == head)
+        {
+            head = head.next;
+        }else{
+            dict[tarIndex - 1].next = dict[tarIndex].next;
+        }
+        return head;
+    }
+}
+```
+
+***
+
 ## 2023/3/17
 
 ## 17. 电话号码的字母组合
