@@ -1,5 +1,82 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/21
+
+## 20. 有效的括号
+
+[20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/description/?favorite=2cktkvj)
+```
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
+ 
+
+示例 1：
+
+输入：s = "()"
+输出：true
+示例 2：
+
+输入：s = "()[]{}"
+输出：true
+示例 3：
+
+输入：s = "(]"
+输出：false
+```
+
+`思路`
+左括号入栈，右括号出栈匹配
+
+`c# 实现`
+```
+public class Solution {
+    public bool IsValid(string s) {
+        Stack<char> stack = new Stack<char>();
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[')
+            {
+                stack.Push(s[i]);
+            }else{
+                if (stack.Count == 0)
+                {
+                    return false;
+                }
+                char c = stack.Pop();
+                bool isMatch = false;
+                switch (c)
+                {
+                    case '(':{
+                        isMatch = s[i] == ')';
+                        break;
+                    }
+                    case '[':{
+                        isMatch = s[i] == ']';
+                        break;
+                    }
+                    case '{':{
+                        isMatch = s[i] == '}';
+                        break;
+                    }
+                }
+                if (!isMatch)
+                {
+                    return false;
+                }
+            }
+        }
+        return stack.Count == 0;
+    }
+}
+```
+
+***
+
 ## 2023/3/20
 
 ## 19. 删除链表的倒数第 N 个结点
