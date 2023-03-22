@@ -1,5 +1,70 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/22
+
+## 21. 合并两个有序链表
+
+[21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/description/?favorite=2cktkvj)
+```
+将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+ 
+
+示例 1：
+
+
+输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+示例 2：
+
+输入：l1 = [], l2 = []
+输出：[]
+示例 3：
+
+输入：l1 = [], l2 = [0]
+输出：[0]
+```
+
+`思路`
+再头部加一个前头节点，遍历比较两个节点并依次指向小的那个，直到某一个为空
+
+`c# 实现`
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode MergeTwoLists(ListNode list1, ListNode list2) {
+     
+        ListNode preHead = new ListNode(-1);
+        ListNode cur = preHead;
+        while(list1 != null && list2 != null){
+            if (list1.val > list2.val)
+            {
+                cur.next = list2;
+                list2 = list2.next;
+            }else{
+                cur.next = list1;
+                list1 = list1.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = list1 == null ? list2 : list1;
+        return preHead.next;
+    }
+}
+```
+
+***
+
 ## 2023/3/21
 
 ## 20. 有效的括号
