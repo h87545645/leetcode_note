@@ -1,5 +1,65 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/23
+
+## 22. 括号生成
+
+[22. 括号生成](https://leetcode.cn/problems/generate-parentheses/description/?favorite=2cktkvj)
+```
+数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+
+ 
+
+示例 1：
+
+输入：n = 3
+输出：["((()))","(()())","(())()","()(())","()()()"]
+示例 2：
+
+输入：n = 1
+输出：["()"]
+```
+
+`思路`
+递归每个个数的括号情形并记录
+
+`c# 实现`
+```
+public class Solution {
+    IList<string>[] cache = new IList<string>[100];
+    public IList<string> GenerateParenthesis(int n) {
+        return GenParent(n);
+    }
+
+    private IList<string> GenParent(int n){
+        if (cache[n] != null)
+        {
+            return cache[n];
+        }
+        IList<string> ans = new List<string>();
+        if (n == 0)
+        {
+            ans.Add("");
+        }
+        
+        for (int i = 0; i < n; i++)
+        {
+            foreach (string left in GenParent(i))
+            {
+                foreach (string right in GenParent(n - i - 1))
+                {
+                    ans.Add("("+left+")"+right);
+                }
+            }
+        }
+        cache[n] = ans;
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/3/22
 
 ## 21. 合并两个有序链表
