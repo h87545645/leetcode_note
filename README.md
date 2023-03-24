@@ -1,5 +1,127 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/24
+
+## 23. 合并 K 个升序链表
+
+[23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/description/?favorite=2cktkvj)
+```
+给你一个链表数组，每个链表都已经按升序排列。
+
+请你将所有链表合并到一个升序链表中，返回合并后的链表。
+
+ 
+
+示例 1：
+
+输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+将它们合并到一个有序链表中得到。
+1->1->2->3->4->4->5->6
+示例 2：
+
+输入：lists = []
+输出：[]
+示例 3：
+
+输入：lists = [[]]
+输出：[]
+```
+
+`思路`
+
+解法一：
+直接便利链表数组，每次找出最小的一个元素接到答案链表上，直到所有链表都为空
+
+解法二：
+使用优先队列记录每个链表当前位置的节点，每次链接出列的节点并添加下一个非空节点
+
+`c# 实现`
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+ 解法一 ： 顺序遍历
+ public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        if(lists.Length == 0){
+            return null;
+        }
+        ListNode preHead = new ListNode(-1);
+        ListNode curNd = preHead;
+        while(true){
+            int nullCnt = 0;
+            int minIndex = 0;
+            int min = int.MaxValue;
+            for (int i = 0; i < lists.Length; i++)
+            {
+                if (lists[i] == null)
+                {
+                    nullCnt ++;
+                    continue;
+                }
+                if (min > lists[i].val)
+                {
+                    min = lists[i].val;
+                    minIndex = i;
+                }
+            }
+            if (nullCnt == lists.Length )
+            {
+                break;
+            }
+            curNd.next = lists[minIndex];
+            curNd = curNd.next;
+            lists[minIndex] = lists[minIndex].next;
+           
+        }
+        return preHead.next;
+    }
+}
+ 
+解法二 ： 优先队列
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        ListNode preHead = new ListNode(-1);
+        ListNode curNd = preHead;
+        PriorityQueue<ListNode,int> que = new PriorityQueue<ListNode,int>();
+        for (int i = 0; i < lists.Length; i++)
+        {
+            if (lists[i] != null)
+            {
+                que.Enqueue(lists[i],lists[i].val);
+            }
+        }
+        while(que.Count > 0){
+            ListNode temp = que.Dequeue();
+            curNd.next = temp;
+            curNd = curNd.next;
+            if(temp.next != null){
+                que.Enqueue(temp.next,temp.next.val);
+            }
+            
+        }
+        return preHead.next;
+    }
+}
+```
+
+***
+
 ## 2023/3/23
 
 ## 22. 括号生成
