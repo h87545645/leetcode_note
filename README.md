@@ -1,5 +1,88 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/28
+
+## 25. K 个一组翻转链表
+
+[25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/description/)
+```
+给你链表的头节点 head ，每 k 个节点一组进行翻转，请你返回修改后的链表。
+
+k 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+
+ 
+
+示例 1：
+
+
+输入：head = [1,2,3,4,5], k = 2
+输出：[2,1,4,3,5]
+示例 2：
+
+
+
+输入：head = [1,2,3,4,5], k = 3
+输出：[3,2,1,4,5]
+```
+
+`思路`
+数组记录要反转的节点
+
+`c# 实现`
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode ReverseKGroup(ListNode head, int k) {
+        if (k < 2)
+        {
+            return head;
+        }
+        ListNode[] list = new ListNode[k];
+        ListNode preHead = new ListNode(-1);
+        ListNode pre = preHead;
+        ListNode cur = head;
+        int cnt = 0;
+        while(cur != null){
+            list[cnt] = cur;
+            cur = cur.next;
+            cnt++;
+            if (cnt == k)
+            {
+                for (int i = k - 1; i >=0; i--)
+                {
+                    if (i == k - 1)
+                    {
+                        pre.next = list[i];
+                        list[i].next = list[i - 1];
+                    }else if(i == 0){
+                        list[i].next = cur;
+                        pre = list[i];
+                    }else{
+                        list[i].next = list[i - 1];
+                    }
+                }
+                cnt = 0;
+            }
+        }
+        return preHead.next;
+    }
+}
+```
+
+***
+
 ## 2023/3/27
 
 ## 24. 两两交换链表中的节点
