@@ -1,5 +1,61 @@
 # LEET CODE STUDY NOTE
 
+## 2023/3/30
+
+## 32. 最长有效括号
+
+[32. 最长有效括号](https://leetcode.cn/problems/longest-valid-parentheses/description/?favorite=2cktkvj)
+```
+给你一个只包含 '(' 和 ')' 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
+
+ 
+
+示例 1：
+
+输入：s = "(()"
+输出：2
+解释：最长有效括号子串是 "()"
+示例 2：
+
+输入：s = ")()())"
+输出：4
+解释：最长有效括号子串是 "()()"
+示例 3：
+
+输入：s = ""
+输出：0
+```
+
+`思路`
+动态规划，dp[i]表示当前最长有效长度
+
+`c# 实现`
+```
+public class Solution {
+    public int LongestValidParentheses(string s) {
+        int n = s.Length;
+        int[] dp = new int[n+1];
+        Array.Fill(dp,0);
+        for (int i = 1; i < n; i++)
+        {
+            if (s[i] == ')' && s[i - 1] == '(')
+            {
+                dp[i] = (i >= 2 ? dp[i-2] : 0) + 2;
+            }else if (s[i] == ')' && s[i - 1] == ')')
+            {
+                if(i - dp[i-1]  > 0 && s[i - dp[i - 1] - 1] == '('){
+                     dp[i] = dp[i-1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+                }
+               
+            }
+        }
+        return dp.Max();
+    }
+}
+```
+
+***
+
 ## 2023/3/29
 
 ## 31. 下一个排列
