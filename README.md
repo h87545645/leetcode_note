@@ -1,5 +1,88 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/3
+
+## 34. 在排序数组中查找元素的第一个和最后一个位置
+
+[34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/?favorite=2cktkvj)
+```
+给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 target，返回 [-1, -1]。
+
+你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题。
+
+ 
+
+示例 1：
+
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+示例 2：
+
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+示例 3：
+
+输入：nums = [], target = 0
+输出：[-1,-1]
+
+```
+
+`思路`
+要求O(log n),所以基本只能是二分查找。
+先二分查找到target的某个位置，再往前和往后延伸寻找相同的位置。
+
+`c# 实现`
+```
+public class Solution {
+    public int[] SearchRange(int[] nums, int target) {
+        int[] res = new int[2]{-1,-1};
+        int n = nums.Length;
+        if (n > 0)
+        {
+            int l = 0;
+            int r = n - 1;
+            bool find = false;
+            while(l <= r){
+                int mid = (l + r + 1) / 2;
+                if (target == nums[mid])
+                {
+                    
+                    l = mid;
+                    find = true;
+                    break;
+                }
+                else if (target > nums[mid])
+                {
+                    l = mid + 1;
+                }else{
+                    r = mid - 1;
+                }
+            }
+            if (find)
+            {
+                
+                int index = l;
+                while(index - 1 >= 0 && index - 1 < n && nums[index-1] == nums[l]){
+                    index --;
+                }
+                res[0] = index;
+                index = l;
+                while(index + 1 >= 0 && index + 1 < n && nums[index + 1] == nums[l]){
+                    index ++;
+                }
+                res[1] = index;
+            }
+        
+        }
+        return res;
+    }
+}
+```
+
+***
+
 ## 2023/3/31
 
 ## 33. 搜索旋转排序数组
