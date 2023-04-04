@@ -1,5 +1,75 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/4
+
+## 39. 组合总和
+
+[39. 组合总和](https://leetcode.cn/problems/combination-sum/description/?favorite=2cktkvj)
+```
+给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+
+candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+
+对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+
+ 
+
+示例 1：
+
+输入：candidates = [2,3,6,7], target = 7
+输出：[[2,2,3],[7]]
+解释：
+2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。
+7 也是一个候选， 7 = 7 。
+仅有这两种组合。
+示例 2：
+
+输入: candidates = [2,3,5], target = 8
+输出: [[2,2,2,2],[2,3,3],[3,5]]
+示例 3：
+
+输入: candidates = [2], target = 1
+输出: []
+
+```
+
+`思路`
+搜索回溯
+需要考虑每种情况的题目应用回溯算法，直到满足条件
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> CombinationSum(int[] candidates, int target) {
+        IList<IList<int>> ans = new List<IList<int>>();
+        List<int> combine = new List<int>();
+        Dfs(candidates,target,ans,combine,0);
+        return ans;
+    }
+
+    private void Dfs(int[] candidates , int target , IList<IList<int>> ans , List<int> combine , int idx){
+        if (idx == candidates.Length)
+        {
+            return;
+        }
+        if (target == 0)
+        {
+            ans.Add(new List<int>(combine));
+            return;
+        }
+        Dfs(candidates,target,ans,combine,idx + 1);
+        if (target - candidates[idx] >= 0)
+        {
+            combine.Add(candidates[idx]);
+            Dfs(candidates,target - candidates[idx],ans,combine,idx);
+            combine.RemoveAt(combine.Count - 1);
+        }
+    }
+}
+```
+
+***
+
 ## 2023/4/3
 
 ## 34. 在排序数组中查找元素的第一个和最后一个位置
