@@ -1,5 +1,61 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/11
+
+## 49. 字母异位词分组
+
+[49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/description/?favorite=2cktkvj)
+```
+你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+
+字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。
+
+ 
+
+示例 1:
+
+输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+示例 2:
+
+输入: strs = [""]
+输出: [[""]]
+示例 3:
+
+输入: strs = ["a"]
+输出: [["a"]]
+
+```
+
+`思路`
+将排序后的单词哈希表记录分组
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) {
+        Dictionary<string,IList<string>> dict = new Dictionary<string,IList<string>>();
+        IList<IList<string>> ans = new List<IList<string>>();
+        for (int i = 0; i < strs.Length; i++)
+        {
+            char[] temp = strs[i].ToCharArray();
+            Array.Sort(temp);
+            string tempStr = new string(temp);
+            dict.TryAdd(tempStr,new List<string>());
+            dict[tempStr].Add(strs[i]);
+        }
+
+        foreach (KeyValuePair<string, IList<string>> kvp in dict)
+        {
+            ans.Add(new List<string>(kvp.Value));
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/4/10
 
 ## 48. 旋转图像
