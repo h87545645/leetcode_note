@@ -1,5 +1,75 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/12
+
+## 53. 最大子数组和
+
+[53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/description/?favorite=2cktkvj)
+```
+给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+子数组 是数组中的一个连续部分。
+
+ 
+
+示例 1：
+
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+示例 2：
+
+输入：nums = [1]
+输出：1
+示例 3：
+
+输入：nums = [5,4,-1,7,8]
+输出：23
+```
+
+`思路`
+dp[i] 来表示以当前i结尾时，最大的子串大小，所以可得 ： dp[i + 1] = (dp[i] > 0 ? dp[i] : 0) + nums[i + 1]
+
+`c# 实现`
+```
+public class Solution {
+    public int MaxSubArray(int[] nums) {
+        int n = nums.Length;
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        int res = dp[0];
+        for (int i = 1; i < n; i++)
+        {
+            if (dp[i - 1] > 0)
+            {
+                dp[i] = Math.Max(nums[i] , dp[i - 1] + nums[i]);
+            }else{
+                dp[i] = nums[i];
+            }
+            res = Math.Max(dp[i] , res);
+        }
+        return res;
+    }
+}
+
+//简化版
+public class Solution {
+    public int MaxSubArray(int[] nums) {
+        int n = nums.Length;
+        int res = nums[0];
+        int pre = 0;
+        for (int i = 0; i < n; i++)
+        {
+            pre = Math.Max(nums[i], pre + nums[i]);
+            res = Math.Max(res,pre);
+        }
+        return res;
+    }
+}
+```
+
+***
+
 ## 2023/4/11
 
 ## 49. 字母异位词分组
