@@ -1,5 +1,56 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/14
+
+## 56. 合并区间
+
+[56. 合并区间](https://leetcode.cn/problems/merge-intervals/description/?favorite=2cktkvj?favorite=2cktkvj)
+```
+以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+
+ 
+
+示例 1：
+
+输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+输出：[[1,6],[8,10],[15,18]]
+解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+示例 2：
+
+输入：intervals = [[1,4],[4,5]]
+输出：[[1,5]]
+解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
+```
+
+`思路`
+排序后遍历比较区间
+
+`c# 实现`
+```
+public class Solution {
+    public int[][] Merge(int[][] intervals) {
+        Array.Sort(intervals,(int[] a, int[] b)=>{
+            return a[0] - b[0];
+        });
+        int n = intervals.Length;
+        List<int[]> ans = new List<int[]>();
+        for (int i = 0; i < n; i++)
+        {
+            int l = intervals[i][0] ,  r = intervals[i][1];
+            if (ans.Count == 0 || ans[ans.Count - 1][1] < l)
+            {
+                ans.Add(new int[2]{l,r});
+            }else{
+               ans[ans.Count - 1][1] = Math.Max(r,ans[ans.Count - 1][1]);
+            }
+        }
+        return ans.ToArray();
+    }
+}
+```
+
+***
+
 ## 2023/4/13
 
 ## 55. 跳跃游戏
