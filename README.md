@@ -1,5 +1,54 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/24
+
+## 78. 子集
+
+[78. 子集](https://leetcode.cn/problems/subsets/description/?favorite=2cktkvj)
+```
+给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+
+解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+
+ 
+
+示例 1：
+
+输入：nums = [1,2,3]
+输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+示例 2：
+
+输入：nums = [0]
+输出：[[],[0]]
+```
+
+`思路`
+倒序遍历添加
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> Subsets(int[] nums) {
+        IList<IList<int>> ans = new List<IList<int>>();
+        ans.Add(new List<int>());
+        int n = nums.Length;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            int n2 = ans.Count;
+            for (int j = 0; j < n2; j++)
+            {
+                List<int> temp = new List<int>(ans[j]);
+                temp.Add(nums[i]);
+                ans.Add(temp);
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/4/23
 
 ## 76. 最小覆盖子串
