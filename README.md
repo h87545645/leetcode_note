@@ -1,5 +1,72 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/26
+
+## 84. 柱状图中最大的矩形
+
+[84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/description/?favorite=2cktkvj)
+```
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+ 
+
+示例 1:
+
+
+
+输入：heights = [2,1,5,6,2,3]
+输出：10
+解释：最大的矩形为图中红色区域，面积为 10
+示例 2：
+
+
+
+输入： heights = [2,4]
+输出： 4
+```
+
+`思路`
+单调栈，用left[i] right[i] 分别记录下标i时，最多能到的左右边界
+
+`c# 实现`
+```
+public class Solution {
+    public int LargestRectangleArea(int[] heights) {
+        int ans = 0;
+        int n = heights.Length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Stack<int> stack = new Stack<int>();
+        for (int i = 0; i < n; i++)
+        {
+            while(stack.Count > 0 && heights[stack.Peek()] >= heights[i]){
+                stack.Pop();
+            }
+            left[i] = stack.Count > 0 ? stack.Peek() : -1;
+            stack.Push(i);
+        }
+        stack.Clear();
+        for (int i = n - 1; i >= 0; i--)
+        {
+            while(stack.Count > 0 && heights[stack.Peek()] >= heights[i]){
+                stack.Pop();
+            }
+            right[i] = stack.Count > 0 ? stack.Peek() : n;
+            stack.Push(i);
+        }
+        for (int i = 0; i < n; i++)
+        {
+            ans = Math.Max(ans,(right[i] - left[i] - 1)*heights[i]);
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/4/25
 
 ## 79. 单词搜索
