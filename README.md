@@ -1,5 +1,100 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/27
+
+## 85. 最大矩形
+
+[85. 最大矩形](https://leetcode.cn/problems/maximal-rectangle/description/?favorite=2cktkvj)
+```
+给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+
+ 
+
+示例 1：
+
+
+输入：matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+输出：6
+解释：最大矩形如上图所示。
+示例 2：
+
+输入：matrix = []
+输出：0
+示例 3：
+
+输入：matrix = [["0"]]
+输出：0
+示例 4：
+
+输入：matrix = [["1"]]
+输出：1
+示例 5：
+
+输入：matrix = [["0","0"]]
+输出：0
+```
+
+`思路`
+这道题需要结合[84. 柱状图中最大的矩形]来做
+其实就是将矩阵转换成了很多列柱状图最大面积的问题
+
+`c# 实现`
+```
+public class Solution {
+    public int MaximalRectangle(char[][] matrix) {
+        int m = matrix.Length;
+        if (m == 0)
+        {
+            return 0;
+        }
+        int n = matrix[0].Length;
+        int[][] left = new int[m][];
+        for (int i = 0; i < m; i++)
+        {
+            left[i] = new int[n];
+            for (int j = 0; j < n; j++)
+            {
+                if (matrix[i][j] == '1')
+                {
+                     left[i][j] = (j == 0 ? 0 : left[i][j - 1] ) + 1;
+                }
+            }
+        }
+        int ans = 0;
+        for (int j = 0; j < n; j++)
+        {
+            int[] up = new int[m];
+            int[] down = new int[m];
+            Stack<int> stack = new Stack<int>();
+            for (int i = 0; i < m; i++)
+            {
+                while(stack.Count > 0 && left[stack.Peek()][j] >= left[i][j]){
+                    stack.Pop();
+                }
+                up[i] = stack.Count > 0 ? stack.Peek() : -1;
+                stack.Push(i);
+            }
+            stack = new Stack<int>();
+            for (int i = m - 1; i >= 0; i--)
+            {
+                while(stack.Count > 0 && left[stack.Peek()][j] >= left[i][j]){
+                    stack.Pop();
+                }
+                down[i] = stack.Count > 0 ? stack.Peek() : m;
+                stack.Push(i);
+            }
+            for (int i = 0; i < m; i++)
+            {
+                ans = Math.Max(ans,(down[i] - up[i] - 1) * left[i][j]);
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/4/26
 
 ## 84. 柱状图中最大的矩形
