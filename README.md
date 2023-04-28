@@ -1,5 +1,69 @@
 # LEET CODE STUDY NOTE
 
+## 2023/4/28
+
+## 94. 二叉树的中序遍历
+
+[94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/?favorite=2cktkvj)
+```
+给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+
+ 
+
+示例 1：
+
+
+输入：root = [1,null,2,3]
+输出：[1,3,2]
+示例 2：
+
+输入：root = []
+输出：[]
+示例 3：
+
+输入：root = [1]
+输出：[1]
+```
+
+`思路`
+中序遍历
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public IList<int> InorderTraversal(TreeNode root) {
+        IList<int> ans = new List<int>();
+        DFS(root,ans);
+        return ans;
+    }
+
+    private void DFS(TreeNode root , IList<int> ans){
+        if (root == null)
+        {
+            return;
+        }
+        DFS(root.left,ans);
+        ans.Add(root.val);
+        DFS(root.right,ans);
+    }
+}
+```
+
+***
+
 ## 2023/4/27
 
 ## 85. 最大矩形
