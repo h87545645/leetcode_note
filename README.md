@@ -1,5 +1,75 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/5
+
+## 98. 验证二叉搜索树
+
+[98. 验证二叉搜索树](https://leetcode.cn/problems/validate-binary-search-tree/description/?favorite=2cktkvj)
+```
+给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
+
+有效 二叉搜索树定义如下：
+
+节点的左子树只包含 小于 当前节点的数。
+节点的右子树只包含 大于 当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+ 
+
+示例 1：
+
+
+输入：root = [2,1,3]
+输出：true
+示例 2：
+
+
+输入：root = [5,1,4,null,null,3,6]
+输出：false
+解释：根节点的值是 5 ，但是右子节点的值是 4 。
+```
+
+`思路`
+中序遍历二叉树
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool IsValidBST(TreeNode root) {
+        long inorder = long.MinValue;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while(root != null || stack.Count > 0){
+            while(root != null){
+                stack.Push(root);
+                root = root.left;
+            }
+            root = stack.Pop();
+            if (root.val <= inorder)
+            {
+                return false;
+            }
+            inorder = root.val;
+            root = root.right;
+        }
+        return true;
+    }
+}
+```
+
+***
+
 ## 2023/5/4
 
 ## 96. 不同的二叉搜索树
