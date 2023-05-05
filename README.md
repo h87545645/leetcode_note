@@ -66,6 +66,34 @@ public class Solution {
         return true;
     }
 }
+
+解法2
+
+public class Solution {
+    long inorder;
+    public bool IsValidBST(TreeNode root) {
+        inorder = long.MinValue;
+        return IsValid(root);
+    }
+
+    private bool IsValid(TreeNode root){
+        if (root == null)
+        {
+            return true;
+        }
+        bool left = IsValid(root.left);
+        if (!left)
+        {
+            return false;
+        }
+        if (root.val <= inorder)
+        {
+            return false;
+        }
+        inorder = root.val;
+        return IsValid(root.right);
+    }
+}
 ```
 
 ***
