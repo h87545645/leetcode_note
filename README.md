@@ -1,5 +1,66 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/6
+
+## 101. 对称二叉树
+
+[101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/?favorite=2cktkvj)
+```
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+
+ 
+
+示例 1：
+
+
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+示例 2：
+
+
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+
+`思路`
+递归比较
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool IsSymmetric(TreeNode root) {
+        return Check(root,root);
+    }
+
+    private bool Check(TreeNode l,TreeNode r){
+        if (l == null && r == null)
+        {
+            return true;
+        }
+        if (l == null || r == null)
+        {
+            return false;
+        }
+        return l.val == r.val && Check(l.left,r.right) && Check(l.right,r.left);
+    }
+}
+```
+
+***
+
 ## 2023/5/5
 
 ## 98. 验证二叉搜索树
