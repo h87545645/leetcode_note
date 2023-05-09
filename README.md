@@ -1,5 +1,64 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/9
+
+## 104. 二叉树的最大深度
+
+[104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?favorite=2cktkvj)
+```
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例：
+给定二叉树 [3,9,20,null,null,15,7]，
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最大深度 3 。
+```
+
+`思路`
+DFS
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public int MaxDepth(TreeNode root) {
+        return DFS(root,0);
+    }
+
+    private int DFS(TreeNode root , int depth){
+        if (root == null)
+        {
+            return depth;
+        }
+        depth ++;
+        return Math.Max(DFS(root.left,depth) , DFS(root.right,depth));
+    }
+}
+```
+
+***
+
 ## 2023/5/8
 
 ## 102. 二叉树的层序遍历
