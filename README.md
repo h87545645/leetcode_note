@@ -1,5 +1,75 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/11
+
+## 105. 从前序与中序遍历序列构造二叉树
+
+[105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/?favorite=2cktkvj)
+```
+给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+
+ 
+
+示例 1:
+
+
+输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+输出: [3,9,20,null,null,15,7]
+示例 2:
+
+输入: preorder = [-1], inorder = [-1]
+输出: [-1]
+```
+
+`思路`
+递归
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Dictionary<int,int> indexDict;
+    public TreeNode BuildTree(int[] preorder, int[] inorder) {
+        int n = preorder.Length;
+        indexDict = new Dictionary<int,int>();
+        for (int i = 0; i < n; i++)
+        {
+            indexDict.Add(inorder[i],i);
+        }
+        return Build(preorder,inorder,0,n-1,0);
+    }
+
+    private TreeNode Build(int[] preorder, int[] inorder , int preLeft , int preRight, int inLeft ){
+        if (preLeft > preRight)
+        {
+            return null;
+        }
+        int val = preorder[preLeft];
+        TreeNode root = new TreeNode(val);
+        int rootInInOrder = indexDict[val];
+        int leftLen = rootInInOrder - inLeft;
+
+        root.left =  Build(preorder, inorder , preLeft + 1 , preLeft + leftLen, inLeft);
+        root.right = Build(preorder, inorder , preLeft + leftLen + 1 , preRight , rootInInOrder + 1 );
+        return root;
+    }
+}
+```
+
+***
+
 ## 2023/5/9
 
 ## 104. 二叉树的最大深度
