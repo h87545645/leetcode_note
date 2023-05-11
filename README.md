@@ -2,6 +2,83 @@
 
 ## 2023/5/11
 
+## 114. 二叉树展开为链表
+
+[114. 二叉树展开为链表](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/description/?favorite=2cktkvj)
+```
+给你二叉树的根结点 root ，请你将它展开为一个单链表：
+
+展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+展开后的单链表应该与二叉树 先序遍历 顺序相同。
+ 
+
+示例 1：
+
+
+输入：root = [1,2,5,3,4,null,6]
+输出：[1,null,2,null,3,null,4,null,5,null,6]
+示例 2：
+
+输入：root = []
+输出：[]
+示例 3：
+
+输入：root = [0]
+输出：[0]
+```
+
+`思路`
+先序遍历
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public void Flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        TreeNode ans = null;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.Push(root);
+        while(stack.Count > 0){
+            TreeNode cur = stack.Pop();
+            if (ans != null)
+            {
+                ans.left = null;
+                ans.right = cur;
+            }
+            if (cur.right != null)
+            {
+                stack.Push(cur.right);
+            }
+            if (cur.left != null)
+            {
+                stack.Push(cur.left);
+            }
+            ans = cur;
+        }
+    }
+
+}
+```
+
+***
+
+## 2023/5/11
+
 ## 105. 从前序与中序遍历序列构造二叉树
 
 [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/?favorite=2cktkvj)
