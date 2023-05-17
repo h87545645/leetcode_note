@@ -1,5 +1,79 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/17
+
+## 136. 只出现一次的数字
+
+[136. 只出现一次的数字](https://leetcode.cn/problems/single-number/description/?favorite=2cktkvj)
+```
+给你一个 非空 整数数组 nums ，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+你必须设计并实现线性时间复杂度的算法来解决此问题，且该算法只使用常量额外空间。
+
+ 
+
+示例 1 ：
+
+输入：nums = [2,2,1]
+输出：1
+示例 2 ：
+
+输入：nums = [4,1,2,1,2]
+输出：4
+示例 3 ：
+
+输入：nums = [1]
+输出：1
+```
+
+`思路`
+解法一  排序后遍历
+
+解法二 位运算
+
+交换律：a ^ b ^ c <=> a ^ c ^ b
+
+任何数于0异或为任何数 0 ^ n => n
+
+相同的数异或为0: n ^ n => 0
+
+var a = [2,3,2,4,4]
+
+2 ^ 3 ^ 2 ^ 4 ^ 4等价于 2 ^ 2 ^ 4 ^ 4 ^ 3 => 0 ^ 0 ^3 => 3
+
+`c# 实现`
+```
+public class Solution {
+    public int SingleNumber(int[] nums) {
+        Array.Sort(nums);
+        int n = nums.Length;
+        for (int i = 0; i < n; i+=2)
+        {
+            if (i == n - 1 || nums[i] != nums[i + 1])
+            {
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+}
+
+
+public class Solution {
+    public int SingleNumber(int[] nums) {
+        int n = nums.Length;
+        int ans = nums[0];
+        for (int i = 1; i < n; i++)
+        {
+            ans ^= nums[i];
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/5/16
 
 ## 128. 最长连续序列
