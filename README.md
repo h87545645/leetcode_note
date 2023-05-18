@@ -1,5 +1,66 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/18
+
+## 139. 单词拆分
+
+[139. 单词拆分](https://leetcode.cn/problems/word-break/description/)
+```
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+
+ 
+
+示例 1：
+
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+示例 2：
+
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+     注意，你可以重复使用字典中的单词。
+示例 3：
+
+输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+输出: false
+```
+
+`思路`
+只用字典树会被 "aaaa" "aa" s = "aaaaaaa" 这种用例卡住。
+这道题还是得动态规划，用 dp[i] 表示在i位置时，能否用wordDict里的单词拼接，dp[i] = dp[j] && wordDict.Contains(s.Substring(j , i - j))
+其中j是 0 到 i 的某一下标， s.Substring(j , i - j)是其对应的字符串片段
+
+`c# 实现`
+```
+public class Solution {
+
+    public bool WordBreak(string s, IList<string> wordDict) {
+        HashSet<string> set = new HashSet<string>(wordDict);
+        int n = s.Length;
+        bool[] dp = new bool[n + 1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = i; j >= 0; j--)
+            {
+                if (dp[j] && set.Contains(s.Substring(j , i - j)))
+                {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+***
+
 ## 2023/5/17
 
 ## 136. 只出现一次的数字
