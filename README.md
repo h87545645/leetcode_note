@@ -2,6 +2,105 @@
 
 ## 2023/5/18
 
+## 141. 环形链表
+
+[141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/description/)
+```
+给你一个链表的头节点 head ，判断链表中是否有环。
+
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+
+如果链表中存在环 ，则返回 true 。 否则，返回 false 。
+
+ 
+
+示例 1：
+
+
+
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+示例 2：
+
+
+
+输入：head = [1,2], pos = 0
+输出：true
+解释：链表中有一个环，其尾部连接到第一个节点。
+示例 3：
+
+
+
+输入：head = [1], pos = -1
+输出：false
+解释：链表中没有环。
+```
+
+`思路`
+一：
+哈希表记录
+
+二：
+快慢指针，两个指针A B。 A每次移动一个，B每次移动两个，如果存在环，A一定会追上B ， 即 A == B ， 否则A,B最终位null
+
+`c# 实现`
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+1:
+
+public class Solution {
+    public bool HasCycle(ListNode head) {
+        HashSet<ListNode> set = new HashSet<ListNode>();
+        while(head != null){
+            if (set.Contains(head))
+            {
+                return true;
+            }
+            set.Add(head);
+            head = head.next;
+        }
+        return false;
+    }
+}
+
+2：
+
+public class Solution {
+    public bool HasCycle(ListNode head) {
+        if (head == null || head.next == null)
+        {
+            return false;
+        }
+        ListNode A = head;
+        ListNode B = head.next;
+        while(A != B){
+            if (B == null || B.next == null)
+            {
+                return false;
+            }
+            A = A.next;
+            B = B.next.next;
+        }
+        return true;
+    }
+}
+```
+
+***
+
+## 2023/5/18
+
 ## 139. 单词拆分
 
 [139. 单词拆分](https://leetcode.cn/problems/word-break/description/)
