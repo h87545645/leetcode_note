@@ -1,5 +1,62 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/23
+
+## 152. 乘积最大子数组
+
+[152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/description/)
+```
+给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+
+测试用例的答案是一个 32-位 整数。
+
+子数组 是数组的连续子序列。
+
+ 
+
+示例 1:
+
+输入: nums = [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+示例 2:
+
+输入: nums = [-2,0,-1]
+输出: 0
+解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+```
+
+`思路`
+动态规划，dp[i] 来表示以第 i 个元素结尾的乘积最大子数组的乘积
+因为有负数，需要额外一个dpMin来记录 以第 i 个元素结尾的乘积最小子数组的乘积
+每次在dpMax dpMin nums[i] 中比较最大值
+
+`c# 实现`
+```
+public class Solution {
+    public int MaxProduct(int[] nums) {
+        int n = nums.Length;
+        int[] dpMax = new int[n];
+        int[] dpMin = new int[n];
+        dpMax[0] = nums[0];
+        dpMin[0] = nums[0];
+        for (int i = 1; i < n; i++)
+        {
+            dpMax[i] = Math.Max(dpMax[i - 1] * nums[i] , Math.Max(dpMin[i - 1] * nums[i] , nums[i]));
+            dpMin[i] = Math.Min(dpMin[i - 1] * nums[i] , Math.Min(dpMax[i - 1] * nums[i] , nums[i]));
+        }
+        int ans = int.MinValue;
+        for (int i = 0; i < n; i++)
+        {
+            ans = Math.Max(ans,dpMax[i]);
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/5/22
 
 ## 148. 排序链表
