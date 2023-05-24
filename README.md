@@ -1,5 +1,82 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/24
+
+## 155. 最小栈
+
+[155. 最小栈](https://leetcode.cn/problems/min-stack/description/)
+```
+设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
+
+实现 MinStack 类:
+
+MinStack() 初始化堆栈对象。
+void push(int val) 将元素val推入堆栈。
+void pop() 删除堆栈顶部的元素。
+int top() 获取堆栈顶部的元素。
+int getMin() 获取堆栈中的最小元素。
+ 
+
+示例 1:
+
+输入：
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+输出：
+[null,null,null,null,-3,null,0,-2]
+
+解释：
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+```
+
+`思路`
+辅助栈。每次push辅助栈都push栈顶和val比较小的那个，getmin时就能保证拿到辅助栈的栈顶是最小值
+
+`c# 实现`
+```
+public class MinStack {
+    Stack<int> stack;
+    Stack<int> minStack;
+    public MinStack() {
+        stack = new Stack<int>();
+        minStack = new Stack<int>();
+    }
+    
+    public void Push(int val) {
+        stack.Push(val);
+        if(minStack.Count > 0){
+             minStack.Push(Math.Min(minStack.Peek() , val));
+        }else{
+            minStack.Push(val);
+        }
+       
+    }
+    
+    public void Pop() {
+        stack.Pop();
+        minStack.Pop();
+    }
+    
+    public int Top() {
+        return stack.Peek();
+    }
+    
+    public int GetMin() {
+        return minStack.Peek();
+    }
+}
+```
+
+***
+
 ## 2023/5/23
 
 ## 152. 乘积最大子数组
