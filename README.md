@@ -65,7 +65,8 @@ skipB - 在 listB 中（从头节点开始）跳到交叉节点的节点数
 解法一：
 哈希表记录
 解法二：
-
+遍历
+具体参考[这篇解答](https://leetcode.cn/problems/intersection-of-two-linked-lists/solutions/10774/tu-jie-xiang-jiao-lian-biao-by-user7208t/)
 
 `c# 实现`
 ```
@@ -103,6 +104,20 @@ public class Solution {
 }
 
 二：
+public class Solution {
+    public ListNode GetIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null)
+        {
+            return null;
+        }
+        ListNode pa = headA , pb = headB;
+        while(pa != pb){
+            pa = pa == null ? headB : pa.next;
+            pb = pb == null ? headA : pb.next;
+        }
+        return pa;
+    }
+}
 ```
 
 ***
