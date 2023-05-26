@@ -1,5 +1,82 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/26
+
+## 169. 多数元素
+
+[169. 多数元素](https://leetcode.cn/problems/majority-element/description/)
+```
+给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+ 
+
+示例 1：
+
+输入：nums = [3,2,3]
+输出：3
+示例 2：
+
+输入：nums = [2,2,1,1,1,2,2]
+输出：2
+```
+
+`思路`
+排序
+Boyer-Moore 投票算法
+
+`c# 实现`
+```
+我的解法
+public class Solution {
+    public int MajorityElement(int[] nums) {
+        Array.Sort(nums);
+        int major = nums[0];
+        int max = 1;
+        int left = 1;
+        for (int i = 1; i < nums.Length; i++)
+        {
+            if (nums[i] != nums[i - 1] || i == nums.Length - 1)
+            {
+                if (i - left + 1 > max)
+                {
+                    max = i - left + 1;
+                    major = nums[i - 1];
+                }
+                left = i;
+            }
+             
+        }
+        return major;
+    }
+}
+
+官方
+public class Solution {
+    public int MajorityElement(int[] nums) {
+        Array.Sort(nums);
+        return nums[nums.Length / 2];
+    }
+}
+
+public class Solution {
+    public int MajorityElement(int[] nums) {
+        int cnt = 0;
+        int candiate = nums[0];
+        for(int i = 0; i < nums.Length; i++){
+            if(cnt == 0){
+                candiate = nums[i];
+            }
+            cnt += (nums[i] == candiate) ? 1 : -1;
+        }
+        return candiate;
+    }
+}
+```
+
+***
+
 ## 2023/5/25
 
 ## 160. 相交链表
