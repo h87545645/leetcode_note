@@ -1,5 +1,70 @@
 # LEET CODE STUDY NOTE
 
+## 2023/5/31
+
+## 206. 反转链表
+
+[206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/description/?envType=featured-list&envId=2cktkvj)
+```
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+ 
+
+示例 1：
+
+
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+示例 2：
+
+
+输入：head = [1,2]
+输出：[2,1]
+示例 3：
+
+输入：head = []
+输出：[]
+```
+
+`思路`
+解法1.
+递归，类似DFS，先递归到原来的尾节点，再往回赋值
+
+解法2.
+遍历链表，用pre ， curr, 记录前一个和当前节点，每次将curr.next = prev;  prev = curr; curr = next;
+`c# 实现`
+```
+1.
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        if (head == null || head.next == null)
+        {
+            return head;
+        }
+        ListNode temp = ReverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return temp;
+    }
+}
+
+2.
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+***
+
 ## 2023/5/30
 
 ## 200. 岛屿数量
