@@ -1,5 +1,105 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/5
+
+## 215. 数组中的第K个最大元素
+
+[215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/description/?envType=featured-list&envId=2cktkvj)
+```
+给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+
+请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+
+你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+ 
+
+示例 1:
+
+输入: [3,2,1,5,6,4], k = 2
+输出: 5
+示例 2:
+
+输入: [3,2,3,1,2,4,5,5,6], k = 4
+输出: 4
+```
+
+`思路`
+解法就是实现快排的过程，只是每次排序时只关心k所在的那一半
+
+快排的过程，选一个锚点值 pivot = （0 + nums.Length）/2
+将pivot 与 rigth 交换
+遍历
+遇到比pivot 大的left时， 将nums[right] 赋值为 nums[left]
+遇到比pivot 小的rigth时， 将nums[left] 赋值为 nums[right]
+重复这个过程直到left == rigth
+最后将nums[left] = 一开时的nums[pivot]值
+
+此时nums 被分割为了 [left, pivot - 1] [pivot + 1, right];
+一般的快排此时需要递归[left, pivot - 1] 和 [pivot + 1, right] 上述操作
+但是此题只关心第 k 大的数，也就是说只需要递归 k所在的 区间即可
+最后当pivot == k对应的下标时，就是答案
+
+`c# 实现`
+```
+ public class Solution {
+    int index = 0;
+    public int FindKthLargest(int[] nums, int k) {
+        index = nums.Length - k;
+        return QuickSort(nums,0,nums.Length - 1);
+    }
+
+    private int QuickSort(int[] arr, int l , int r){
+        if (r <= l)
+        {
+            return arr[l];
+        }
+        int pivot = (l + r)/2;
+ 
+        swap(arr , pivot , r);
+        pivot = Partition(arr, l , r);
+        if (pivot == index)
+        {
+            return arr[pivot];
+        }else{
+            return pivot < index ? QuickSort(arr,pivot + 1, r) : QuickSort(arr,l , pivot - 1);
+        }
+    }
+
+    private int Partition(int[] arr , int l , int r){
+        int temp = arr[r];
+        while(l != r){
+            while(arr[l] <= temp && l < r){
+                l++;
+            }
+            if (l < r)
+            {
+                arr[r] = arr[l];
+                r--;
+            }
+            while(arr[r] >= temp && r > l){
+                r--;
+            }
+            if (l < r)
+            {
+                arr[l] = arr[r];
+                l++;
+            }
+        }
+        arr[l] = temp;
+        return l;
+    }
+
+    private void swap(int[] a, int i , int j){
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+}
+```
+
+***
+
 ## 2023/6/2
 
 ## 208. 实现 Trie (前缀树)
