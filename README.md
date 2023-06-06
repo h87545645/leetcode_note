@@ -1,5 +1,71 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/6
+
+## 221. 最大正方形
+
+[221. 最大正方形](https://leetcode.cn/problems/maximal-square/description/?envType=featured-list&envId=2cktkvj)
+```
+在一个由 '0' 和 '1' 组成的二维矩阵内，找到只包含 '1' 的最大正方形，并返回其面积。
+
+ 
+
+示例 1：
+
+
+输入：matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+输出：4
+示例 2：
+
+
+输入：matrix = [["0","1"],["1","0"]]
+输出：1
+示例 3：
+
+输入：matrix = [["0"]]
+输出：0
+
+```
+
+`思路`
+动态规划
+dp[i][j] 表示当前最大的正方形边长
+
+则可得 matrix[i][j] 如果为 ‘1’  dp[i][j] = dp[i-1][j] dp[i][j-1] dp[i-1][j-1] 三个之中最小的一个 加上 1
+
+最后放回最大边长的正方形即可
+
+`c# 实现`
+```
+public class Solution {
+    public int MaximalSquare(char[][] matrix) {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        int[][] dp = new int[n+1][];
+        for (int i = 0; i <= n; i++)
+        {
+            dp[i] = new int[m+1];
+        }
+        int maxWidth = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i][j] == '1')
+                {
+                    int width = Math.Min(dp[i][j] , Math.Min(dp[i+1][j] , dp[i][j+1]));
+                    dp[i+1][j+1] = width + 1;
+                    maxWidth = Math.Max(maxWidth , dp[i+1][j+1]);
+                }
+            }
+        }
+        return maxWidth*maxWidth;
+    }
+}
+```
+
+***
+
 ## 2023/6/5
 
 ## 215. 数组中的第K个最大元素
