@@ -1,5 +1,67 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/7
+
+## 226. 翻转二叉树
+
+[226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/description/?envType=featured-list&envId=2cktkvj)
+```
+给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+
+ 
+
+示例 1：
+
+
+
+输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]
+示例 2：
+
+
+
+输入：root = [2,1,3]
+输出：[2,3,1]
+示例 3：
+
+输入：root = []
+输出：[]
+```
+
+`思路`
+BFS 遍历 ， 并交换其 left 和 right
+
+`c# 实现`
+```
+public class Solution {
+    public TreeNode InvertTree(TreeNode root) {
+        if(root == null) return root;
+        Queue<TreeNode> que = new Queue<TreeNode>();
+        que.Enqueue(root);
+        while(que.Count > 0){
+            for (int i = 0; i < que.Count; i++)
+            {
+                TreeNode curr = que.Dequeue();
+                TreeNode temp = curr.left;
+                curr.left = curr.right;
+                curr.right = temp;
+                if (curr.left != null)
+                {
+                    que.Enqueue(curr.left);
+                }
+                if (curr.right != null)
+                {
+                    que.Enqueue(curr.right);
+                }
+            }
+        }
+        return root;
+    }
+}
+```
+
+***
+
 ## 2023/6/6
 
 ## 221. 最大正方形
