@@ -1,5 +1,69 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/8
+
+## 234. 回文链表
+
+[234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/description/?envType=featured-list&envId=2cktkvj)
+```
+给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false 。
+
+ 
+
+示例 1：
+
+
+输入：head = [1,2,2,1]
+输出：true
+示例 2：
+
+
+输入：head = [1,2]
+输出：false
+```
+
+`思路`
+可以遍历链表，将链表值复制到数组中，再用双指针分别从头 尾遍历，不同则返回false
+
+也可以用快慢指针找到链表的中间，前半部分入栈，后半部分出栈比较
+
+`c# 实现`
+```
+public class Solution {
+    public bool IsPalindrome(ListNode head) {
+        bool isHalf = false;
+        Stack<int> stack = new Stack<int>();
+        ListNode A = head;
+        ListNode B = head.next;
+        while(A != null){
+            if (B != null)
+            {
+                stack.Push(A.val);
+            }
+            if (isHalf)
+            {
+                int curr = stack.Pop();
+                if (curr != A.val)
+                {
+                    return false;
+                }
+            }
+            if (B == null || B.next == null)
+            {
+                isHalf = true;
+                B = null;
+            }else{
+                B = B.next.next;
+            }
+            A = A.next;
+        }
+        return true;
+    }
+}
+```
+
+***
+
 ## 2023/6/7
 
 ## 226. 翻转二叉树
