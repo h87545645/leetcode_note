@@ -1,5 +1,73 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/13
+
+## 239. 滑动窗口最大值
+
+[239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/description/)
+```
+给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+
+返回 滑动窗口中的最大值 。
+
+ 
+
+示例 1：
+
+输入：nums = [1,3,-1,-3,5,3,6,7], k = 3
+输出：[3,3,5,5,6,7]
+解释：
+滑动窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+示例 2：
+
+输入：nums = [1], k = 1
+输出：[1]
+```
+
+`思路`
+维护一个list , 保证list的第一个元素是最大的，每次滑动窗口向右，更新这个list，即如果新的元素比第一个元素还大，或者第一个元素已经不在窗口内了，则移除
+
+`c# 实现`
+```
+public class Solution {
+    public int[] MaxSlidingWindow(int[] nums, int k) {
+        int n = nums.Length;
+        int[] ans = new int[n - k + 1];
+        List<int> list = new List<int>();
+        for (int i = 0 ; i < k; i++)
+        {
+            while(list.Count > 0 && nums[i] >= nums[list[list.Count - 1]]){
+                list.RemoveAt(list.Count - 1);
+            }
+            list.Add(i);
+        }
+        ans[0] = nums[list[0]];
+        for (int i = k; i < n; i++)
+        {
+            while(list.Count > 0 && nums[i] >= nums[list[list.Count - 1]]){
+                list.RemoveAt(list.Count - 1);
+            }
+            list.Add(i);
+            if (list[0] <= i - k)
+            {
+                list.RemoveAt(0);
+            }
+            ans[i - k + 1] = nums[list[0]];
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/6/12
 
 ## 238. 除自身以外数组的乘积
