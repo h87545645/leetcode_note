@@ -1,5 +1,95 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/25
+
+## 301. 删除无效的括号
+
+[301. 删除无效的括号](https://leetcode.cn/problems/remove-invalid-parentheses/description/)
+```
+给你一个由若干括号和字母组成的字符串 s ，删除最小数量的无效括号，使得输入的字符串有效。
+
+返回所有可能的结果。答案可以按 任意顺序 返回。
+
+ 
+
+示例 1：
+
+输入：s = "()())()"
+输出：["(())()","()()()"]
+示例 2：
+
+输入：s = "(a)())()"
+输出：["(a())()","(a)()()"]
+示例 3：
+
+输入：s = ")("
+输出：[""]
+```
+
+`思路`
+BFS遍历 尝试每种可能
+
+`c# 实现`
+```
+public class Solution {
+    public IList<string> RemoveInvalidParentheses(string s) {
+        IList<string> ans = new List<string>();
+        HashSet<string> currSet = new HashSet<string>();
+        currSet.Add(s);
+        while(true){
+            foreach (string str in currSet)
+            {
+                if (IsValid(str))
+                {
+                    ans.Add(str);
+                }
+            }
+            if (ans.Count > 0)
+            {
+                return ans;
+            }
+            HashSet<string> nextSet = new HashSet<string>();
+            foreach (string str in currSet)
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (i > 0 && str[i] == str[i - 1])
+                    {
+                        continue;
+                    }
+                    if (str[i] == '(' || str[i] == ')')
+                    {
+                        nextSet.Add(str.Substring(0,i) + str.Substring(i + 1));
+                    }
+                }
+            }
+            currSet = nextSet;
+        }
+    }
+
+    private bool IsValid(string s){
+        int cnt = 0;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+            {
+                cnt ++;
+            }else if (s[i] == ')')
+            {
+                cnt --;
+                if (cnt < 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return cnt == 0;
+    }
+}
+```
+
+***
+
 ## 2023/6/21
 
 ## 最长递增子序列
