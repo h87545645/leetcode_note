@@ -1,5 +1,64 @@
 # LEET CODE STUDY NOTE
 
+## 2023/6/26
+
+## 309. 最佳买卖股票时机含冷冻期
+
+[309. 最佳买卖股票时机含冷冻期](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/)
+```
+给定一个整数数组prices，其中第  prices[i] 表示第 i 天的股票价格 。​
+
+设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
+
+卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。
+注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+
+ 
+
+示例 1:
+
+输入: prices = [1,2,3,0,2]
+输出: 3 
+解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
+示例 2:
+
+输入: prices = [1]
+输出: 0
+```
+
+`思路`
+动态规划，主要在于分情况转移，
+
+dp[i][0] 表示当天持有股票的最大累积收益
+
+dp[i][1] 表示当天不持有股票且在冷却的最大累积收益，即当天卖出股票的最大收益
+
+dp[i][2] 表示当天不持有股票且不在冷却的最大累积收益，即前一天卖出或者更早之前就卖出了股票的最大收益
+
+`c# 实现`
+```
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int n = prices.Length;
+        int[][] dp = new int[n][];
+        for (int i = 0; i < n; i++)
+        {
+            dp[i] = new int[3];
+        }
+        dp[0][0] = -prices[0];
+        for (int i = 1; i < n; i++)
+        {
+            dp[i][0] = Math.Max(dp[i - 1][0], dp[i-1][2] - prices[i]);
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            dp[i][2] = Math.Max(dp[i - 1][1] , dp[i-1][2]);
+        }
+        return Math.Max(dp[n - 1][1] , dp[n - 1][2]);
+    }
+}
+```
+
+***
+
 ## 2023/6/25
 
 ## 301. 删除无效的括号
