@@ -1,5 +1,52 @@
 # LEET CODE STUDY NOTE
 
+## 2023/7/11
+
+## 438. 找到字符串中所有字母异位词
+
+[438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/?envType=featured-list&envId=2cktkvj)
+```
+
+```
+
+`思路`
+滑动窗口
+
+`c# 实现`
+```
+public class Solution {
+    public IList<int> FindAnagrams(string s, string p) {
+        int sLen = s.Length, pLen = p.Length;
+        if (sLen < pLen) {
+            return new List<int>();
+        }
+        IList<int> ans = new List<int>();
+        int[] sCount = new int[26];
+        int[] pCount = new int[26];
+        for (int i = 0; i < pLen; i++)
+        {
+            ++sCount[s[i] - 'a'];
+            ++pCount[p[i] - 'a'];
+        }
+        if (Enumerable.SequenceEqual(sCount, pCount)) {
+            ans.Add(0);
+        }
+        for (int i = 0; i < sLen - pLen; i++)
+        {
+            --sCount[s[i]-'a'];
+            ++sCount[s[i+pLen] - 'a'];
+             if (Enumerable.SequenceEqual(sCount, pCount)) {
+                ans.Add(i+1);
+            }
+        }
+        return ans;
+    }
+}
+
+```
+
+***
+
 ## 2023/7/10
 
 ## 437. 路径总和 III
