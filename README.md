@@ -1,5 +1,60 @@
 # LEET CODE STUDY NOTE
 
+## 2023/7/18
+
+## 543. 二叉树的直径
+
+[543. 二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=featured-list&envId=2cktkvj)
+```
+给你一棵二叉树的根节点，返回该树的 直径 。
+
+二叉树的 直径 是指树中任意两个节点之间最长路径的 长度 。这条路径可能经过也可能不经过根节点 root 。
+
+两节点之间路径的 长度 由它们之间边数表示。
+
+ 
+
+示例 1：
+
+
+输入：root = [1,2,3,4,5]
+输出：3
+解释：3 ，取路径 [4,2,1,3] 或 [5,2,1,3] 的长度。
+示例 2：
+
+输入：root = [1,2]
+输出：1
+
+```
+
+`思路`
+DFS二叉树，记录最长路径max
+
+`c# 实现`
+```
+public class Solution {
+    private int max;
+    public int DiameterOfBinaryTree(TreeNode root) {
+        max = 0;
+        DFS(root);
+        return max - 1;
+    }
+    
+    private int DFS(TreeNode root){
+        if (root == null)
+        {
+            return 0;
+        }
+        int left = DFS(root.left);
+        int right = DFS(root.right);
+        max = Math.Max(max , left + right + 1);
+        return Math.Max(left + 1, right + 1);
+    }
+}
+```
+
+***
+
 ## 2023/7/17
 
 ## 538. 把二叉搜索树转换为累加树
