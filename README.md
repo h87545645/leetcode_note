@@ -1,5 +1,66 @@
 # LEET CODE STUDY NOTE
 
+## 2023/7/20
+
+## 581. 最短无序连续子数组
+
+[581. 最短无序连续子数组](https://leetcode.cn/problems/shortest-unsorted-continuous-subarray/description/?envType=featured-list&envId=2cktkvj)
+```
+给你一个整数数组 nums ，你需要找出一个 连续子数组 ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+
+请你找出符合题意的 最短 子数组，并输出它的长度。
+
+ 
+
+示例 1：
+
+输入：nums = [2,6,4,8,10,9,15]
+输出：5
+解释：你只需要对 [6, 4, 8, 10, 9] 进行升序排序，那么整个表都会变为升序排序。
+示例 2：
+
+输入：nums = [1,2,3,4]
+输出：0
+示例 3：
+
+输入：nums = [1]
+输出：0
+```
+
+`思路`
+双指针遍历
+
+`c# 实现`
+```
+public class Solution {
+    public int FindUnsortedSubarray(int[] nums) {
+        int n = nums.Length;
+        int left = -1, right = -2;
+        int maxn = int.MinValue;
+        int minn = int.MaxValue;
+        for (int i = 0; i < n; i++)
+        {
+           if (maxn > nums[i])
+           {
+            right = i;
+           }else{
+            maxn = nums[i]; 
+           }
+           if (minn < nums[n - i - 1])
+           {
+            left = n - i - 1;
+           }else{
+            minn = nums[n - i - 1];
+           }
+        }
+        return right - left + 1;
+    }
+}
+```
+
+***
+
+
 ## 2023/7/19
 
 ## 560. 和为 K 的子数组
