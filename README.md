@@ -1,5 +1,60 @@
 # LEET CODE STUDY NOTE
 
+## 2023/7/31
+
+## 14. 最长公共前缀
+
+
+[14. 最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/description/?envType=featured-list&envId=2ckc81c)
+```
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+ 
+
+示例 1：
+
+输入：strs = ["flower","flow","flight"]
+输出："fl"
+示例 2：
+
+输入：strs = ["dog","racecar","car"]
+输出：""
+解释：输入不存在公共前缀。
+```
+
+`思路`
+
+`c# 实现`
+```
+public class Solution {
+    public string LongestCommonPrefix(string[] strs) {
+        int n = int.MaxValue;
+        for (int i = 0; i < strs.Length; i++)
+        {
+            n = Math.Min(strs[i].Length,n);
+        }
+        string ans = "";
+        for (int i = 0; i < n; i++)
+        {
+            char temp = strs[0][i];
+            for (int j = 1; j < strs.Length; j++)
+            {
+                if (strs[j][i] != temp)
+                {
+                    return ans;
+                }
+            }
+            ans += temp;
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/7/28
 
 ## 13. 罗马数字转整数
