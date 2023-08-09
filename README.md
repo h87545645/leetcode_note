@@ -1,5 +1,54 @@
 # LEET CODE STUDY NOTE
 
+## 2023/8/9
+
+## 50. Pow(x, n)
+
+
+[50. Pow(x, n)](https://leetcode.cn/problems/powx-n/description/?envType=featured-list&envId=2ckc81c)
+```
+实现 pow(x, n) ，即计算 x 的整数 n 次幂函数（即，xn ）。
+
+ 
+
+示例 1：
+
+输入：x = 2.00000, n = 10
+输出：1024.00000
+示例 2：
+
+输入：x = 2.10000, n = 3
+输出：9.26100
+示例 3：
+
+输入：x = 2.00000, n = -2
+输出：0.25000
+解释：2-2 = 1/22 = 1/4 = 0.25
+```
+
+`思路`
+快速幂
+
+`c# 实现`
+```
+public class Solution {
+    public double MyPow(double x, int n) {
+        return n >= 0 ? QuickMul(x,n) : 1.0 / QuickMul(x, - n);
+    }
+
+    private double QuickMul(double x, int n){
+        if (n == 0)
+        {
+            return 1.0;
+        }
+        double y = QuickMul(x,n/2);
+        return (n&1) == 0 ? y*y : y*y*x;
+    }
+}
+```
+
+***
+
 ## 2023/8/8
 
 ## 44. 通配符匹配
