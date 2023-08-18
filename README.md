@@ -1,5 +1,77 @@
 # LEET CODE STUDY NOTE
 
+## 2023/8/18
+
+## 103. 二叉树的锯齿形层序遍历
+
+
+[103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/description/?envType=featured-list&envId=2ckc81c)
+```
+给你二叉树的根节点 root ，返回其节点值的 锯齿形层序遍历 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+
+ 
+
+示例 1：
+
+
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[20,9],[15,7]]
+示例 2：
+
+输入：root = [1]
+输出：[[1]]
+示例 3：
+
+输入：root = []
+输出：[]
+```
+
+`思路`
+BFS
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> ZigzagLevelOrder(TreeNode root) {
+        IList<IList<int>> ans = new List<IList<int>>();
+        if (root == null)
+        {
+            return ans;
+        }
+        Queue<TreeNode> que = new Queue<TreeNode>();
+        que.Enqueue(root);
+        bool isLeftOrder = true;
+        while(que.Count > 0){
+            int n = que.Count;
+            IList<int> temp = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                TreeNode curr = que.Dequeue();
+                if (isLeftOrder)
+                {
+                    temp.Add(curr.val);
+                }else{
+                    temp.Insert(0,curr.val);
+                }
+                if (curr.left != null)
+                {
+                    que.Enqueue(curr.left);
+                }
+                if (curr.right != null)
+                {
+                    que.Enqueue(curr.right);
+                }
+            }
+            isLeftOrder = !isLeftOrder;
+            ans.Add(temp);
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/8/17
 
 ## 91. 解码方法
