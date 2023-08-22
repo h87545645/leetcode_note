@@ -1,5 +1,77 @@
 # LEET CODE STUDY NOTE
 
+## 2023/8/22
+
+## 116. 填充每个节点的下一个右侧节点指针
+
+
+[116. 填充每个节点的下一个右侧节点指针](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/description/?envType=featured-list&envId=2ckc81c)
+```
+给定一个 完美二叉树 ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+
+初始状态下，所有 next 指针都被设置为 NULL。
+
+ 
+
+示例 1：
+
+
+
+输入：root = [1,2,3,4,5,6,7]
+输出：[1,#,2,3,#,4,5,6,7,#]
+解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化的输出按层序遍历排列，同一层节点由 next 指针连接，'#' 标志着每一层的结束。
+示例 2:
+
+输入：root = []
+输出：[]
+```
+
+`思路`
+BFS
+
+`c# 实现`
+```
+public class Solution {
+    public Node Connect(Node root) {
+        if(root == null){
+            return root;
+        }
+        Queue<Node> que = new Queue<Node>();
+        que.Enqueue(root);
+        while(que.Count > 0){
+            int n = que.Count;
+            for (int i = 0; i < n; i++)
+            {
+                 Node curr = que.Dequeue();
+                 if (i < n-1)
+                 {
+                    curr.next = que.Peek();
+                 }
+                if (curr.left != null)
+                {
+                    que.Enqueue(curr.left);
+                }
+                if (curr.right != null)
+                {
+                    que.Enqueue(curr.right);
+                }
+            }
+        }
+        return root;
+    }
+}
+```
+
+***
+
 ## 2023/8/21
 
 ## 108. 将有序数组转换为二叉搜索树
