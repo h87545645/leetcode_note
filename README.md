@@ -1,5 +1,58 @@
 # LEET CODE STUDY NOTE
 
+## 2023/8/23
+
+## 118. 杨辉三角
+
+
+[118. 杨辉三角](https://leetcode.cn/problems/pascals-triangle/description/?envType=featured-list&envId=2ckc81c)
+```
+给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
+
+在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+
+
+
+ 
+
+示例 1:
+
+输入: numRows = 5
+输出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+示例 2:
+
+输入: numRows = 1
+输出: [[1]]
+
+```
+
+`思路`
+动态规划
+
+`c# 实现`
+```
+public class Solution {
+    public IList<IList<int>> Generate(int numRows) {
+        int[,] dp = new int[numRows+1,numRows + 1];
+        dp[0,1] = 1;
+        IList<IList<int>> ans = new List<IList<int>>();
+        for (int i = 1; i <= numRows; i++)
+        {
+            List<int> list = new List<int>();
+            for (int j = 1; j <= i; j++)
+            {
+                dp[i,j] = dp[i - 1,j - 1] + dp[i - 1 , j];
+                list.Add(dp[i,j]);
+            }
+            ans.Add(list);
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/8/22
 
 ## 116. 填充每个节点的下一个右侧节点指针
