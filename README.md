@@ -1,5 +1,81 @@
 # LEET CODE STUDY NOTE
 
+## 2023/8/31
+
+## 131. 分割回文串
+
+
+[131. 分割回文串](https://leetcode.cn/problems/palindrome-partitioning/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+
+回文串 是正着读和反着读都一样的字符串。
+
+ 
+
+示例 1：
+
+输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]
+示例 2：
+
+输入：s = "a"
+输出：[["a"]]
+
+```
+
+`思路`
+
+
+`c# 实现`
+```
+public class Solution {
+    int[,] f;
+    IList<IList<string>> ret; 
+    IList<string> ans;
+    int n;
+    public IList<IList<string>> Partition(string s) {
+        ret = new List<IList<string>>();
+        ans = new List<string>();
+        n = s.Length;
+        f = new int[n,n];
+        DFS(s, 0);
+        return ret;
+    }
+
+    public void DFS(string s, int i) {
+        if (i == n) {
+            ret.Add(new List<string>(ans));
+            return;
+        }
+        for (int j = i; j < n; ++j) {
+            if (IsPalindrome(s, i, j) == 1) {
+                ans.Add(s.Substring(i, j + 1 - i));
+                DFS(s, j + 1);
+                ans.RemoveAt(ans.Count - 1);
+            }
+        }
+    }
+
+    // 记忆化搜索中，f[i][j] = 0 表示未搜索，1 表示是回文串，-1 表示不是回文串
+    public int IsPalindrome(string s, int i, int j) {
+        if (f[i,j] != 0) {
+            return f[i,j];
+        }
+        if (i >= j) {
+            f[i,j] = 1;
+        } else if (s[i] == s[j]) {
+            f[i,j] = IsPalindrome(s, i + 1, j - 1);
+        } else {
+            f[i,j] = -1;
+        }
+        return f[i,j];
+    }
+}
+```
+
+***
+
 ## 2023/8/30
 
 ## 130. 被围绕的区域
