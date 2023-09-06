@@ -1,5 +1,76 @@
 # LEET CODE STUDY NOTE
 
+## 2023/9/6
+
+## 140. 单词拆分 II
+
+
+[140. 单词拆分 II](https://leetcode.cn/problems/word-break-ii/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给定一个字符串 s 和一个字符串字典 wordDict ，在字符串 s 中增加空格来构建一个句子，使得句子中所有的单词都在词典中。以任意顺序 返回所有这些可能的句子。
+
+注意：词典中的同一个单词可能在分段中被重复使用多次。
+
+ 
+
+示例 1：
+
+输入:s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+输出:["cats and dog","cat sand dog"]
+示例 2：
+
+输入:s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+输出:["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+解释: 注意你可以重复使用字典中的单词。
+示例 3：
+
+输入:s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+输出:[]
+
+```
+
+`思路`
+
+`c# 实现`
+```
+public class Solution {
+    public IList<string> WordBreak(string s, IList<string> wordDict) {
+        Dictionary<int,List<List<string>>> map = new Dictionary<int,List<List<string>>>();
+        List<List<string>> wordBreaks = Backtrack(s, s.Length, new HashSet<string>(wordDict), 0, map);
+        IList<string> breakList = new List<string>();
+        foreach (List<string> wordBreak in wordBreaks)
+        {
+             breakList.Add(string.Join(" ", wordBreak));
+        }
+        return breakList;
+    }
+    public List<List<string>> Backtrack(string s, int length, HashSet<string> wordSet, int index, Dictionary<int,List<List<string>>> map) {
+        if (!map.ContainsKey(index)) {
+            List<List<string>> wordBreaks = new List<List<string>>();
+            if (index == length) {
+                wordBreaks.Add(new List<string>());
+            }
+            for (int i = index + 1; i <= length; i++) {
+                string word = s.Substring(index, i - index);
+                if (wordSet.Contains(word)) {
+                    List<List<string>> nextWordBreaks = Backtrack(s, length, wordSet, i, map);
+                    foreach (List<string> nextWordBreak in nextWordBreaks)
+                    {
+                       List<string> wordBreak = new List<string>(nextWordBreak);
+                        wordBreak.Insert(0,word);
+                        wordBreaks.Add(wordBreak);
+                    }
+                }
+            }
+            map.Add(index,wordBreaks);
+        }
+        return map[index];
+    }
+}
+```
+
+***
+
 ## 2023/9/5
 
 ## 138. 复制带随机指针的链表
