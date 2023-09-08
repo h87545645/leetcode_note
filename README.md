@@ -1,5 +1,96 @@
 # LEET CODE STUDY NOTE
 
+## 2023/9/8
+
+## 150. 逆波兰表达式求值
+
+
+[150. 逆波兰表达式求值](https://leetcode.cn/problems/evaluate-reverse-polish-notation/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给你一个字符串数组 tokens ，表示一个根据 逆波兰表示法 表示的算术表达式。
+
+请你计算该表达式。返回一个表示表达式值的整数。
+
+注意：
+
+有效的算符为 '+'、'-'、'*' 和 '/' 。
+每个操作数（运算对象）都可以是一个整数或者另一个表达式。
+两个整数之间的除法总是 向零截断 。
+表达式中不含除零运算。
+输入是一个根据逆波兰表示法表示的算术表达式。
+答案及所有中间计算结果可以用 32 位 整数表示。
+ 
+
+示例 1：
+
+输入：tokens = ["2","1","+","3","*"]
+输出：9
+解释：该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
+示例 2：
+
+输入：tokens = ["4","13","5","/","+"]
+输出：6
+解释：该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
+示例 3：
+
+输入：tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+输出：22
+解释：该算式转化为常见的中缀算术表达式为：
+  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+= ((10 * (6 / (12 * -11))) + 17) + 5
+= ((10 * (6 / -132)) + 17) + 5
+= ((10 * 0) + 17) + 5
+= (0 + 17) + 5
+= 17 + 5
+= 22
+```
+
+`思路`
+遇到数字入栈，遇到运算 计算栈顶两个数
+
+`c# 实现`
+```
+public class Solution {
+    public int EvalRPN(string[] tokens) {
+        Stack<int> stack = new  Stack<int>();
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/" )
+            {
+                int num2 = stack.Pop();
+                int num1 = stack.Pop();
+                int res = 0;
+                switch (tokens[i])
+                {
+                    case "+":
+                        res = (num1 + num2);
+                        break;
+                    case "-":
+                        res = (num1 - num2);
+                        break;
+                    case "*":
+                        res = (num1 * num2);
+                        break;
+                    case "/":
+                        res = (num1 / num2);
+                        break;
+                    default:
+                        break;
+                }
+                stack.Push(res);
+            }else{
+                int num = int.Parse(tokens[i]);
+                stack.Push(num);
+            }
+        }
+        return stack.Pop();
+    }
+}
+
+```
+
+***
+
 ## 2023/9/6
 
 ## 140. 单词拆分 II
