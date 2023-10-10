@@ -1,5 +1,109 @@
 # LEET CODE STUDY NOTE
 
+## 2023/10/10
+
+## 212. 单词搜索 II
+
+
+[212. 单词搜索 II](https://leetcode.cn/problems/word-search-ii/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words， 返回所有二维网格上的单词 。
+
+单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母在一个单词中不允许被重复使用。
+
+ 
+
+示例 1：
+
+
+输入：board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
+输出：["eat","oath"]
+示例 2：
+
+
+输入：board = [["a","b"],["c","d"]], words = ["abcb"]
+输出：[]
+
+```
+
+`思路`
+字典树
+
+`c# 实现`
+```
+public class Solution {
+      int[][] dirs = new int[][] {
+        new int[]{1, 0},
+        new int[]{-1, 0},
+        new int[]{0, 1},
+        new int[]{0, -1}
+    };
+    public IList<string> FindWords(char[][] board, string[] words) {
+        Trie trie = new Trie();
+        for (int i = 0; i < words.Length; i++)
+        {
+            string word = words[i];
+            Trie curr = trie;
+            for (int j = 0; j < word.Length; j++)
+            {
+                int mChar = word[j] - 'a';
+                if (curr.Child[mChar] == null)
+                {
+                    curr.Child[mChar] = new Trie();
+                }
+                curr = curr.Child[mChar];
+            }
+            curr.Word = word;
+        }
+        ISet<string> ans = new HashSet<string>();
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[i].Length; j++)
+            {
+                DFS(board,trie,i,j,ans);
+            }
+        }
+        return new List<string>(ans);
+    }
+
+    private void DFS(char[][] board , Trie curr, int i , int j , ISet<string> ans){
+        char mChar = board[i][j];
+        int mIndex = mChar - 'a';
+        if (mIndex < 0 || mIndex > 25 || curr.Child[mIndex] == null)
+        {
+            return;
+        }
+        curr = curr.Child[mChar - 'a'];
+        if (!"".Equals(curr.Word))
+        {
+            ans.Add(curr.Word);
+        }
+        board[i][j] = '#';
+        for (int m = 0; m < dirs.Length; m++)
+        {
+            int mi = i + dirs[m][0];
+            int mj = j + dirs[m][1];
+            if (mi >= 0 && mj >= 0 && mi < board.Length && mj < board[0].Length)
+            {
+                DFS(board,curr,mi,mj,ans);
+            }
+        }
+        board[i][j] = mChar;
+    }
+
+    class Trie {
+        public string Word { get; set; }
+        public Trie[] Child { get; set; }
+        public Trie(){
+            Word = "";
+            Child = new Trie[26];
+        }
+    }
+}
+```
+
+***
+
 ## 2023/10/9
 
 ## 210. 课程表 II
