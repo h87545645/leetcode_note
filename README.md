@@ -1,5 +1,83 @@
 # LEET CODE STUDY NOTE
 
+## 2023/10/20
+
+## 227. 基本计算器 II
+
+
+[227. 基本计算器 II](https://leetcode.cn/problems/basic-calculator-ii/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。
+
+整数除法仅保留整数部分。
+
+你可以假设给定的表达式总是有效的。所有中间结果将在 [-231, 231 - 1] 的范围内。
+
+注意：不允许使用任何将字符串作为数学表达式计算的内置函数，比如 eval() 。
+
+ 
+
+示例 1：
+
+输入：s = "3+2*2"
+输出：7
+示例 2：
+
+输入：s = " 3/2 "
+输出：1
+示例 3：
+
+输入：s = " 3+5 / 2 "
+输出：5
+ 
+```
+
+`思路`
+stack
+
+`c# 实现`
+```
+public class Solution {
+    public int Calculate(string s) {
+        Stack<int> stack = new Stack<int>();
+        char preSign = '+';
+        int num = 0;
+        int n = s.Length;
+        for (int i = 0; i < n; ++i) {
+            if (char.IsDigit(s[i])) {
+                num = num * 10 + s[i] - '0';
+            }
+            if (!char.IsDigit(s[i]) && s[i] != ' ' || i == n - 1) {
+                switch (preSign) {
+                case '+':
+                    stack.Push(num);
+                    break;
+                case '-':
+                    stack.Push(-num);
+                    break;
+                case '*':
+                    stack.Push(stack.Pop() * num);
+                    break;
+                default:
+                    stack.Push(stack.Pop() / num);
+                    break;
+                }
+                preSign = s[i];
+                num = 0;
+            }
+        }
+        int ans = 0;
+        while (stack.Count > 0) {
+            ans += stack.Pop();
+        }
+        return ans;
+    }
+}
+
+```
+
+***
+
 ## 2023/10/19
 
 ## 218. 天际线问题
