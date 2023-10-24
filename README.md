@@ -1,5 +1,69 @@
 # LEET CODE STUDY NOTE
 
+## 2023/10/24
+
+## 230. 二叉搜索树中第K小的元素
+
+
+[230. 二叉搜索树中第K小的元素](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/description/?envType=featured-list&envId=2ckc81c%3FenvType%3Dfeatured-list&envId=2ckc81c)
+```
+给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 个最小元素（从 1 开始计数）。
+
+ 
+
+示例 1：
+
+
+输入：root = [3,1,4,null,2], k = 1
+输出：1
+示例 2：
+
+
+输入：root = [5,3,6,2,4,null,null,1], k = 3
+输出：3
+
+```
+
+`思路`
+中序遍历
+
+`c# 实现`
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public int KthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while(root != null || stack.Count > 0){
+            while(root != null){
+                stack.Push(root);
+                root = root.left;
+            }
+            root = stack.Pop();
+            k--;
+            if(k == 0){
+                break;
+            }
+            root = root.right;
+        }
+        return root.val;
+    }
+}
+```
+
+***
+
 ## 2023/10/20
 
 ## 227. 基本计算器 II
