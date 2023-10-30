@@ -1,5 +1,66 @@
 # LEET CODE STUDY NOTE
 
+## 2023/10/30
+
+## 242. 有效的字母异位词
+
+
+[242. 有效的字母异位词](https://leetcode.cn/problems/valid-anagram/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+
+ 
+
+示例 1:
+
+输入: s = "anagram", t = "nagaram"
+输出: true
+示例 2:
+
+输入: s = "rat", t = "car"
+输出: false
+
+```
+
+`思路`
+哈希表记录
+
+`c# 实现`
+```
+public class Solution {
+    public bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length)
+        {
+            return false;
+        }
+        Dictionary<char,int> dict = new  Dictionary<char,int>();
+        for (int i = 0; i < s.Length; i++)
+        {
+            dict.TryAdd(s[i],0);
+            dict[s[i]] ++;
+        }
+        for (int i = 0; i < t.Length; i++)
+        {
+            if (dict.ContainsKey(t[i]))
+            {
+                dict[t[i]] --;
+                if (dict[t[i]] == 0)
+                {
+                    dict.Remove(t[i]);
+                }
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+***
+
 ## 2023/10/25
 
 ## 237. 删除链表中的节点
