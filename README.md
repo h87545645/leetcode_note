@@ -1,5 +1,101 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/1
+
+## 289. 生命游戏
+
+[289. 生命游戏](https://leetcode.cn/problems/game-of-life/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+根据 百度百科 ， 生命游戏 ，简称为 生命 ，是英国数学家约翰·何顿·康威在 1970 年发明的细胞自动机。
+
+给定一个包含 m × n 个格子的面板，每一个格子都可以看成是一个细胞。每个细胞都具有一个初始状态： 1 即为 活细胞 （live），或 0 即为 死细胞 （dead）。每个细胞与其八个相邻位置（水平，垂直，对角线）的细胞都遵循以下四条生存定律：
+
+如果活细胞周围八个位置的活细胞数少于两个，则该位置活细胞死亡；
+如果活细胞周围八个位置有两个或三个活细胞，则该位置活细胞仍然存活；
+如果活细胞周围八个位置有超过三个活细胞，则该位置活细胞死亡；
+如果死细胞周围正好有三个活细胞，则该位置死细胞复活；
+下一个状态是通过将上述规则同时应用于当前状态下的每个细胞所形成的，其中细胞的出生和死亡是同时发生的。给你 m x n 网格面板 board 的当前状态，返回下一个状态。
+
+ 
+
+示例 1：
+
+
+输入：board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+输出：[[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
+示例 2：
+
+
+输入：board = [[1,1],[1,0]]
+输出：[[1,1],[1,1]]
+
+```
+
+`思路`
+标记需要修改的格子
+
+`c# 实现`
+```
+public class Solution {
+    int[][] around = new int[8][]{
+        new int[]{-1,-1},new int[]{0,-1},new int[]{1,-1},
+        new int[]{-1,0},new int[]{1,0},
+        new int[]{-1,1},new int[]{0,1},new int[]{1,1}
+    };
+    public void GameOfLife(int[][] board) {
+        int m = board.Length , n = board[0].Length;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                CountAlive(board,i,j);
+            }
+        }
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (board[i][j] == 10)
+                {
+                    board[i][j] = 1;
+                }else if (board[i][j] == 11)
+                {
+                    board[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    private void CountAlive(int[][] board , int ii, int ij){
+        int count = 0 , m = board.Length , n = board[0].Length;
+        for (int i = 0; i < around.Length; i++)
+        {
+            int x = ii + around[i][0];
+            int y = ij + around[i][1];
+            if (x < 0 || x >= m || y < 0 || y >= n)
+            {
+                continue;
+            }
+            count += (board[x][y] & 1);
+        }
+        if (board[ii][ij] == 0)
+        {
+            if (count == 3)
+            {
+                board[ii][ij] = 10;
+            }
+        }else{
+            if (count < 2 || count > 3)
+            {
+                board[ii][ij] = 11;
+            }
+        }
+    }
+}
+```
+
+***
+
 ## 2023/10/31
 
 ## 268. 丢失的数字
