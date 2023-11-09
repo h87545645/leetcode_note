@@ -1,5 +1,92 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/9
+
+## 329. 矩阵中的最长递增路径
+
+[329. 矩阵中的最长递增路径](https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给定一个 m x n 整数矩阵 matrix ，找出其中 最长递增路径 的长度。
+
+对于每个单元格，你可以往上，下，左，右四个方向移动。 你 不能 在 对角线 方向上移动或移动到 边界外（即不允许环绕）。
+
+ 
+
+示例 1：
+
+
+输入：matrix = [[9,9,4],[6,6,8],[2,1,1]]
+输出：4 
+解释：最长递增路径为 [1, 2, 6, 9]。
+示例 2：
+
+
+输入：matrix = [[3,4,5],[3,2,6],[2,2,1]]
+输出：4 
+解释：最长递增路径是 [3, 4, 5, 6]。注意不允许在对角线方向上移动。
+示例 3：
+
+输入：matrix = [[1]]
+输出：1
+
+```
+
+`思路`
+记忆优化递归
+
+`c# 实现`
+```
+public class Solution {
+    int[][] dp;
+    public int LongestIncreasingPath(int[][] matrix) {
+        int m = matrix.Length , n = matrix[0].Length;
+        dp = new int[m][];
+        for (int i = 0; i < m; i++)
+        {
+            dp[i] = new int[n];
+        }
+        int ans = 1;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                ans = Math.Max(GetCurrDp(matrix,i,j),ans);
+            }
+        }
+        return ans;
+    }
+
+    private int GetCurrDp(int[][] matrix , int i , int j){
+        if (dp[i][j] > 0)
+        {
+            return dp[i][j];
+        }
+        int l = 0, r =0, u = 0, d = 0;
+        if (i - 1 >= 0 && i - 1 < matrix.Length && matrix[i][j] < matrix[i-1][j])
+        {
+            l = GetCurrDp(matrix,i-1,j);
+        }
+        if (i + 1 >= 0 && i + 1 < matrix.Length && matrix[i][j] < matrix[i+1][j])
+        {
+            r = GetCurrDp(matrix,i+1,j);
+        }
+        if (j - 1 >= 0 && j - 1 < matrix[0].Length && matrix[i][j] < matrix[i][j-1])
+        {
+            u = GetCurrDp(matrix,i,j-1);
+        }
+        if (j + 1 >= 0 && j + 1 < matrix[0].Length && matrix[i][j] < matrix[i][j+1])
+        {
+            d = GetCurrDp(matrix,i,j+1);
+        }
+        int maxNum = 1 + Math.Max(l, Math.Max(r, Math.Max(u,d)));
+        dp[i][j] = maxNum;
+        return maxNum;
+    }
+}
+```
+
+***
+
 ## 2023/11/8
 
 ## 328. 奇偶链表
