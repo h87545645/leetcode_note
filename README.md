@@ -1,5 +1,67 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/10
+
+## 334. 递增的三元子序列
+
+[334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给你一个整数数组 nums ，判断这个数组中是否存在长度为 3 的递增子序列。
+
+如果存在这样的三元组下标 (i, j, k) 且满足 i < j < k ，使得 nums[i] < nums[j] < nums[k] ，返回 true ；否则，返回 false 。
+
+ 
+
+示例 1：
+
+输入：nums = [1,2,3,4,5]
+输出：true
+解释：任何 i < j < k 的三元组都满足题意
+示例 2：
+
+输入：nums = [5,4,3,2,1]
+输出：false
+解释：不存在满足题意的三元组
+示例 3：
+
+输入：nums = [2,1,5,0,4,6]
+输出：true
+解释：三元组 (3, 4, 5) 满足题意，因为 nums[3] == 0 < nums[4] == 4 < nums[5] == 6
+```
+
+`思路`
+双向遍历,用left right 两个辅助数组分别记录当前位置 i 从左到右和从右到左的最小值和最大值，如果存在一个nums[i] 满足大于 left[i] 并且小于 right[i] ，则符合三元递增
+
+`c# 实现`
+```
+public class Solution {
+    public bool IncreasingTriplet(int[] nums) {
+        int n = nums.Length;
+        int[] leftArr = new int[n] , rightArr = new int[n];
+        leftArr[0] = nums[0];
+        rightArr[n - 1] = nums[n - 1];
+        for (int i = 1; i < n; i++)
+        {
+            leftArr[i] = Math.Min(leftArr[i - 1] , nums[i]);
+        }
+        for (int i = n - 2; i >= 0; i--)
+        {
+            rightArr[i] = Math.Max(rightArr[i + 1] , nums[i]);
+        }
+        for (int i = 1; i < n - 1; i++)
+        {
+            if (nums[i] > leftArr[i] && nums[i] < rightArr[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+***
+
 ## 2023/11/9
 
 ## 329. 矩阵中的最长递增路径
