@@ -1,5 +1,149 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/16
+
+## 344. 反转字符串
+
+[344. 反转字符串](https://leetcode.cn/problems/reverse-string/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+ 
+
+示例 1：
+
+输入：s = ["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+示例 2：
+
+输入：s = ["H","a","n","n","a","h"]
+输出：["h","a","n","n","a","H"]
+
+```
+
+`思路`
+双指针
+
+`c# 实现`
+```
+public class Solution {
+    public void ReverseString(char[] s) {
+        for (int i = 0 , j = s.Length - 1; i < j; i++ , j--)
+        {
+            char temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+    }
+}
+```
+
+***
+
+## 2023/11/15
+
+## 341. 扁平化嵌套列表迭代器
+
+[341. 扁平化嵌套列表迭代器](https://leetcode.cn/problems/flatten-nested-list-iterator/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给你一个嵌套的整数列表 nestedList 。每个元素要么是一个整数，要么是一个列表；该列表的元素也可能是整数或者是其他列表。请你实现一个迭代器将其扁平化，使之能够遍历这个列表中的所有整数。
+
+实现扁平迭代器类 NestedIterator ：
+
+NestedIterator(List<NestedInteger> nestedList) 用嵌套列表 nestedList 初始化迭代器。
+int next() 返回嵌套列表的下一个整数。
+boolean hasNext() 如果仍然存在待迭代的整数，返回 true ；否则，返回 false 。
+你的代码将会用下述伪代码检测：
+
+initialize iterator with nestedList
+res = []
+while iterator.hasNext()
+    append iterator.next() to the end of res
+return res
+如果 res 与预期的扁平化列表匹配，那么你的代码将会被判为正确。
+
+ 
+
+示例 1：
+
+输入：nestedList = [[1,1],2,[1,1]]
+输出：[1,1,2,1,1]
+解释：通过重复调用 next 直到 hasNext 返回 false，next 返回的元素的顺序应该是: [1,1,2,1,1]。
+示例 2：
+
+输入：nestedList = [1,[4,[6]]]
+输出：[1,4,6]
+解释：通过重复调用 next 直到 hasNext 返回 false，next 返回的元素的顺序应该是: [1,4,6]。
+
+```
+
+`思路`
+无
+
+`c# 实现`
+```
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     bool IsInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     int GetInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     IList<NestedInteger> GetList();
+ * }
+ */
+public class NestedIterator {
+    List<int> mInteger;
+    int index;
+    public NestedIterator(IList<NestedInteger> nestedList) {
+        index = 0;
+        mInteger = new List<int>();
+        mInteger = SplitNested(nestedList);
+    }
+
+    private List<int> SplitNested(IList<NestedInteger> nestedList){
+        List<int> temp =  new List<int>();
+        for (int i = 0; i < nestedList.Count; i++)
+        {
+            NestedInteger curr = nestedList[i];
+            if (curr.IsInteger())
+            {
+                temp.Add(curr.GetInteger());
+            }else{
+                temp.AddRange(SplitNested(curr.GetList()));
+            }
+        }
+        return temp;
+    }
+
+    public bool HasNext() {
+        return index < mInteger.Count;
+    }
+
+    public int Next() {
+        return mInteger[index++];
+    }
+}
+
+
+/**
+ * Your NestedIterator will be called like this:
+ * NestedIterator i = new NestedIterator(nestedList);
+ * while (i.HasNext()) v[f()] = i.Next();
+ */
+```
+
+***
+
 ## 2023/11/10
 
 ## 334. 递增的三元子序列
