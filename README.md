@@ -1,5 +1,63 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/17
+
+## 350. 两个数组的交集 II
+
+[350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给你两个整数数组 nums1 和 nums2 ，请你以数组形式返回两数组的交集。返回结果中每个元素出现的次数，应与元素在两个数组中都出现的次数一致（如果出现次数不一致，则考虑取较小值）。可以不考虑输出结果的顺序。
+
+ 
+
+示例 1：
+
+输入：nums1 = [1,2,2,1], nums2 = [2,2]
+输出：[2,2]
+示例 2:
+
+输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出：[4,9]
+
+```
+
+`思路`
+双指针或者哈希表
+
+`c# 实现`
+```
+public class Solution {
+    public int[] Intersect(int[] nums1, int[] nums2) {
+        if (nums1.Length > nums2.Length)
+        {
+            return Intersect(nums2,nums1);
+        }
+        List<int> ans = new List<int>();
+        Dictionary<int,int> dict = new Dictionary<int, int>();
+        for (int i = 0; i < nums1.Length; i++)
+        {
+            dict.TryAdd(nums1[i],0);
+            dict[nums1[i]]++;
+        }
+        for (int i = 0; i < nums2.Length; i++)
+        {
+            if (dict.ContainsKey(nums2[i]))
+            {
+                ans.Add(nums2[i]);
+                dict[nums2[i]] --;
+                if (dict[nums2[i]] == 0)
+                {
+                    dict.Remove(nums2[i]);
+                }
+            }
+        }
+        return ans.ToArray();
+    }
+}
+```
+
+***
+
 ## 2023/11/16
 
 ## 344. 反转字符串
