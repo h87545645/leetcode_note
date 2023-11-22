@@ -1,5 +1,102 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/22
+
+## 380. O(1) 时间插入、删除和获取随机元素
+
+[380. O(1) 时间插入、删除和获取随机元素](https://leetcode.cn/problems/insert-delete-getrandom-o1/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+public class RandomizedSet {
+    IList<int> nums;
+    Dictionary<int, int> indices;
+    Random random;
+    public RandomizedSet() {
+        nums = new List<int>();
+        indices = new  Dictionary<int, int>();
+        random = new Random();
+    }
+    
+    public bool Insert(int val) {
+        if (indices.ContainsKey(val))
+        {
+            return false;
+        }
+        int index = nums.Count;
+        nums.Add(val);
+        indices.Add(val,index);
+        return true;
+    }
+    
+    public bool Remove(int val) {
+        if (!indices.ContainsKey(val))
+        {
+            return false;
+        }
+        int index = indices[val];
+        int last = nums[nums.Count - 1];
+        nums[index] = last;
+        indices[last] = index;
+        nums.RemoveAt(nums.Count - 1);
+        indices.Remove(val);
+        return true;
+    }
+    
+    public int GetRandom() {
+        int randomIndex = random.Next(nums.Count);
+        return nums[randomIndex];
+    }
+}
+```
+
+`思路`
+哈希表辅助
+
+`c# 实现`
+```
+public class RandomizedSet {
+    IList<int> nums;
+    Dictionary<int, int> indices;
+    Random random;
+    public RandomizedSet() {
+        nums = new List<int>();
+        indices = new  Dictionary<int, int>();
+        random = new Random();
+    }
+    
+    public bool Insert(int val) {
+        if (indices.ContainsKey(val))
+        {
+            return false;
+        }
+        int index = nums.Count;
+        nums.Add(val);
+        indices.Add(val,index);
+        return true;
+    }
+    
+    public bool Remove(int val) {
+        if (!indices.ContainsKey(val))
+        {
+            return false;
+        }
+        int index = indices[val];
+        int last = nums[nums.Count - 1];
+        nums[index] = last;
+        indices[last] = index;
+        nums.RemoveAt(nums.Count - 1);
+        indices.Remove(val);
+        return true;
+    }
+    
+    public int GetRandom() {
+        int randomIndex = random.Next(nums.Count);
+        return nums[randomIndex];
+    }
+}
+```
+
+***
+
 ## 2023/11/21
 
 ## 378. 有序矩阵中第 K 小的元素
