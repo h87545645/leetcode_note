@@ -1,5 +1,73 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/23
+
+## 384. 打乱数组
+
+[384. 打乱数组](https://leetcode.cn/problems/shuffle-an-array/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给你一个整数数组 nums ，设计算法来打乱一个没有重复元素的数组。打乱后，数组的所有排列应该是 等可能 的。
+
+实现 Solution class:
+
+Solution(int[] nums) 使用整数数组 nums 初始化对象
+int[] reset() 重设数组到它的初始状态并返回
+int[] shuffle() 返回数组随机打乱后的结果
+ 
+
+示例 1：
+
+输入
+["Solution", "shuffle", "reset", "shuffle"]
+[[[1, 2, 3]], [], [], []]
+输出
+[null, [3, 1, 2], [1, 2, 3], [1, 3, 2]]
+
+解释
+Solution solution = new Solution([1, 2, 3]);
+solution.shuffle();    // 打乱数组 [1,2,3] 并返回结果。任何 [1,2,3]的排列返回的概率应该相同。例如，返回 [3, 1, 2]
+solution.reset();      // 重设数组到它的初始状态 [1, 2, 3] 。返回 [1, 2, 3]
+solution.shuffle();    // 随机返回数组 [1, 2, 3] 打乱后的结果。例如，返回 [1, 3, 2]
+```
+
+`思路`
+
+
+`c# 实现`
+```
+public class Solution {
+    int[] nums;
+    int[] origin;
+    public Solution(int[] nums) {
+        this.nums = nums;
+        origin = new int[nums.Length];
+        Array.Copy(nums, origin, nums.Length);
+    }
+    
+    public int[] Reset() {
+        return origin;
+    }
+    
+    public int[] Shuffle() {
+        int[] shuffled = new int[nums.Length];
+        IList<int> list = new List<int>(nums);
+        // for (int i = 0; i < nums.Length; ++i) {
+        //     list.Add(nums[i]);
+        // }
+        Random random = new Random();
+        for (int i = 0; i < nums.Length; ++i) {
+            int j = random.Next(list.Count);
+            shuffled[i] = list[j];
+            list.Remove(list[j]);
+        }
+        Array.Copy(shuffled, nums, nums.Length);
+        return nums;
+    }
+}
+```
+
+***
+
 ## 2023/11/22
 
 ## 380. O(1) 时间插入、删除和获取随机元素
