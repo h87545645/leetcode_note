@@ -1,5 +1,63 @@
 # LEET CODE STUDY NOTE
 
+## 2023/11/30
+
+## 387. 字符串中的第一个唯一字符
+
+[387. 字符串中的第一个唯一字符](https://leetcode.cn/problems/first-unique-character-in-a-string/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给定一个字符串 s ，找到 它的第一个不重复的字符，并返回它的索引 。如果不存在，则返回 -1 。
+
+ 
+
+示例 1：
+
+输入: s = "leetcode"
+输出: 0
+示例 2:
+
+输入: s = "loveleetcode"
+输出: 2
+示例 3:
+
+输入: s = "aabb"
+输出: -1
+
+```
+
+`思路`
+哈希表
+
+`c# 实现`
+```
+public class Solution {
+    public int FirstUniqChar(string s) {
+        int ans = -1;
+        Dictionary<char,int> dict = new Dictionary<char, int>();
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (dict.ContainsKey(s[i]))
+            {
+                dict[s[i]] = -1;
+            }else{
+                dict.Add(s[i],i);
+            }
+        }
+        foreach( KeyValuePair<char, int> kvp in dict ){
+            if (kvp.Value != -1)
+            {
+                ans = kvp.Value;
+                break;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
+
 ## 2023/11/23
 
 ## 384. 打乱数组
