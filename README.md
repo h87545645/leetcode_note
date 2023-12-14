@@ -1,5 +1,65 @@
 # LEET CODE STUDY NOTE
 
+## 2023/12/14
+
+## 454. 四数相加 II
+
+[454. 四数相加 II](https://leetcode.cn/problems/4sum-ii/description/?envType=featured-list&envId=2ckc81c?envType=featured-list&envId=2ckc81c)
+```
+给你四个整数数组 nums1、nums2、nums3 和 nums4 ，数组长度都是 n ，请你计算有多少个元组 (i, j, k, l) 能满足：
+
+0 <= i, j, k, l < n
+nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+ 
+
+示例 1：
+
+输入：nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]
+输出：2
+解释：
+两个元组如下：
+1. (0, 0, 0, 1) -> nums1[0] + nums2[0] + nums3[0] + nums4[1] = 1 + (-2) + (-1) + 2 = 0
+2. (1, 1, 0, 0) -> nums1[1] + nums2[1] + nums3[0] + nums4[0] = 2 + (-1) + (-1) + 0 = 0
+示例 2：
+
+输入：nums1 = [0], nums2 = [0], nums3 = [0], nums4 = [0]
+输出：1
+```
+
+`思路`
+哈希表记录
+
+`c# 实现`
+```
+public class Solution {
+    public int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        Dictionary<int , int> dict = new  Dictionary<int , int>();
+        foreach (int a in nums1)
+        {
+            foreach (int b in nums2)
+            {
+                dict.TryAdd(a+b , 0);
+                dict[a+b] ++;
+            }
+        }
+        int ans = 0;
+        foreach (int a in nums3)
+        {
+            foreach (int b in nums4)
+            {
+                if (dict.ContainsKey(-a-b))
+                {
+                    ans += dict[-a-b];
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+***
+
 ## 2023/12/13
 
 ## 412. Fizz Buzz
