@@ -1,5 +1,54 @@
 # LEET CODE STUDY NOTE
 
+## 2023/12/27
+
+## 面试题 01.01. 判定字符是否唯一
+
+[面试题 01.01. 判定字符是否唯一](https://leetcode.cn/problems/is-unique-lcci/description/?envType=featured-list&envId=xb9lfcwi?envType=featured-list&envId=xb9lfcwi)
+```
+实现一个算法，确定一个字符串 s 的所有字符是否全都不同。
+
+示例 1：
+
+输入: s = "leetcode"
+输出: false 
+示例 2：
+
+输入: s = "abc"
+输出: true
+限制：
+
+0 <= len(s) <= 100 
+s[i]仅包含小写字母
+如果你不使用额外的数据结构，会很加分。
+```
+
+`思路`
+排序
+
+`c# 实现`
+```
+public class Solution {
+    public bool IsUnique(string astr) {
+        char[] chars = astr.ToCharArray();
+        if(chars.Length == 0) return true;
+        Array.Sort(chars);
+        char previous = chars[0];
+        for (int i = 1; i < chars.Length; i++)
+        {
+            if (previous == chars[i])
+            {
+                return false;
+            }
+            previous = chars[i];
+        }
+        return true;
+    }
+}
+```
+
+***
+
 ## 2023/12/14
 
 ## 454. 四数相加 II
